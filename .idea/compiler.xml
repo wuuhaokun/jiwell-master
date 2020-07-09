@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="jiwell-common" />
+        <module name="jiwell-user-service" />
+        <module name="jiwell-sms" />
+        <module name="jiwell-upload" />
+        <module name="jiwell-search" />
+        <module name="jiwell-user-interface" />
+        <module name="jiwell-api-gateway" />
+        <module name="jiwell-item-service" />
+        <module name="jiwell-order-service" />
+        <module name="jiwell-authentication-common" />
+        <module name="jiwell-goods-web" />
+        <module name="jiwell-seckill-service" />
+        <module name="jiwell-cart" />
+        <module name="jiwell-authentication-service" />
+        <module name="jiwell-seckill-interface" />
+        <module name="jiwell-config" />
+        <module name="jiwell-item-interface" />
+        <module name="jiwell-comments-service" />
+        <module name="jiwell-order-interface" />
+        <module name="jiwell-registry" />
+        <module name="jiwell-comments-interface" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="jiwell" target="1.8" />
+      <module name="jiwell-api-gateway" target="1.8" />
+      <module name="jiwell-authentication" target="1.8" />
+      <module name="jiwell-authentication-common" target="1.8" />
+      <module name="jiwell-authentication-service" target="1.8" />
+      <module name="jiwell-cart" target="1.8" />
+      <module name="jiwell-comments" target="1.8" />
+      <module name="jiwell-comments-interface" target="1.8" />
+      <module name="jiwell-comments-service" target="1.8" />
+      <module name="jiwell-common" target="1.8" />
+      <module name="jiwell-config" target="1.8" />
+      <module name="jiwell-goods-web" target="1.8" />
+      <module name="jiwell-item" target="1.8" />
+      <module name="jiwell-item-interface" target="1.8" />
+      <module name="jiwell-item-service" target="1.8" />
+      <module name="jiwell-order" target="1.8" />
+      <module name="jiwell-order-interface" target="1.8" />
+      <module name="jiwell-order-service" target="1.8" />
+      <module name="jiwell-registry" target="1.8" />
+      <module name="jiwell-search" target="1.8" />
+      <module name="jiwell-seckill-interface" target="1.8" />
+      <module name="jiwell-seckill-service" target="1.8" />
+      <module name="jiwell-secskill" target="1.8" />
+      <module name="jiwell-sms" target="1.8" />
+      <module name="jiwell-upload" target="1.8" />
+      <module name="jiwell-user" target="1.8" />
+      <module name="jiwell-user-interface" target="1.8" />
+      <module name="jiwell-user-service" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="jiwell-api-gateway" options="-parameters" />
+      <module name="jiwell-authentication-common" options="-parameters" />
+      <module name="jiwell-authentication-service" options="-parameters" />
+      <module name="jiwell-cart" options="-parameters" />
+      <module name="jiwell-comments-interface" options="-parameters" />
+      <module name="jiwell-comments-service" options="-parameters" />
+      <module name="jiwell-common" options="-parameters" />
+      <module name="jiwell-config" options="-parameters" />
+      <module name="jiwell-goods-web" options="-parameters" />
+      <module name="jiwell-item-interface" options="-parameters" />
+      <module name="jiwell-item-service" options="-parameters" />
+      <module name="jiwell-order-interface" options="-parameters" />
+      <module name="jiwell-order-service" options="-parameters" />
+      <module name="jiwell-registry" options="-parameters" />
+      <module name="jiwell-search" options="-parameters" />
+      <module name="jiwell-seckill-interface" options="-parameters" />
+      <module name="jiwell-seckill-service" options="-parameters" />
+      <module name="jiwell-sms" options="-parameters" />
+      <module name="jiwell-upload" options="-parameters" />
+      <module name="jiwell-user-interface" options="-parameters" />
+      <module name="jiwell-user-service" options="-parameters" />
+    </option>
+  </component>
+</project>
