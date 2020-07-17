@@ -1,5 +1,0 @@
-com/jiwell/JwApiGateway.class
-com/jiwell/filter/LoginFilter.class
-com/jiwell/config/GlobalCorsConfig.class
-com/jiwell/config/JwtProperties.class
-com/jiwell/config/FilterProperties.class

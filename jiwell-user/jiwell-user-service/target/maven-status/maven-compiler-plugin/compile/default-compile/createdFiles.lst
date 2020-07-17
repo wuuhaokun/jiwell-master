@@ -1,5 +1,0 @@
-com/jiwell/user/JwUserApplication.class
-com/jiwell/user/service/UserService.class
-com/jiwell/user/mapper/UserMapper.class
-com/jiwell/user/controller/UserController.class
-com/jiwell/user/service/impl/UserServiceImpl.class

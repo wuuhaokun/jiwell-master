@@ -1,6 +1,0 @@
-com/jiwell/auth/JwAuthApplication.class
-com/jiwell/auth/service/AuthService.class
-com/jiwell/auth/controller/AuthController.class
-com/jiwell/auth/service/impl/AuthServiceImpl.class
-com/jiwell/auth/properties/JwtProperties.class
-com/jiwell/auth/client/UserClient.class

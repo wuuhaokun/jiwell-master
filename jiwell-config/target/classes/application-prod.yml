@@ -1,6 +1,0 @@
-spring:
-  rabbitmq:
-    host: 10.140.0.9
-    username: /ji-well
-    password: ji-well
-    virtual-host: /ji-well
