@@ -1,0 +1,14 @@
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/controller/SearchController.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/client/CategoryClient.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/client/BrandClient.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/pojo/Goods.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/client/SpuClient.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/client/GoodsClient.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/service/SearchService.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/listener/GoodsListener.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/bo/SearchRequest.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/client/SpecClient.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/vo/SearchResult.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/JwSearchService.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/service/impl/SearchServiceImpl.java
+/Users/chao-kun.wu/Desktop/test/jiwell/jiwell-search/src/main/java/com/jiwell/repository/GoodsRepository.java
