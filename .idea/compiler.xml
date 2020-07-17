@@ -6,12 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="jiwell-common" />
         <module name="jiwell-user-service" />
         <module name="jiwell-sms" />
         <module name="jiwell-upload" />
         <module name="jiwell-search" />
-        <module name="jiwell-user-interface" />
         <module name="jiwell-api-gateway" />
         <module name="jiwell-item-service" />
         <module name="jiwell-order-service" />
@@ -24,9 +22,9 @@
         <module name="jiwell-config" />
         <module name="jiwell-item-interface" />
         <module name="jiwell-comments-service" />
+        <module name="jiwell-comments-interface" />
         <module name="jiwell-order-interface" />
         <module name="jiwell-registry" />
-        <module name="jiwell-comments-interface" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
