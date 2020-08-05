@@ -87,7 +87,6 @@ public class CommentController {
         if (!result){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

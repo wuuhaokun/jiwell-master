@@ -265,7 +265,7 @@ FastDFS两个主要的角色：Tracker Server 和 Storage Server 。
 [传送门](https://blog.csdn.net/lyj2018gyq/article/category/7963560)
 
 mac 打開docker port
-docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 127.0.0.1:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 10.140.0.3:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
 在Mac OSX系统的Docker机上启用Docker远程API功能
 https://blog.csdn.net/chszs/article/details/50650214
 
@@ -379,7 +379,7 @@ rabbitmq-plugins enable rabbitmq_management
 firewall-cmd --zone=public --add-port=15672/tcp --permanent
 firewall-cmd --reload
 //http://35.236.174.253:15672/
-訪問地址查看是否安裝成功：http://35.236.155.182:15672/
+訪問地址查看是否安裝成功：http://35.194.253.254:15672/
 輸入賬號密碼並登錄：guest guest
 創建帳號並設置其角色為管理員：/ji-well ji-well
 創建一個新的虛擬host為：/ji-well
@@ -481,11 +481,141 @@ docker rm nginx
 使用docker命令啟動：
 
 docker run -p 80:80 --name nginx \
--v /mydata/conf/html:/usr/share/nginx/html \
+-v /mydata/conf/html:/etc/nginx/html \
 -v /mydata/conf/logs:/var/log/nginx \
 -v /mydata/conf/nginx:/etc/nginx \
 -d nginx:1.17.0
 
+Mac 啟動/重啟/關閉/停止ngin方式(需在root權限下 sudo su -)
+先切換到root權限下
+sudo su -
+
+啟動nginx：
+ngxin
+
+重啟nginx：
+nginx -s reload
+
+關閉/停止nginx：
+先查詢nginx對應端口號
+ps -ef | grep nginx
+501 53536 1 0 3:34下午 ?? 0:00.00 nginx: master process nginx
+501 53569 53536 0 3:36下午 ?? 0:00.00 nginx: worker process
+501 53611 52121 0 3:38下午 ttys000 0:00.00 grep nginx
+kill nginx: master 端口號，即53536
+kill -QUIT 53536
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+fastdfs安裝(內含nginx 所以要安裝到獨立一台VM，要不含nginx的自行上網找)
+1.下載 fastdfs 從docker （使用delron/fastdfs）
+docker pull delron/fastdfs
+
+2.使用docker鏡像構建tracker容器，用於啟動跟踪服務器，起到調度的作用。
+docker run -d --network=host --name tracker \
+-v /mydata/fdfs/tracker:/var/fdfs delron/fastdfs tracker
+上面的啟動命令是在Linux下，如果是Mac或Windows操作系統network=host（容器與主機享受相同的network namespace）會失效，此時需要指定對應的端口映射。本教程的Docker宿主機為Mac。
+實際我們自行對應如下：
+docker run -d --network=host --name tracker \
+-v /mydata/fdfs/tracker:/var/fdfs delron/fastdfs tracker
+或（建議使用上面的方法，下面的方式有時會有問題 可參考 https://github.com/happyfish100/fastdfs/issues/336）
+docker run -d --name tracker -p 22122:22122 \
+-v /mydata/fdfs/tracker:/var/fdfs delron/fastdfs tracker
+
+3.使用docker鏡像構建storage容器，用於啟動存儲服務器，提供容量和備份服務。
+
+在執行下面命令時特別需要提醒的時，對應的IP地址，需要修改為tracker服務的IP地址，由於是在同一台電腦上操作，這裡使用本機的內網地址即可，22122是tracker對應的端口。
+
+示例，下面命令需要替換IP地址。
+
+替換IP地址之後對應Mac下的的具體執行操作：（注意在docker中使用TRACKER_SERVER=localhost:22122會有問題)
+docker run -d --network=host --name storage -e TRACKER_SERVER=10.140.0.4:22122 \
+-v /mydata/fdfs/storage:/var/fdfs -e GROUP_NAME=group1 delron/fastdfs storage
+
+其中8888為Nginx對應的訪問端口，23000是storage服務端口。
+
+4.經過上面的步驟，tracker和storage都啟動完成。我們可以進入對應的docker容器查看一下默認的配置情況
+docker exec -it ($CONTAINER ID) bash 例如：docker exec -it 2bc9f8268eda bash
+其中參數值storage CONTAINER ID =“2bc9f8268eda”為我們上面看到的要進入的容器的CONTAINER ID。
+
+先進入storage，查看其對應配置文件中關於http訪問的配置，配置文件在/etc/fdfs目錄下的storage.conf。在最後一行可以看到如下配置：
+
+# the port of the web server on this storage server
+http.server_port=8888
+也就是說，這個docker鏡像中默認監聽的是8888端口，當然此配置是需要修改的。如果修改為其他端口，對應的Nginx配置也需要修改。
+
+那麼Nginx配置在哪裡呢？也在當前容器當中。 Nginx配置文件的根目錄為：
+
+usr/local/nginx/conf/
+可以對其下的nginx.conf進行查看和修改。先來看一下默認配置：
+
+docker 內nginx.conf設定如下：
+
+   server {
+        listen       80;
+        server_name  image.ji-well.com;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Server $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        location / {
+                proxy_pass http://localhost:8888;
+                proxy_connect_timeout 1000;
+                proxy_read_timeout 1000;
+        }
+   }
+   server {
+        listen       8888;
+        server_name  localhost;
+        location ~/group[0-9]/ {
+            ngx_fastdfs_module;
+        }
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root html;
+        }
+   }
+
+5.測試一下
+
+經過上面的步驟已經完成了FastDFS的安裝和配置，下面我們來放一張圖片驗證一下。
+
+a.上傳一張圖至GCP VM（可參考 ），如上傳test.png 則可在/home/w_sirius/test.png
+w_sirius 為我的使用者名稱，你的會不一樣的。
+
+b.之後，將一張圖片放在本機掛載目錄/mydata/fdfs/storage下（上面命令中用到的目錄）。
+mv /home/w_sirius/test.png /mydata/fdfs/storage
+
+c.然後，進入storage容器，進入/var/fdfs目錄，執行如下命令：
+docker exec -it ($CONTAINER ID) bash 
+
+d.後執行如下命令
+/usr/bin/fdfs_upload_file /etc/fdfs/client.conf test.png
+
+其中test.png是前面存放在本機storage目錄下的圖片的名稱。
+
+相關執行命令及目錄如下：
+
+[root@2bc9f8268eda fdfs]# pwd
+/var/fdfs
+[root@2bc9f8268eda fdfs]# /usr/bin/fdfs_upload_file /etc/fdfs/client.conf test.png
+
+可得到如下返回（你的返回值會跟我的不太一樣的）此時，文件已經上傳成功，會返回在storage存儲文件的路徑信息。
+group1/M00/00/00/rBEAA18X7ZWAfAPiAABrsFVlX6U142.jpg
+
+e.離開 容器
+exit
+
+f.在主機下執行
+http://image.ji-well.com/group1/M00/00/00/rBEACV8o-XSAP8erAAAbo5WgO4U286.png
+
+應可看到上傳的圖
+
+如在VM 命令列中則可打
+
+curl http://10.140.0.4:8888/group1/M00/00/00/rBEACV8o-XSAP8erAAAbo5WgO4U286.png
+
+成功會回傳圖檔。但是二進位碼，看不出圖就是了。
+
+參考：https://www.codenong.com/c3125732/
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 本文主要介紹如何使用Maven插件將SpringBoot應用打包為Docker鏡像，並上傳到私有鏡像倉庫Docker Registry的過程。
@@ -520,7 +650,7 @@ ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock
 [dywang@dywOffice tmp]$ vim test.txt
 按下 i 進入編輯模式，開始編輯文字。
 按下 [Esc] 按鈕回到一般模式。
-在一般模式中按下 :wq 儲存後離開 vi。
+在一般模式中按下 :wq 儲存後離開 vi。 離開不儲存更動一般模式中按下 :q!
 
 echo '{ "insecure-registries":["35.201.214.141:5000"] }' > /etc/docker/daemon.json
 echo '{ "insecure-registries":["35.236.155.182:5000"] }' > /etc/docker/daemon.json
@@ -537,7 +667,7 @@ firewall-cmd --zone=public --add-port=2375/tcp --permanent
 firewall-cmd --reload
 
 Linux 測試命令
-curl  127.0.0.1:5000/v2/_catalog
+curl  10.140.0.3:5000/v2/_catalog
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 jiwell程式部置及順序
@@ -614,15 +744,115 @@ docker run -p 8083:8083 --name jiwell-search \
 -v /mydata/rsa:/mydata/rsa \
 -d jiwell/jiwell-search:1.0.0-SNAPSHOT
 
-****************** GCP Instance 位置 *********************
+****************** jiwell-upload部署 *********************
 
+docker run -p 8082:8082 --name jiwell-upload \
+-v /etc/localtime:/etc/localtime \
+-v /mydata/app/upload/logs:/var/logs \
+-d jiwell/jiwell-upload:1.0.0-SNAPSHOT
+
+*********** 前瑞管理程式jiwell-manage-web-master **********
+
+Linux下的部署（前瑞管理程式jiwell-manage-web-master）
+環境安裝
+1.下载nodejs并安装 下载地址：https://nodejs.org/dist/v8.9.4/node-v8.9.4-x64.msi
+
+2.於jiwell-manage-web-master 目錄下，打开控制台输入命令安装相关依赖
+npm install
+
+3.測試執行可直接使用
+npm run dev
+
+4.正式環境可用（建完後即可使用。但需注意要有webserver無法直接打開）
+npm run build
+
+4.安裝zip程式
+yum install zip unzip
+ apt-get zip unzip
+
+5.壓縮 dist(使用zip或其他即可)
+套件名稱：zip。
+壓縮：
+zip -r FileName.zip DirName
+解壓縮：
+unzip FileName.zip
+
+6.將dist.zip上傳到linux服務器（即mydata/nginx相關目錄）
+
+7.解壓縮(使用該命令進行解壓操作)
+unzip dist.zip
+
+8.刪除nginx的html文件夾
+rm -rf html
+
+9.移動dist文件夾到html文件夾
+mv /home/w_sirius/dist /mydata/conf/dist
+
+10.移動dist文件夾到html文件夾
+mv dist html
+
+11.重啟nginx
+docker restart nginx
+
+如何在 CentOS 安装 node.js
+https://blog.csdn.net/luckydarcy/article/details/79138650
+
+
+********************* Jenkins简介 ************************
+
+Jenkins是開源CI&CD軟件領導者，提供超過1000個插件來支持構建、部署、自動化，滿足任何項目的需要。我們可以用Jenkins來構建和部署我們的項目，比如說從我們的代碼倉庫獲取代碼，然後將我們的代碼打包成可執行的文件，之後通過遠程的ssh工具執行腳本來運行我們的項目。
+參考 https://mp.weixin.qq.com/s/tQqvgSc9cHBtnqRQSbI4aw
+
+Docker环境下的安装
+1.下载Jenkins的Docker镜像
+docker pull jenkins/jenkins:lts
+
+2.在Docker容器中运行Jenkins：
+docker run -p 8080:8080 -p 50000:5000 --name jenkins \
+-u root \
+-v /mydata/jenkins_home:/var/jenkins_home \
+-d jenkins/jenkins:lts
+
+Jenkins的配置12
+运行成功后访问该地址登录Jenkins，第一次登录需要输入管理员密码：http://35.194.253.254:8080
+在GCP上使用要打開 8080 Port防火牆，不然會開不了
+
+使用管理员密码进行登录，可以使用以下命令从容器启动日志中获取管理密码
+
+从日志中获取管理员密码：
+
+目前設定帳號：ji-well  密碼:ji-well
+
+=========================================================
+
+********************* GCP instance 位置 ******************
 1.instance name : mysql-data-server
-data 的位置含 mysql 及 mango             外網IP:35.194.244.197 內網IP：10.140.0.6
+  data 的位置含 mysql,mango,redis,rabbitmq,jenkins,FastDFS          
+外網IP:35.194.253.254 內網IP：10.140.0.4
 
 2.instance name : server
-  data 的位置含所有微服器及rabbitMQ及redis 外網IP:35.236.155.182  內網IP：10.140.0.10
+  data 的位置含所有微服器及rabbitMQ及redis 外網IP:34.80.79.6  內網IP：10.140.0.3
 防火牆port 為 10010
 
+=========================================================
+GCP網域及子網域設定（Godaddy網域指向GCP虛擬機）主要參考 https://medium.com/@jamesshieh0510/godaddy網域指向gcp虛擬機教學-32a8d01155f5
+ 
+ 1.在GCP中建立虛擬機，並取得External IP：目前我的IP為 192.0.1.123
+ 2.在Cloud DNS頁面中，點選CREATE ZONE：
+ 3.點選ADD RECORD SET，加入設定，欄位說明如下：
+   DNS Name：可設定子網域名稱，預設為主網域（空白）
+   Resource Record Type：紀錄類型，A紀錄用以指向虛擬機
+   IPv4 Address：欲指向的虛擬機ＩＰ，請貼上剛剛取得的虛擬機IP 
+ 4.這裏我們設定了4組A紀錄，依序是將ji-well.com、api.ji-well.com、manage.ji-well.com、www.ji-well.com等網域指向對應的虛擬機IP。
+   其中有個NS Type（名稱伺服器）的紀錄，請將Data欄位的名稱伺服器複製下來。
+   ns-cloud-e1.googledomains.com
+   ns-cloud-e2.googledomains.com
+   ns-cloud-e3.googledomains.com
+   ns-cloud-e4.googledomains.com
+ 5.設定Godaddy：進入DNS管理頁面，在網域名稱伺服器區塊，可變更其設定，將剛剛複製的名稱伺服器依序填入：
+ 至此已完成所有的設定。約1小時設定即可使用。
+ 
+=========================================================
 
 
 參考資料
@@ -646,4 +876,39 @@ https://ithelp.ithome.com.tw/questions/10029001
 # docker rm $(docker ps -a -q) // Remove all containers
 
 
+Hearder 不見的問題
+http://blog.itpub.net/69926045/viewspace-2698810/
+https://github.com/gf-huanchupk/SpringCloudLearning
+https://github.com/huacke/mq-kafka
+ 
 35.236.155.182:10010
+
+微服务架构下的自动化部署，使用Jenkins来实现
+http://www.macrozheng.com/#/deploy/mall_swarm_deploy_jenkins
+https://mp.weixin.qq.com/s/tQqvgSc9cHBtnqRQSbI4aw
+
+http://{{Domain}}{{BrandItem}}/page?page=1&rows=10
+
+fogein 沒有header的問題，目前參考第二個方式。（Hearder 不見的問題 正解是這個）
+https://blog.csdn.net/lidai352710967/article/details/88680173
+實作方式是寫在呼叫方。(原版即在jiwell-secskill中的OrderConfig.java己有實作)
+
+參考資料
+GCP設置DNS Server
+https://snoopy30485.github.io/2018/06/20/GCP-設定DNS網域/
+GCP子網域設定
+https://medium.com/@jamesshieh0510/godaddy網域指向gcp虛擬機教學-32a8d01155f5
+
+curl -X GET "http://api.ji-well.com/api/item/brand/page?page=1&rows=10"
+
+GCP NS Type
+ns-cloud-e1.googledomains.com
+ns-cloud-e2.googledomains.com
+ns-cloud-e3.googledomains.com
+ns-cloud-e4.googledomains.com
+
+Godaddy 網域名稱伺服器區塊
+原本的兩個
+ns27.domaincontrol.com
+ns28.domaincontrol.com
+

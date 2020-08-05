@@ -78,6 +78,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot-maven-plugin.version}</version>
             </plugin>
             <!-- docker的maven插件，官网 https://github.com/spotify/docker-maven-plugin -->
             <plugin>

@@ -23,6 +23,8 @@
         <module>jiwell-secskill</module>
         <module>jiwell-cart</module>
         <module>jiwell-search</module>
+        <module>jiwell-upload</module>
+        <module>jiwell-sms</module>
     </modules>
 
     <parent>
@@ -59,10 +61,11 @@
         <mongodb.version>2.1.7.RELEASE</mongodb.version>
         <spring.config.version>2.1.3.RELEASE</spring.config.version>
         <dockerfile-maven-version>1.3.7</dockerfile-maven-version>
-        <docker.host>http://35.201.214.141:2375</docker.host>
+        <docker.host>http://34.80.79.6:2375</docker.host>
         <docker.name>jiwell</docker.name>
         <docker.maven.plugin.version>1.1.0</docker.maven.plugin.version>
         <jetbrains_annotations_version>16.0.3</jetbrains_annotations_version>
+        <spring-boot-maven-plugin.version>2.2.2.RELEASE</spring-boot-maven-plugin.version>
 
     </properties>
 

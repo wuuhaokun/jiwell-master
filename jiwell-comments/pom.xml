@@ -15,6 +15,4 @@
         <module>jiwell-comments-interface</module>
         <module>jiwell-comments-service</module>
     </modules>
-
-
 </project>

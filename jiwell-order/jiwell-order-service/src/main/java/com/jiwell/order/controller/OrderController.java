@@ -154,7 +154,10 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         //返回204
-        return new ResponseEntity<>(result,HttpStatus.NO_CONTENT);
+        //這里返回204會有問題,Body 會為空，所以改為使用HttpStatus.OK 可參考https://blog.csdn.net/u010234516/article/details/103600587
+        //return new ResponseEntity<>(true,HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(true,HttpStatus.OK);
+
     }
 
     /**

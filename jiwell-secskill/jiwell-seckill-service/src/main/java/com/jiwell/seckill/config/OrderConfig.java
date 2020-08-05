@@ -10,7 +10,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
-
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @Author: 98050
@@ -32,6 +32,12 @@ public class OrderConfig {
                     requestTemplate.header(name, values);
                 }
             }
+
+            String bearerToken = request.getHeader("Authorization");
+            if (StringUtils.isNotBlank(bearerToken) && bearerToken.startsWith("Bearer ")) {
+                requestTemplate.header("Authorization", bearerToken);
+            }
+
         });
     }
 }

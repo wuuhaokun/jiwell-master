@@ -14,6 +14,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -77,10 +79,16 @@ public class CommentServiceImpl implements CommentService {
         HttpServletRequest request1 = servletRequestAttributes.getRequest();
         HttpServletResponse response1 = servletRequestAttributes.getResponse();
 
-        boolean result = this.orderClient.updateOrderStatus(orderId, 6).getBody();
-        if (!result){
+        ResponseEntity<Boolean> responseEntity = this.orderClient.updateOrderStatus(orderId, 6);
+        if (responseEntity.getStatusCode() != HttpStatus.OK){
+            //更新失敗，返回false
             return false;
         }
+        //原始的寫法在某些版本會有問題。
+        //boolean result = this.orderClient.updateOrderStatus(orderId, 6).getBody();
+        //if (!result){
+        //    return false;
+        //}
         //3.添加评论
         /**
          * 设置主键

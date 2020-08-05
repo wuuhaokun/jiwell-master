@@ -48,20 +48,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
      * @return
      * @throws Exception
      */
-    /*
-            String headerToken = JwtUtils.getJwtFromRequest(request);
-        if (StringUtils.isBlank(token)){
-            //有header 傳入的token
-            if(StringUtils.isNotBlank(headerToken)){
-                token = headerToken;
-            }
-            else{
-                //2.未登录，返回401
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                return false;
-            }
-        }
-    */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //1.查询token

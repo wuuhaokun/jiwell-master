@@ -60,7 +60,7 @@ public class PayHelper {
             //金额，单位是分
             data.put("total_fee", "1");
             //调用微信支付的终端IP（estore商城的IP）
-            data.put("spbill_create_ip", "127.0.0.1");
+            data.put("spbill_create_ip", "10.140.0.3");
             //回调地址
             data.put("notify_url", "http://test.jiwell.com/wxpay/notify");
             // 交易类型为扫码支付

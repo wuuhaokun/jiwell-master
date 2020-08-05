@@ -51,10 +51,13 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //1.查询token
         String token = CookieUtils.getCookieValue(request,jwtProperties.getCookieName());
-        if (StringUtils.isBlank(token)){
+        if(StringUtils.isBlank(token)) {
+            token = JwtUtils.getJwtFromRequest(request);
+            if (StringUtils.isBlank(token)){
             //2.未登录，返回401
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            return false;
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                return false;
+            }
         }
         //3.有token，查询用户信息
         try{

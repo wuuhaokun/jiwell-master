@@ -34,7 +34,7 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:${server.port}
     prefer-ip-address: true  #当你获取host时，返回的不是主机名，而是ip
-    ip-address: 127.0.0.1
+    ip-address: 10.140.0.3
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 10
 
