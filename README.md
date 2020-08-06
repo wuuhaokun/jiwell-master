@@ -815,7 +815,7 @@ docker run -p 8080:8080 -p 50000:5000 --name jenkins \
 -v /mydata/jenkins_home:/var/jenkins_home \
 -d jenkins/jenkins:lts
 
-Jenkins的配置12
+Jenkins的配置
 运行成功后访问该地址登录Jenkins，第一次登录需要输入管理员密码：http://35.194.253.254:8080
 在GCP上使用要打開 8080 Port防火牆，不然會開不了
 
@@ -855,7 +855,6 @@ GCP網域及子網域設定（Godaddy網域指向GCP虛擬機）主要參考 htt
  至此已完成所有的設定。約1小時設定即可使用。
  
 =========================================================
-
 
 參考資料
 GCloud] 使用 gcloud 連線到 Google Cloud Platform 上的 VM
@@ -914,3 +913,6 @@ Godaddy 網域名稱伺服器區塊
 ns27.domaincontrol.com
 ns28.domaincontrol.com
 
+##問題及參考
+maven 上架遇到 spring-boot-maven-plugin not found的解决方案
+https://www.cnblogs.com/vevy/p/12246679.html

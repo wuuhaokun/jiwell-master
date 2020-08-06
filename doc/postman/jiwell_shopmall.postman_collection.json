@@ -1,0 +1,1980 @@
+{
+	"info": {
+		"_postman_id": "4e767ec0-1452-4bd8-9415-0a71c0314b28",
+		"name": "jiwell_shopmall",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "auth",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{AuthItem}}/accredit?username=lyj123123&password=123456",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{AuthItem}}"
+							],
+							"path": [
+								"accredit"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "lyj123123"
+								},
+								{
+									"key": "password",
+									"value": "123456"
+								}
+							]
+						},
+						"description": "登錄授權"
+					},
+					"response": []
+				},
+				{
+					"name": "verify",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						},
+						"description": "用戶驗證"
+					},
+					"response": []
+				},
+				{
+					"name": "verify1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MjksInVzZXJuYW1lIjoibHlqMTIzMTIzIiwicGhvbmUiOiIxMzI4OTM5MzY5MyIsImdlbmRlciI6Im1hbGUiLCJuaWNrbmFtZSI6Im5pY2tuYW1lIiwiZXhwIjoxODQ5ODQ3NDQ1fQ.Yl_JsVYYTDsD0R0tAfdwTIKDaitGGCgjczEUzSrFZE1tdlH8idsajxhk1E-6Rdmjr1gM_RnOGbUin9cKsW7mkT2823UefYqNMDYhE7fwZFU6lzP9qpVo_b3fktMKG1Bffyy4-Xacz1sERQtIlr6HD4FhkcTxiRTRAA7RyaCCZ2s",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{AuthItem}}/verify1",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{AuthItem}}"
+							],
+							"path": [
+								"verify1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "un123456k",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "15397089001",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "515211",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{Domain}}{{UserItem}}/register",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{UserItem}}"
+							],
+							"path": [
+								"register"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "kun111",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"disabled": true
+								},
+								{
+									"key": "phone",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "註冊"
+					},
+					"response": []
+				},
+				{
+					"name": "code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{UserItem}}/code?phone=15397089001",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{UserItem}}"
+							],
+							"path": [
+								"code"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "15397089001"
+								}
+							]
+						},
+						"description": "發送短信驗證碼"
+					},
+					"response": []
+				},
+				{
+					"name": "query",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{UserItem}}/query?username=lyj123123&password=lyj123123",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{UserItem}}"
+							],
+							"path": [
+								"query"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "lyj123123"
+								},
+								{
+									"key": "password",
+									"value": "lyj123123"
+								}
+							]
+						},
+						"description": "用戶驗證"
+					},
+					"response": []
+				},
+				{
+					"name": "check/{data}/{type}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{UserItem}}/check/13289393693/1",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{UserItem}}"
+							],
+							"path": [
+								"check",
+								"13289393693",
+								"1"
+							]
+						},
+						"description": "data = 註冊手機號或用戶名，\ntype = 1（輪入手機號）、2（輪入用戶名）"
+					},
+					"response": []
+				},
+				{
+					"name": "updatePassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{UserItem}}/password?username=lyj123123&oldPassword=lyj123123&newPassword=123456",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{UserItem}}"
+							],
+							"path": [
+								"password"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "lyj123123"
+								},
+								{
+									"key": "oldPassword",
+									"value": "lyj123123"
+								},
+								{
+									"key": "newPassword",
+									"value": "123456"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "notification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{UserItem}}/notification?content=123456",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{UserItem}}"
+							],
+							"path": [
+								"notification"
+							],
+							"query": [
+								{
+									"key": "content",
+									"value": "123456"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgetPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{UserItem}}/code?phone=15397089001",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{UserItem}}"
+							],
+							"path": [
+								"code"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "15397089001"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Item",
+			"item": [
+				{
+					"name": "Brand",
+					"item": [
+						{
+							"name": "page",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{BrandItem}}/page",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{BrandItem}}"
+									],
+									"path": [
+										"page"
+									]
+								},
+								"description": "分頁查詢品牌"
+							},
+							"response": []
+						},
+						{
+							"name": "cid",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{BrandItem}}/cid?cid=2032",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{BrandItem}}"
+									],
+									"path": [
+										"cid"
+									],
+									"query": [
+										{
+											"key": "cid",
+											"value": "2032"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{BrandItem}}/list?ids=15127",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{BrandItem}}"
+									],
+									"path": [
+										"list"
+									],
+									"query": [
+										{
+											"key": "ids",
+											"value": "15127"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save brand",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{Domain}}{{BrandItem}}?categories=76,77&name=ABC&image&letter=C",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{BrandItem}}"
+									],
+									"query": [
+										{
+											"key": "categories",
+											"value": "76,77"
+										},
+										{
+											"key": "name",
+											"value": "ABC"
+										},
+										{
+											"key": "image",
+											"value": null
+										},
+										{
+											"key": "letter",
+											"value": "C"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update brand",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{BrandItem}}?categories=75,76,77&name=ABC&image=http://img14.360buyimg.com/popshop/jfs/t2701/34/484677369/7439/ee13e8fa/5716e2c4Nc925baf3.jpg&letter=BB",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{BrandItem}}"
+									],
+									"query": [
+										{
+											"key": "categories",
+											"value": "75,76,77"
+										},
+										{
+											"key": "name",
+											"value": "ABC"
+										},
+										{
+											"key": "image",
+											"value": "http://img14.360buyimg.com/popshop/jfs/t2701/34/484677369/7439/ee13e8fa/5716e2c4Nc925baf3.jpg"
+										},
+										{
+											"key": "letter",
+											"value": "BB"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cid_bid/{bid}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{BrandItem}}/cid_bid/325429",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{BrandItem}}"
+									],
+									"path": [
+										"cid_bid",
+										"325429"
+									]
+								},
+								"description": "刪除tb_category_brand中的數據"
+							},
+							"response": []
+						},
+						{
+							"name": "bid/{bid}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{BrandItem}}/bid/325429",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{BrandItem}}"
+									],
+									"path": [
+										"bid",
+										"325429"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Category",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "bid",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{CategoryItem}}/bid/15127",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{CategoryItem}}"
+									],
+									"path": [
+										"bid",
+										"15127"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "names",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{CategoryItem}}/names?ids=74,75,76",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{CategoryItem}}"
+									],
+									"path": [
+										"names"
+									],
+									"query": [
+										{
+											"key": "ids",
+											"value": "74,75,76"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"ids\":[74,75,76]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{Domain}}{{CategoryItem}}/all?ids=74,75,76",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{CategoryItem}}"
+									],
+									"path": [
+										"all"
+									],
+									"query": [
+										{
+											"key": "ids",
+											"value": "74,75,76"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all/level/{cid3}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{CategoryItem}}/all/level/76",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{CategoryItem}}"
+									],
+									"path": [
+										"all",
+										"level",
+										"76"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save category",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{CategoryItem}}?name=測試燈&parentId=75&isParent=false&sort=3",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{CategoryItem}}"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "測試燈"
+										},
+										{
+											"key": "parentId",
+											"value": "75"
+										},
+										{
+											"key": "isParent",
+											"value": "false"
+										},
+										{
+											"key": "sort",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update category",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{CategoryItem}}?name=測試燈001&parentId=75&isParent=false&sort=3",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{CategoryItem}}"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "測試燈001"
+										},
+										{
+											"key": "parentId",
+											"value": "75"
+										},
+										{
+											"key": "isParent",
+											"value": "false"
+										},
+										{
+											"key": "sort",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cid/{cid}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{CategoryItem}}/cid/1426",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{CategoryItem}}"
+									],
+									"path": [
+										"cid",
+										"1426"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Goods",
+					"item": [
+						{
+							"name": "sup",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "spu/page",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{GoodsItem}}/spu/page?page=1&rows=10&sortBy=false&key=&saleable=true&cid3=76",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{GoodsItem}}"
+									],
+									"path": [
+										"spu",
+										"page"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "rows",
+											"value": "10"
+										},
+										{
+											"key": "sortBy",
+											"value": "false"
+										},
+										{
+											"key": "key",
+											"value": ""
+										},
+										{
+											"key": "saleable",
+											"value": "true"
+										},
+										{
+											"key": "cid3",
+											"value": "76"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "spu/detail",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{GoodsItem}}/spu/detail/82",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{GoodsItem}}"
+									],
+									"path": [
+										"spu",
+										"detail",
+										"82"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sku/list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{GoodsItem}}/sku/list/82",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{GoodsItem}}"
+									],
+									"path": [
+										"sku",
+										"list",
+										"82"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "sku",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{GoodsItem}}/sku/2600248",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{GoodsItem}}"
+									],
+									"path": [
+										"sku",
+										"2600248"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "seckill/list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{GoodsItem}}/seckill/list",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{GoodsItem}}"
+									],
+									"path": [
+										"seckill",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "seckill/add",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[{\"id\":3712633,\"startTime\":\"2020-05-09 06:01:00\",\"endTime\":\"2020-05-10 06:01:00\",\"count\":22,\"discount\":0.87},{\"id\":3846673,\"startTime\":\"2020-05-07 06:01:00\",\"endTime\":\"2020-05-09 06:01:00\",\"count\":22,\"discount\":0.87}]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{Domain}}{{GoodsItem}}/seckill/add",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{GoodsItem}}"
+									],
+									"path": [
+										"seckill",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save goods",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"brandId\": 15127,\n    \"cid1\": 74,\n    \"cid2\": 75,\n    \"cid3\": 76,\n    \"title\": \"三星 Galaxy C5（SM-C5000）4GB+32GB \",\n    \"subTitle\": \"5.2英寸AMOLED屏，800+1600万像素，金属机身，小巧便捷，续航能力强大！<a href='https://sale.jd.com/act/T15MnRgiasWe8L.html' target='_blank'>三星S9震撼上市详情猛戳>></a>\",\n    \"saleable\": true,\n    \"valid\": true,\n    \"createTime\": \"2018-04-21T20:55:18.000+0000\",\n    \"lastUpdateTime\": \"2018-04-21T20:55:18.000+0000\",\n    \"cname\": \"手機\",\n    \"bname\": \"三星光\",\n    \"spuDetail\": {\n        \"spuId\": 3,\n        \"description\": \"<table width=\\\"750\\\" align=\\\"center\\\"> \\n <tbody>\\n  <tr> \\n   <td><img src=\\\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2941/353/1432469497/41808/4509b71f/57870a39N36dccd66.jpg\\\" width=\\\"750\\\" height=\\\"150\\\" border=\\\"0\\\" usemap=\\\"#Maplk\\\" /></td> \\n  </tr>\\n </tbody>\\n</table>\\n<map name=\\\"Maplk\\\"><area shape=\\\"rect\\\" coords=\\\"368,74,584,133\\\" href=\\\"//sale.jd.com/act/i2XHqvhoAsU1.html\\\" target=\\\"_blank\\\"></area></map>\\n<div style=\\\"text-align: center;\\\"></div>\\n<div style=\\\"text-align: center;\\\">\\n <img src=\\\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2599/185/2071779239/112061/a7d7b34f/5754e156N97acd9e5.jpg\\\" style=\\\"widows: auto;\\\" alt=\\\"\\\" />\\n</div>\\n<div style=\\\"text-align: center;\\\">\\n <img src=\\\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2737/345/1987734434/1880171/e25dedc4/5753c41bN41b2e2a3.jpg\\\" alt=\\\"\\\" />\\n <br />\\n</div><br/>\",\n        \"specTemplate\": \"{\\\"机身颜色\\\":[\\\"金\\\",\\\"粉\\\",\\\"灰\\\",\\\"银\\\"],\\\"内存\\\":[\\\"4GB\\\"],\\\"机身存储\\\":[\\\"32GB\\\"]}\",\n        \"specifications\": \"[{\\\"group\\\":\\\"主体\\\",\\\"params\\\":[{\\\"k\\\":\\\"品牌\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"v\\\":\\\"三星（SAMSUNG）\\\"},{\\\"k\\\":\\\"型号\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"v\\\":\\\"SM-C5000\\\"},{\\\"k\\\":\\\"上市年份\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"年\\\",\\\"v\\\":2016.0}]},{\\\"group\\\":\\\"基本信息\\\",\\\"params\\\":[{\\\"k\\\":\\\"机身颜色\\\",\\\"searchable\\\":false,\\\"global\\\":false,\\\"options\\\":[\\\"金\\\",\\\"粉\\\",\\\"灰\\\",\\\"银\\\"]},{\\\"k\\\":\\\"机身重量（g）\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"g\\\",\\\"v\\\":143},{\\\"k\\\":\\\"机身材质工艺\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"v\\\":null}]},{\\\"group\\\":\\\"操作系统\\\",\\\"params\\\":[{\\\"k\\\":\\\"操作系统\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"v\\\":\\\"Android\\\"}]},{\\\"group\\\":\\\"主芯片\\\",\\\"params\\\":[{\\\"k\\\":\\\"CPU品牌\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"v\\\":\\\"骁龙（Snapdragon)\\\"},{\\\"k\\\":\\\"CPU型号\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"v\\\":\\\"骁龙617（msm8952）\\\"},{\\\"k\\\":\\\"CPU核数\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"v\\\":\\\"八核\\\"},{\\\"k\\\":\\\"CPU频率\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"GHz\\\",\\\"v\\\":1.5}]},{\\\"group\\\":\\\"存储\\\",\\\"params\\\":[{\\\"k\\\":\\\"内存\\\",\\\"searchable\\\":true,\\\"global\\\":false,\\\"numerical\\\":false,\\\"unit\\\":\\\"GB\\\",\\\"options\\\":[\\\"4GB\\\"]},{\\\"k\\\":\\\"机身存储\\\",\\\"searchable\\\":true,\\\"global\\\":false,\\\"numerical\\\":false,\\\"unit\\\":\\\"GB\\\",\\\"options\\\":[\\\"32GB\\\"]}]},{\\\"group\\\":\\\"屏幕\\\",\\\"params\\\":[{\\\"k\\\":\\\"主屏幕尺寸（英寸）\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"英寸\\\",\\\"v\\\":5.2},{\\\"k\\\":\\\"分辨率\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"v\\\":\\\"1920*1080(FHD)\\\"}]},{\\\"group\\\":\\\"摄像头\\\",\\\"params\\\":[{\\\"k\\\":\\\"前置摄像头\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"万\\\",\\\"v\\\":800.0},{\\\"k\\\":\\\"后置摄像头\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"万\\\",\\\"v\\\":1600.0}]},{\\\"group\\\":\\\"电池信息\\\",\\\"params\\\":[{\\\"k\\\":\\\"电池容量（mAh）\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"mAh\\\",\\\"v\\\":2600}]}]\",\n        \"packingList\": \"\",\n        \"afterService\": \"本产品全国联保，享受三包服务，质保期为：一年质保\"\n    },\n    \"skus\": [\n        {\n            \"spuId\": 19999,\n            \"title\": \"三星 Galaxy C5（SM-C5000）4GB+32GB 蔷薇粉 移动联通电信4G手机 双卡双待\",\n            \"images\": \"http://image.leyou.com/images/9/11/1524297316400.jpg\",\n            \"price\": 119900,\n            \"ownSpec\": \"{\\\"机身颜色\\\":\\\"粉\\\",\\\"内存\\\":\\\"4GB\\\",\\\"机身存储\\\":\\\"32GB\\\"}\",\n            \"indexes\": \"1_0_0\",\n            \"enable\": true,\n            \"createTime\": \"2018-04-21T20:55:16.000+0000\",\n            \"lastUpdateTime\": \"2018-04-21T20:55:16.000+0000\",\n            \"stock\": 9999\n        },\n        {\n            \"spuId\": 19999,\n            \"title\": \"三星 Galaxy C5（SM-C5000）4GB+32GB 烟雨灰 移动联通电信4G手机 双卡双待\",\n            \"images\": \"http://image.leyou.com/images/15/15/1524297316945.jpg\",\n            \"price\": 119900,\n            \"ownSpec\": \"{\\\"机身颜色\\\":\\\"灰\\\",\\\"内存\\\":\\\"4GB\\\",\\\"机身存储\\\":\\\"32GB\\\"}\",\n            \"indexes\": \"2_0_0\",\n            \"enable\": true,\n            \"createTime\": \"2018-04-21T20:55:17.000+0000\",\n            \"lastUpdateTime\": \"2018-04-21T20:55:17.000+0000\",\n            \"stock\": 9999\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{Domain}}{{GoodsItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{GoodsItem}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update goods",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"brandId\": 15127,\n    \"cid1\": 74,\n    \"cid2\": 75,\n    \"cid3\": 76,\n    \"title\": \"三星 Galaxy C5（SM-C5000）4GB+32GB \",\n    \"subTitle\": \"5.2英寸AMOLED屏，800+1600万像素，金属机身，小巧便捷，续航能力强大！<a href='https://sale.jd.com/act/T15MnRgiasWe8L.html' target='_blank'>三星S9震撼上市详情猛戳>></a>\",\n    \"saleable\": true,\n    \"valid\": true,\n    \"createTime\": \"2018-04-21T20:55:18.000+0000\",\n    \"lastUpdateTime\": \"2018-04-21T20:55:18.000+0000\",\n    \"cname\": \"手機\",\n    \"bname\": \"三星光\",\n    \"spuDetail\": {\n        \"spuId\": 3,\n        \"description\": \"<table width=\\\"750\\\" align=\\\"center\\\"> \\n <tbody>\\n  <tr> \\n   <td><img src=\\\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2941/353/1432469497/41808/4509b71f/57870a39N36dccd66.jpg\\\" width=\\\"750\\\" height=\\\"150\\\" border=\\\"0\\\" usemap=\\\"#Maplk\\\" /></td> \\n  </tr>\\n </tbody>\\n</table>\\n<map name=\\\"Maplk\\\"><area shape=\\\"rect\\\" coords=\\\"368,74,584,133\\\" href=\\\"//sale.jd.com/act/i2XHqvhoAsU1.html\\\" target=\\\"_blank\\\"></area></map>\\n<div style=\\\"text-align: center;\\\"></div>\\n<div style=\\\"text-align: center;\\\">\\n <img src=\\\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2599/185/2071779239/112061/a7d7b34f/5754e156N97acd9e5.jpg\\\" style=\\\"widows: auto;\\\" alt=\\\"\\\" />\\n</div>\\n<div style=\\\"text-align: center;\\\">\\n <img src=\\\"//img30.360buyimg.com/jgsq-productsoa/jfs/t2737/345/1987734434/1880171/e25dedc4/5753c41bN41b2e2a3.jpg\\\" alt=\\\"\\\" />\\n <br />\\n</div><br/>\",\n        \"specTemplate\": \"{\\\"机身颜色\\\":[\\\"金\\\",\\\"粉\\\",\\\"灰\\\",\\\"银\\\"],\\\"内存\\\":[\\\"4GB\\\"],\\\"机身存储\\\":[\\\"32GB\\\"]}\",\n        \"specifications\": \"[{\\\"group\\\":\\\"主体\\\",\\\"params\\\":[{\\\"k\\\":\\\"品牌\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"v\\\":\\\"三星（SAMSUNG）\\\"},{\\\"k\\\":\\\"型号\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"v\\\":\\\"SM-C5000\\\"},{\\\"k\\\":\\\"上市年份\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"年\\\",\\\"v\\\":2016.0}]},{\\\"group\\\":\\\"基本信息\\\",\\\"params\\\":[{\\\"k\\\":\\\"机身颜色\\\",\\\"searchable\\\":false,\\\"global\\\":false,\\\"options\\\":[\\\"金\\\",\\\"粉\\\",\\\"灰\\\",\\\"银\\\"]},{\\\"k\\\":\\\"机身重量（g）\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"g\\\",\\\"v\\\":143},{\\\"k\\\":\\\"机身材质工艺\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"v\\\":null}]},{\\\"group\\\":\\\"操作系统\\\",\\\"params\\\":[{\\\"k\\\":\\\"操作系统\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"v\\\":\\\"Android\\\"}]},{\\\"group\\\":\\\"主芯片\\\",\\\"params\\\":[{\\\"k\\\":\\\"CPU品牌\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"v\\\":\\\"骁龙（Snapdragon)\\\"},{\\\"k\\\":\\\"CPU型号\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"v\\\":\\\"骁龙617（msm8952）\\\"},{\\\"k\\\":\\\"CPU核数\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"v\\\":\\\"八核\\\"},{\\\"k\\\":\\\"CPU频率\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"GHz\\\",\\\"v\\\":1.5}]},{\\\"group\\\":\\\"存储\\\",\\\"params\\\":[{\\\"k\\\":\\\"内存\\\",\\\"searchable\\\":true,\\\"global\\\":false,\\\"numerical\\\":false,\\\"unit\\\":\\\"GB\\\",\\\"options\\\":[\\\"4GB\\\"]},{\\\"k\\\":\\\"机身存储\\\",\\\"searchable\\\":true,\\\"global\\\":false,\\\"numerical\\\":false,\\\"unit\\\":\\\"GB\\\",\\\"options\\\":[\\\"32GB\\\"]}]},{\\\"group\\\":\\\"屏幕\\\",\\\"params\\\":[{\\\"k\\\":\\\"主屏幕尺寸（英寸）\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"英寸\\\",\\\"v\\\":5.2},{\\\"k\\\":\\\"分辨率\\\",\\\"searchable\\\":false,\\\"global\\\":true,\\\"v\\\":\\\"1920*1080(FHD)\\\"}]},{\\\"group\\\":\\\"摄像头\\\",\\\"params\\\":[{\\\"k\\\":\\\"前置摄像头\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"万\\\",\\\"v\\\":800.0},{\\\"k\\\":\\\"后置摄像头\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"万\\\",\\\"v\\\":1600.0}]},{\\\"group\\\":\\\"电池信息\\\",\\\"params\\\":[{\\\"k\\\":\\\"电池容量（mAh）\\\",\\\"searchable\\\":true,\\\"global\\\":true,\\\"numerical\\\":true,\\\"unit\\\":\\\"mAh\\\",\\\"v\\\":2600}]}]\",\n        \"packingList\": \"\",\n        \"afterService\": \"本产品全国联保，享受三包服务，质保期为：一年质保\"\n    },\n    \"skus\": [\n        {\n            \"spuId\": 19999,\n            \"title\": \"三星 Galaxy C5（SM-C5000）4GB+32GB 蔷薇粉 移动联通电信4G手机 双卡双待\",\n            \"images\": \"http://image.leyou.com/images/9/11/1524297316400.jpg\",\n            \"price\": 119900,\n            \"ownSpec\": \"{\\\"机身颜色\\\":\\\"粉\\\",\\\"内存\\\":\\\"4GB\\\",\\\"机身存储\\\":\\\"32GB\\\"}\",\n            \"indexes\": \"1_0_0\",\n            \"enable\": true,\n            \"createTime\": \"2018-04-21T20:55:16.000+0000\",\n            \"lastUpdateTime\": \"2018-04-21T20:55:16.000+0000\",\n            \"stock\": 9999\n        },\n        {\n            \"spuId\": 19999,\n            \"title\": \"三星 Galaxy C5（SM-C5000）4GB+32GB 烟雨灰 移动联通电信4G手机 双卡双待\",\n            \"images\": \"http://image.leyou.com/images/15/15/1524297316945.jpg\",\n            \"price\": 119900,\n            \"ownSpec\": \"{\\\"机身颜色\\\":\\\"灰\\\",\\\"内存\\\":\\\"4GB\\\",\\\"机身存储\\\":\\\"32GB\\\"}\",\n            \"indexes\": \"2_0_0\",\n            \"enable\": true,\n            \"createTime\": \"2018-04-21T20:55:17.000+0000\",\n            \"lastUpdateTime\": \"2018-04-21T20:55:17.000+0000\",\n            \"stock\": 9999\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{Domain}}{{GoodsItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{GoodsItem}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "spu/out/{id}",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{GoodsItem}}/spu/out/{id}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{GoodsItem}}"
+									],
+									"path": [
+										"spu",
+										"out",
+										"{id}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/spu/{id}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{GoodsItem}}/spu/{id}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{GoodsItem}}"
+									],
+									"path": [
+										"spu",
+										"{id}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Spec",
+					"item": [
+						{
+							"name": "spec",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{SpecItem}}/76",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{SpecItem}}"
+									],
+									"path": [
+										"76"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "save specification",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"categoryId\":76,\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"品牌\",\"searchable\":false,\"global\":true,\"options\":[]},{\"k\":\"型号\",\"searchable\":false,\"global\":true,\"options\":[]},{\"k\":\"上市年份\",\"searchable\":false,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"年\"}]},{\"group\":\"基本信息\",\"params\":[{\"k\":\"机身颜色\",\"searchable\":false,\"global\":false,\"options\":[]},{\"k\":\"机身重量（g）\",\"searchable\":false,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"g\"},{\"k\":\"机身材质工艺\",\"searchable\":false,\"global\":true,\"options\":[]}]},{\"group\":\"操作系统\",\"params\":[{\"k\":\"操作系统\",\"searchable\":true,\"global\":true,\"options\":[\"Android\",\"IOS\",\"Windows\",\"功能机\"]}]},{\"group\":\"主芯片\",\"params\":[{\"k\":\"CPU品牌\",\"searchable\":true,\"global\":true,\"options\":[\"骁龙（Snapdragon)\",\"麒麟\"]},{\"k\":\"CPU型号\",\"searchable\":false,\"global\":true,\"options\":[]},{\"k\":\"CPU核数\",\"searchable\":true,\"global\":true,\"options\":[\"一核\",\"二核\",\"四核\",\"六核\",\"八核\",\"十核\"]},{\"k\":\"CPU频率\",\"searchable\":true,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"GHz\"}]},{\"group\":\"存储\",\"params\":[{\"k\":\"内存\",\"searchable\":true,\"global\":false,\"options\":[\"1GB及以下\",\"2GB\",\"3GB\",\"4GB\",\"6GB\",\"8GB\"],\"numerical\":false,\"unit\":\"\"},{\"k\":\"机身存储\",\"searchable\":true,\"global\":false,\"options\":[\"8GB及以下\",\"16GB\",\"32GB\",\"64GB\",\"128GB\",\"256GB\"],\"numerical\":false,\"unit\":\"\"}]},{\"group\":\"屏幕\",\"params\":[{\"k\":\"主屏幕尺寸（英寸）\",\"searchable\":true,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"英寸\"},{\"k\":\"分辨率\",\"searchable\":false,\"global\":true,\"options\":[]}]},{\"group\":\"摄像头\",\"params\":[{\"k\":\"前置摄像头\",\"searchable\":true,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"万\"},{\"k\":\"后置摄像头\",\"searchable\":true,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"万\"}]},{\"group\":\"电池信息\",\"params\":[{\"k\":\"电池容量（mAh）\",\"searchable\":true,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"mAh\"}]}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{Domain}}{{SpecItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{SpecItem}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update specification",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"categoryId\":76,\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"品牌\",\"searchable\":false,\"global\":true,\"options\":[]},{\"k\":\"型号\",\"searchable\":false,\"global\":true,\"options\":[]},{\"k\":\"上市年份\",\"searchable\":false,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"年\"}]},{\"group\":\"基本信息\",\"params\":[{\"k\":\"机身颜色\",\"searchable\":false,\"global\":false,\"options\":[]},{\"k\":\"机身重量（g）\",\"searchable\":false,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"g\"},{\"k\":\"机身材质工艺\",\"searchable\":false,\"global\":true,\"options\":[]}]},{\"group\":\"操作系统\",\"params\":[{\"k\":\"操作系统\",\"searchable\":true,\"global\":true,\"options\":[\"Android\",\"IOS\",\"Windows\",\"功能机\"]}]},{\"group\":\"主芯片\",\"params\":[{\"k\":\"CPU品牌\",\"searchable\":true,\"global\":true,\"options\":[\"骁龙（Snapdragon)\",\"麒麟\"]},{\"k\":\"CPU型号\",\"searchable\":false,\"global\":true,\"options\":[]},{\"k\":\"CPU核数\",\"searchable\":true,\"global\":true,\"options\":[\"一核\",\"二核\",\"四核\",\"六核\",\"八核\",\"十核\"]},{\"k\":\"CPU频率\",\"searchable\":true,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"GHz\"}]},{\"group\":\"存储\",\"params\":[{\"k\":\"内存\",\"searchable\":true,\"global\":false,\"options\":[\"1GB及以下\",\"2GB\",\"3GB\",\"4GB\",\"6GB\",\"8GB\"],\"numerical\":false,\"unit\":\"\"},{\"k\":\"机身存储\",\"searchable\":true,\"global\":false,\"options\":[\"8GB及以下\",\"16GB\",\"32GB\",\"64GB\",\"128GB\",\"256GB\"],\"numerical\":false,\"unit\":\"\"}]},{\"group\":\"屏幕\",\"params\":[{\"k\":\"主屏幕尺寸（英寸）\",\"searchable\":true,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"英寸\"},{\"k\":\"分辨率\",\"searchable\":false,\"global\":true,\"options\":[]}]},{\"group\":\"摄像头\",\"params\":[{\"k\":\"前置摄像头\",\"searchable\":true,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"万\"},{\"k\":\"后置摄像头\",\"searchable\":true,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"万\"}]},{\"group\":\"电池信息\",\"params\":[{\"k\":\"电池容量（mAh）\",\"searchable\":true,\"global\":true,\"options\":[],\"numerical\":true,\"unit\":\"mAh\"}]}]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete specification",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{SpecItem}}/76",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{SpecItem}}"
+									],
+									"path": [
+										"76"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Favorite",
+					"item": [
+						{
+							"name": "favorite",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{favoriteItem}}?userId=29",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{favoriteItem}}"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "29"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "favorite",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"createTime\": \"2020-02-11T04:44:12.000+0000\",\n    \"modifyTime\": \"2020-04-11T03:44:12.000+0000\",\n    \"userId\": 29,\n     \"spuId\": 102\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{Domain}}{{favoriteItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{favoriteItem}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "favorite",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{favoriteItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{favoriteItem}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Favorite",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{favoriteItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{favoriteItem}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Car",
+			"item": [
+				{
+					"name": "Car",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":29,\"skuId\":2600248,\"title\":\"华为 G9 青春版 金色 移动联通电信4G手机 双卡双待\",\"image\":\"http://image.leyou.com/images/9/5/1524297314398.jpg\",\"price\":84900,\"num\":1,\"ownSpec\":\"{\\\"机身颜色\\\":\\\"金色\\\",\\\"内存\\\":\\\"3GB\\\",\\\"机身存储\\\":\\\"16GB\\\"}\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{Domain}}{{CartItem}}",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{CartItem}}"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "29",
+									"disabled": true
+								},
+								{
+									"key": "skuId",
+									"value": "3924115",
+									"disabled": true
+								},
+								{
+									"key": "image",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "title",
+									"value": "天龍國",
+									"disabled": true
+								},
+								{
+									"key": "price",
+									"value": "199",
+									"disabled": true
+								},
+								{
+									"key": "num",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "ownSpec",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "defaultAddress",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "defaultAddress",
+									"value": "天龍國台北二路3號",
+									"disabled": true
+								}
+							]
+						},
+						"description": "{\"userId\":29,\"skuId\":3924115,\"title\":\"\",\"image\":\"http://image.leyou.com/images/4/11/1524297413085.jpg\",\"price\":79900,\"num\":1,\"ownSpec\":\"{\\\"机身颜色\\\":\\\"星空灰\\\",\\\"内存\\\":\\\"3GB\\\",\\\"机身存储\\\":\\\"32GB\\\"}\"}"
+					},
+					"response": []
+				},
+				{
+					"name": "Cart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{CartItem}}",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{CartItem}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cart",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{CartItem}}?skuId=3924115&num=2",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{CartItem}}"
+							],
+							"query": [
+								{
+									"key": "skuId",
+									"value": "3924115"
+								},
+								{
+									"key": "num",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{CartItem}}/",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{CartItem}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "Order",
+					"item": [
+						{
+							"name": "order",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{OrderItem}}/1260500942546145280",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{OrderItem}}"
+									],
+									"path": [
+										"1260500942546145280"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{OrderItem}}/list",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{OrderItem}}"
+									],
+									"path": [
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create order",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"orderId\":1172137062385324032,\"totalPay\":1090,\"actualPay\":1000,\"promotionIds\":\"\",\"paymentType\":2,\"postFee\":10007,\"createTime\":\"2020-04-21T20:57:53.000+0000\",\"shippingName\":\"黑貓\",\"shippingCode\":\"14345256\",\"userId\":29,\"buyerMessage\":\"快點到啊!\",\"buyerNick\":\"kun\",\"buyerRate\":0,\"receiverState\":\"台灣\",\"receiverCity\":\"新北市\",\"receiverDistrict\":\"林口區\",\"receiverAddress\":\"文化路\",\"receiverMobile\":\"18834888888\",\"receiverZip\":\"104\",\"receiver\":\"小芳\",\"invoiceType\":1,\"sourceType\":1,\"orderDetails\":[{\"orderId\":1172137062385324032,\"skuId\":2600242,\"num\":2,\"title\":\"雪連花1\",\"ownSpec\":\"\",\"price\":\"20001\",\"image\":\"\"},{\"orderId\":1172137062385324032,\"skuId\":2600248,\"num\":2,\"title\":\"雪連花2\",\"ownSpec\":\"\",\"price\":\"20001\",\"image\":\"\"}]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{Domain}}{{OrderItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{OrderItem}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create order1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"orderId\":1172137062385324032,\"totalPay\":1090,\"actualPay\":1000,\"promotionIds\":\"\",\"paymentType\":2,\"postFee\":10007,\"createTime\":\"2020-04-21T20:57:53.000+0000\",\"shippingName\":\"黑貓\",\"shippingCode\":\"14345256\",\"userId\":29,\"buyerMessage\":\"快點到啊!\",\"buyerNick\":\"kun\",\"buyerRate\":0,\"receiverState\":\"台灣\",\"receiverCity\":\"新北市\",\"receiverDistrict\":\"林口區\",\"receiverAddress\":\"文化路\",\"receiverMobile\":\"18834888888\",\"receiverZip\":\"104\",\"receiver\":\"小芳\",\"invoiceType\":1,\"sourceType\":1,\"orderDetails\":[{\"orderId\":1172137062385324032,\"skuId\":2600242,\"num\":2,\"title\":\"雪連花1\",\"ownSpec\":\"\",\"price\":\"20001\",\"image\":\"\"},{\"orderId\":1172137062385324032,\"skuId\":2600248,\"num\":2,\"title\":\"雪連花2\",\"ownSpec\":\"\",\"price\":\"20001\",\"image\":\"\"}]}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{Domain}}{{OrderItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{OrderItem}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{id}/{status}",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{OrderItem}}/1260500942546145280/1",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{OrderItem}}"
+									],
+									"path": [
+										"1260500942546145280",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "url/{id}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{OrderItem}}/url/",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{OrderItem}}"
+									],
+									"path": [
+										"url",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "skuId/{id}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{OrderItem}}/skuId/1260500942546145280",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{OrderItem}}"
+									],
+									"path": [
+										"skuId",
+										"1260500942546145280"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "status/{id}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{OrderItem}}/status/1260500942546145280",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{OrderItem}}"
+									],
+									"path": [
+										"status",
+										"1260500942546145280"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "state/{id}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{OrderItem}}/state/1260500942546145280",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{OrderItem}}"
+									],
+									"path": [
+										"state",
+										"1260500942546145280"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteOrder",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{OrderItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{OrderItem}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Address",
+					"item": [
+						{
+							"name": "address",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": " {\n        \"userId\": \"29\",\n        \"name\": \"吳浩邦\",\n        \"phone\": \"153970891\",\n        \"zipCode\": \"1231321111\",\n        \"state\": \"台省\",\n        \"city\": \"新北市\",\n        \"district\": \"林口區\",\n        \"address\": \"台省新北市林口區文化一路135\",\n        \"defaultAddress\": false,\n        \"label\": \"学校\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{Domain}}{{AddressItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{AddressItem}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "address",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{AddressItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{AddressItem}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Address",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "   {\n        \"id\": \"1\",\n        \"userId\": \"29\",\n        \"name\": \"張三\",\n        \"phone\": \"18834888888\",\n        \"zipCode\": \"1231321111\",\n        \"state\": \"陕西省3\",\n        \"city\": \"西安市3\",\n        \"district\": \"碑林区1\",\n        \"address\": \"陕西省西安市碑林区33333\",\n        \"defaultAddress\": false,\n        \"label\": \"車站\"\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{Domain}}{{AddressItem}}",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{AddressItem}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{addressId}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{AddressItem}}/6",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{AddressItem}}"
+									],
+									"path": [
+										"6"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Seckill",
+			"item": [
+				{
+					"name": "orderId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{Seckill}}/orderId?orderId=123",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{Seckill}}"
+							],
+							"path": [
+								"orderId"
+							],
+							"query": [
+								{
+									"key": "orderId",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_path/{goodsId}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{Seckill}}/get_path/{goodsId}",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{Seckill}}"
+							],
+							"path": [
+								"get_path",
+								"{goodsId}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						},
+						"description": "{goodsId} = skuId"
+					},
+					"response": []
+				},
+				{
+					"name": "{path}/seck",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"skuId\":2600242,\"startTime\":\"2020-05-21T06:01:00.000+0000\",\"endTime\":\"2020-05-01T06:01:00.000+0000\",\"seckillPrice\":8490,\"title\":\"华为 G9 青春版 白色 移动联通电信4G手机 双卡双待\",\"image\":\"http://image.leyou.com/images/9/15/1524297313793.jpg\",\"enable\":1,\"stock\":30,\"seckillTotal\":20}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{Domain}}{{Seckill}}/$2a$10$N6RWZU6iyWItHCc2xsH5neC8d84TSFdxt2v1J0kE4YZEzItche8ma/seck",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{Seckill}}"
+							],
+							"path": [
+								"$2a$10$N6RWZU6iyWItHCc2xsH5neC8d84TSFdxt2v1J0kE4YZEzItche8ma",
+								"seck"
+							]
+						},
+						"description": "{path} ＝ $2a$10$N6RWZU6iyWItHCc2xsH5neC8d84TSFdxt2v1J0kE4YZEzItche8ma"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "list",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"spuId\":57,\"page\":1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{Domain}}{{CommentItem}}/list",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{CommentItem}}"
+							],
+							"path": [
+								"list"
+							],
+							"query": [
+								{
+									"key": "spuId",
+									"value": "57",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "thumb",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{CommentItem}}/thumb/80",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{CommentItem}}"
+							],
+							"path": [
+								"thumb",
+								"80"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"orderid\":\"1072137062385324032\",\"spuid\":\"57\",\"content\":\"free\",\"publishtime\":\"2020-05-11T20:55:15.000+0000\",\"userid\":\"29\",\"nickname\":\"lyj123123\",\"visits\":1,\"comment\":12,\"thumbup\":1,\"images\":[],\"iscomment\":false,\"parentid\":\"0\",\"isparent\":true,\"type\":1}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{Domain}}{{CommentItem}}/comment/1072137062385324032",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{CommentItem}}"
+							],
+							"path": [
+								"comment",
+								"1072137062385324032"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "comment",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{CommentItem}}/commentId/107213706",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{CommentItem}}"
+							],
+							"path": [
+								"commentId",
+								"107213706"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "comment",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{CommentItem}}/comment",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{CommentItem}}"
+							],
+							"path": [
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{CommentItem}}/commentId/1258293277413875713",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{CommentItem}}"
+							],
+							"path": [
+								"commentId",
+								"1258293277413875713"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "visit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{CommentItem}}/comment",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{CommentItem}}"
+							],
+							"path": [
+								"comment"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Goods Web",
+			"item": [
+				{
+					"name": "web",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://www.leyou.com/item/141.html",
+							"protocol": "http",
+							"host": [
+								"www",
+								"leyou",
+								"com"
+							],
+							"path": [
+								"item",
+								"141.html"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "page",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"key\":\"华为\",\"page\":1,\"sortBy\":\"\",\"descending\":false,\"filter\":{\"key\":\"\"}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{Domain}}{{SearchItem}}/page",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{SearchItem}}"
+							],
+							"path": [
+								"page"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Upload",
+			"item": [
+				{
+					"name": "image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/chao-kun.wu/Desktop/AppIcon_airgo_60png.png"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "http://{{Domain}}/upload/image",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}"
+							],
+							"path": [
+								"upload",
+								"image"
+							],
+							"query": [
+								{
+									"key": "file",
+									"value": "\"\"",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://image.ji-well.com/group1/M00/00/00/rBEACV8pJZeAYPVTAAAbo5WgO4U428.png",
+							"protocol": "http",
+							"host": [
+								"image",
+								"ji-well",
+								"com"
+							],
+							"path": [
+								"group1",
+								"M00",
+								"00",
+								"00",
+								"rBEACV8pJZeAYPVTAAAbo5WgO4U428.png"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "image",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}/upload/image?filePath=group1/M00/00/00/CowABF8qFEqAMlfOAAAbo5WgO4U574.png",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}"
+							],
+							"path": [
+								"upload",
+								"image"
+							],
+							"query": [
+								{
+									"key": "filePath",
+									"value": "group1/M00/00/00/CowABF8qFEqAMlfOAAAbo5WgO4U574.png"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
