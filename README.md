@@ -1,272 +1,271 @@
-### 一、架构图
+### 一、架構圖
 
 ![img](https://img-blog.csdnimg.cn/20181212215151153.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x5ajIwMThneXE=,size_16,color_FFFFFF,t_70)
 
 
-### 二、包含的微服务
+### 二、包含的微服務
 
 ![img](https://img-blog.csdnimg.cn/20181212215548926.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x5ajIwMThneXE=,size_16,color_FFFFFF,t_70)
 
 
-### 2.1 网关微服务
+### 2.1 網關微服務
 
-> 架构图
+> 架構圖
 
 ![img](https://img-blog.csdnimg.cn/20181214102311483.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x5ajIwMThneXE=,size_16,color_FFFFFF,t_70)
 
 
-不管是来自于客户端（PC或移动端）的请求，还是服务内部调用。一切对服务的请求都会经过Zuul这个网关，然后再由网关来实现 鉴权、动态路由等等操作。Zuul就是我们服务的统一入口。
+不管是來自於客戶端（PC或移動端）的請求，還是服務內部調用。一切對服務的請求都會經過Zuul這個網關，然後再由網關來實現 鑑權、動態路由等等操作。 Zuul就是我們服務的統一入口。
 
 > 配置
 
 ![img](https://img-blog.csdnimg.cn/20181214102758667.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x5ajIwMThneXE=,size_16,color_FFFFFF,t_70)
 
-服务网关是微服务架构中一个不可或缺的部分。通过服务网关统一向外系统提供REST API的过程中，除了具备服务路由、均衡负载功能之外，它还具备了`权限控制`等功能。为微服务架构提供了前门保护的作用，同时将权限控制这些较重的非业务逻辑内容迁移到服务路由层面，使得服务集群主体能够具备更高的可复用性和可测试性。
+服務網關是微服務架構中一個不可或缺的部分。通過服務網關統一向外系統提供REST API的過程中，除了具備服務路由、均衡負載功能之外，它還具備了`權限控制`等功能。為微服務架構提供了前門保護的作用，同時將權限控制這些較重的非業務邏輯內容遷移到服務路由層面，使得服務集群主體能夠具備更高的可複用性和可測試性。
 
 > 主要功能
 
-身份认证与安全：识别每个资源的验证要求，并拒绝那些与要求不相符的请求。（对jwt鉴权）
+身份認證與安全：識別每個資源的驗證要求，並拒絕那些與要求不相符的請求。 （對jwt鑑權）
 
-动态路由：动态地将请求路由到不同的后端集群。
+動態路由：動態地將請求路由到不同的後端集群。
 
-负载均衡和熔断
+負載均衡和熔斷
 
-### 2.2 授权中心微服务
+### 2.2 授權中心微服務
 
-> 结合RSA的鉴权
+> 結合RSA的鑑權
 
 ![img](https://img-blog.csdnimg.cn/20181214104033784.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x5ajIwMThneXE=,size_16,color_FFFFFF,t_70)
 
-- 首先利用RSA生成公钥和私钥。私钥保存在授权中心，公钥保存在Zuul和各个微服务
-- 用户请求登录
-- 授权中心校验，通过后用私钥对JWT进行签名加密
-- 返回jwt给用户
-- 用户携带JWT访问
-- Zuul直接通过公钥解密JWT，进行验证，验证通过则放行
-- 请求到达微服务，微服务直接用公钥解析JWT，获取用户信息，无需访问授权中心
+- 首先利用RSA生成公鑰和私鑰。私鑰保存在授權中心，公鑰保存在Zuul和各個微服務
+- 用戶請求登錄
+- 授權中心校驗，通過後用私鑰對JWT進行簽名加密
+- 返回jwt給用戶
+- 用戶攜帶JWT訪問
+- Zuul直接通過公鑰解密JWT，進行驗證，驗證通過則放行
+- 請求到達微服務，微服務直接用公鑰解析JWT，獲取用戶信息，無需訪問授權中心
 
-> 授权中心的主要职责
+> 授權中心的主要職責
 
-1. 用户鉴权：接收用户的登录请求，通过用户中心的接口进行校验，通过后生成JWT。使用私钥生成JWT并返回
-2. 服务鉴权：微服务间的调用不经过Zuul，会有风险，需要鉴权中心进行认证。原理与用户鉴权类似，但逻辑稍微复杂一些（未实现）。
+1. 用戶鑑權：接收用戶的登錄請求，通過用戶中心的接口進行校驗，通過後生成JWT。使用私鑰生成JWT並返回
+2. 服務鑑權：微服務間的調用不經過Zuul，會有風險，需要鑑權中心進行認證。原理與用戶鑑權類似，但邏輯稍微複雜一些（未實現）。
 
-### 2.3 购物车微服务
+### 2.3 購物車微服務
 
 > 功能需求
 
-- 用户可以在登录状态下将商品添加到购物车
+- 用戶可以在登錄狀態下將商品添加到購物車
 
-放入数据库
+放入數據庫
 
-放入redis（采用）
+放入redis（採用）
 
-- 用户可以在未登录状态下将商品添加到购物车
+- 用戶可以在未登錄狀態下將商品添加到購物車
 - 放入localstorage
-- 用户可以使用购物车一起结算下单
-- 用户可以查询自己的购物车
-- 用户可以在购物车中修改购买商品的数量。
-- 用户可以在购物车中删除商品。
-- 在购物车中展示商品优惠信息
-- 提示购物车商品价格变化
+- 用戶可以使用購物車一起結算下單
+- 用戶可以查詢自己的購物車
+- 用戶可以在購物車中修改購買商品的數量。
+- 用戶可以在購物車中刪除商品。
+- 在購物車中展示商品優惠信息
+- 提示購物車商品價格變化
 
-> 流程图
+> 流程圖
 
 ![img](https://img-blog.csdnimg.cn/20181214104500266.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x5ajIwMThneXE=,size_16,color_FFFFFF,t_70)
 
 
-这幅图主要描述了两个功能：新增商品到购物车、查询购物车。
+這幅圖主要描述了兩個功能：新增商品到購物車、查詢購物車。
 
 - 新增商品：
 
-  - 判断是否登录
-    - 是：则添加商品到后台Redis中
-    - 否：则添加商品到本地的Localstorage
+  - 判斷是否登錄
+    - 是：則添加商品到後台Redis中
+    - 否：則添加商品到本地的Localstorage
 
-- 无论哪种新增，完成后都需要查询购物车列表：
+- 無論哪種新增，完成後都需要查詢購物車列表：
 
-  - 判断是否登录
-    - 否：直接查询localstorage中数据并展示
-    - 是：已登录，则需要先看本地是否有数据，
-      - 有：需要提交到后台添加到redis，合并数据，而后查询
-      - 否：直接去后台查询redis，而后返回
+  - 判斷是否登錄
+    - 否：直接查詢localstorage中數據並展示
+    - 是：已登錄，則需要先看本地是否有數據，
+      - 有：需要提交到後台添加到redis，合併數據，而後查詢
+      - 否：直接去後台查詢redis，而後返回
 
-### 2.4 评论微服务（新增）
+### 2.4 評論微服務（新增）
 
 > 功能需求
 
-1. 用户在确认收货后可以对商品进行评价，每个用户对订单中的商品只能发布一次顶级评论，可以追评，也可以回复别人的评论。
-2. 当用户确认收货后没有进行手动评价时，3天后自动五星好评
+1. 用戶在確認收貨後可以對商品進行評價，每個用戶對訂單中的商品只能發布一次頂級評論，可以追評，也可以回复別人的評論。
+2. 當用戶確認收貨後沒有進行手動評價時，3天后自動五星好評
 
-> 表结构设计
+> 表結構設計
 
-parent和isparent字段是用来实现评论嵌套的。
+parent和isparent字段是用來實現評論嵌套的。
 
-> 实现
+> 實現
 
-使用MongoDB存储评论，基本的CRUD。
+使用MongoDB存儲評論，基本的CRUD。
 
-### 2.5 配置中心微服务
+### 2.5 配置中心微服務
 
 > 需求
 
-在分布式系统中，由于服务数量巨多，为了方便服务配置文件统一管理，实时更新，所以需要分布式配置中心组件。在Spring Cloud中，有分布式配置中心组件spring cloudconfig ，它支持配置服务放在配置服务的内存中（即本地），也支持放在远程Git仓库中。
+在分佈式系統中，由於服務數量巨多，為了方便服務配置文件統一管理，實時更新，所以需要分佈式配置中心組件。在Spring Cloud中，有分佈式配置中心組件spring cloudconfig ，它支持配置服務放在配置服務的內存中（即本地），也支持放在遠程Git倉庫中。
 
-使用SpringCloudBus来实现配置的自动更新。
+使用SpringCloudBus來實現配置的自動更新。
 
-> 组成结构
+> 組成結構
 
-在spring cloud config 组件中，分两个角色，一是config server，二是config client。
+在spring cloud config 組件中，分兩個角色，一是config server，二是config client。
 
-Config Server是一个可横向扩展、集中式的配置服务器，它用于集中管理应用程序各个环境下的配置，默认使用Git存储配置文件内容，也可以使用SVN存储，或者是本地文件存存储
+Config Server是一個可橫向擴展、集中式的配置服務器，它用於集中管理應用程序各個環境下的配置，默認使用Git存儲配置文件內容，也可以使用SVN存儲，或者是本地文件存存儲
 
-Config Client是Config Server的客户端，用于操作存储在Config Server中的配置内容。微服务在启动时会请求Config Server获取配置文件的内容，请求到后再启动容器
+Config Client是Config Server的客戶端，用於操作存儲在Config Server中的配置內容。微服務在啟動時會請求Config Server獲取配置文件的內容，請求到後再啟動容器
 
-> 实现
+> 實現
 
-创建配置中心，对Config Server进行配置，然后在其它微服务中配置Config Client。最后使用Github上的Webhooks进行配置的动态刷新，所以还要使用内网穿透工具，同时要在配置中心中添加过滤器，因为使用Webhooks提交请求时会加上一段Payload，而本地是无法解析这个Payload的，所以要将它过滤掉。
+創建配置中心，對Config Server進行配置，然後在其它微服務中配置Config Client。最後使用Github上的Webhooks進行配置的動態刷新，所以還要使用內網穿透工具，同時要在配置中心中添加過濾器，因為使用Webhooks提交請求時會加上一段Payload，而本地是無法解析這個Payload的，所以要將它過濾掉。
 
-### 2.6 页面静态化微服务
+### 2.6 頁面靜態化微服務
 
-商品详情浏览量比较大，并发高，所以单独开启一个微服务用来展示商品详情，并且对其进行静态化处理，保存为静态html文件。在用户访问商品详情页面时，让nginx对商品请求进行监听，指向本地静态页面，如果本地没找到，才反向代理到页面详情微服务端口。 
+商品詳情瀏覽量比較大，並發高，所以單獨開啟一個微服務用來展示商品詳情，並且對其進行靜態化處理，保存為靜態html文件。在用戶訪問商品詳情頁面時，讓nginx對商品請求進行監聽，指向本地靜態頁面，如果本地沒找到，才反向代理到頁面詳情微服務端口。
 
-### 2.7 后台管理微服务
+### 2.7 後台管理微服務
 
-主要是对商品分类、品牌、商品的规格参数以及商品的CRUD，为后台管理提供各种接口。 
+主要是對商品分類、品牌、商品的規格參數以及商品的CRUD，為後台管理提供各種接口。
 
-### 2.8 订单微服务
+### 2.8 訂單微服務
 
 主要接口有：
 
-- 创建订单
-- 查询订单
-- 更新订单状态
-- 根据订单号生成微信付款链接
-- 根据订单号查询支付状态
+- 創建訂單
+- 查詢訂單
+- 更新訂單狀態
+- 根據訂單號生成微信付款鏈接
+- 根據訂單號查詢支付狀態
 
-### 2.9 注册中心
+### 2.9 註冊中心
 
-> 基本架构
+> 基本架構
 
 ![img](https://img-blog.csdnimg.cn/2018121514422783.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x5ajIwMThneXE=,size_16,color_FFFFFF,t_70)
 
 
-- Eureka：就是服务注册中心（可以是一个集群），对外暴露自己的地址
-- 提供者：启动后向Eureka注册自己信息（地址，提供什么服务）
-- 消费者：向Eureka订阅服务，Eureka会将对应服务的所有提供者地址列表发送给消费者，并且定期更新
-- 心跳(续约)：提供者定期通过http方式向Eureka刷新自己的状态
+- Eureka：就是服務註冊中心（可以是一個集群），對外暴露自己的地址
+- 提供者：啟動後向Eureka註冊自己信息（地址，提供什麼服務）
+- 消費者：向Eureka訂閱服務，Eureka會將對應服務的所有提供者地址列表發送給消費者，並且定期更新
+- 心跳(續約)：提供者定期通過http方式向Eureka刷新自己的狀態
 
-主要功能就是对各种服务进行管理。
+主要功能就是對各種服務進行管理。
 
-### 2.10 搜索微服务
+### 2.10 搜索微服務
 
-主要是对Elasticsearch的应用，将所有商品数据封装好后添加到Elasticsearch的索引库中，然后进行搜索过滤，查询相应的商品信息。 
+主要是對Elasticsearch的應用，將所有商品數據封裝好後添加到Elasticsearch的索引庫中，然後進行搜索過濾，查詢相應的商品信息。
 
-### 2.11 秒杀微服务
+### 2.11 秒殺微服務
 
 主要接口有：
 
-- 添加参加秒杀的商品
-- 查询秒杀商品
-- 创建秒杀地址
-- 验证秒杀地址
-- 秒杀
+- 添加參加秒殺的商品
+- 查詢秒殺商品
+- 創建秒殺地址
+- 驗證秒殺地址
+- 秒殺
 
-秒杀的实现及其优化：
+秒殺的實現及其優化：
 
-前端：秒杀地址的隐藏、使用图形验证码
+前端：秒殺地址的隱藏、使用圖形驗證碼
 
-后端：接口限流，使用消息队列，调用订单微服务执行下单操作。
+後端：接口限流，使用消息隊列，調用訂單微服務執行下單操作。
 
-TODO：需要改进~~~~~~~~~~~~~！！！！！！！！！！！！！
+TODO：需要改進~~~~~~~~~~~~~！ ！ ！ ！ ！ ！ ！ ！ ！ ！ ！ ！ ！
 
-### 2.12 短信微服务
+### 2.12 短信微服務
 
-因为系统中不止注册一个地方需要短信发送，因此将短信发送抽取为微服务：`jiwell-sms-service`，凡是需要的地方都可以使用。
+因為系統中不止註冊一個地方需要短信發送，因此將短信發送抽取為微服務：`jiwell-sms-service`，凡是需要的地方都可以使用。
 
-另外，因为短信发送API调用时长的不确定性，为了提高程序的响应速度，短信发送我们都将采用异步发送方式，即：
+另外，因為短信發送API調用時長的不確定性，為了提高程序的響應速度，短信發送我們都將採用異步發送方式，即：
 
-- 短信服务监听MQ消息，收到消息后发送短信。
-- 其它服务要发送短信时，通过MQ通知短信微服务。
+- 短信服務監聽MQ消息，收到消息後發送短信。
+- 其它服務要發送短信時，通過MQ通知短信微服務。
 
-### 2.13 文件上传微服务
+### 2.13 文件上傳微服務
 
-使用分布式文件系统FastDFS实现图片上传。
+使用分佈式文件系統FastDFS實現圖片上傳。
 
-> FastDFS架构
+> FastDFS架構
 
 ![img](https://img-blog.csdnimg.cn/20181215150632856.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x5ajIwMThneXE=,size_16,color_FFFFFF,t_70)
 
+FastDFS兩個主要的角色：Tracker Server 和 Storage Server 。
 
-FastDFS两个主要的角色：Tracker Server 和 Storage Server 。
+- Tracker Server：跟踪服務器，主要負責調度storage節點與client通信，在訪問上起負載均衡的作用，和記錄storage節點的運行狀態，是連接client和storage節點的樞紐。
+- Storage Server：存儲服務器，保存文件和文件的meta data（元數據），每個storage server會啟動一個單獨的線程主動向Tracker cluster中每個tracker server報告其狀態信息，包括磁盤使用情況，文件同步情況及文件上傳下載次數統計等信息
+- Group：文件組，多台Storage Server的集群。上傳一個文件到同組內的一台機器上後，FastDFS會將該文件即時同步到同組內的其它所有機器上，起到備份的作用。不同組的服務器，保存的數據不同，而且相互獨立，不進行通信。
+- Tracker Cluster：跟踪服務器的集群，有一組Tracker Server（跟踪服務器）組成。
+- Storage Cluster ：存儲集群，有多個Group組成。
 
-- Tracker Server：跟踪服务器，主要负责调度storage节点与client通信，在访问上起负载均衡的作用，和记录storage节点的运行状态，是连接client和storage节点的枢纽。
-- Storage Server：存储服务器，保存文件和文件的meta data（元数据），每个storage server会启动一个单独的线程主动向Tracker cluster中每个tracker server报告其状态信息，包括磁盘使用情况，文件同步情况及文件上传下载次数统计等信息
-- Group：文件组，多台Storage Server的集群。上传一个文件到同组内的一台机器上后，FastDFS会将该文件即时同步到同组内的其它所有机器上，起到备份的作用。不同组的服务器，保存的数据不同，而且相互独立，不进行通信。
-- Tracker Cluster：跟踪服务器的集群，有一组Tracker Server（跟踪服务器）组成。
-- Storage Cluster ：存储集群，有多个Group组成。
-
-> 上传流程
+> 上傳流程
 
 ![img](https://img-blog.csdnimg.cn/2018121515081720.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x5ajIwMThneXE=,size_16,color_FFFFFF,t_70)
 
 
-1. Client通过Tracker server查找可用的Storage server。
-2. Tracker server向Client返回一台可用的Storage server的IP地址和端口号。
-3. Client直接通过Tracker server返回的IP地址和端口与其中一台Storage server建立连接并进行文件上传。
-4. 上传完成，Storage server返回Client一个文件ID，文件上传结束。
+1. Client通過Tracker server查找可用的Storage server。
+2. Tracker server向Client返回一台可用的Storage server的IP地址和端口號。
+3. Client直接通過Tracker server返回的IP地址和端口與其中一台Storage server建立連接並進行文件上傳。
+4. 上傳完成，Storage server返回Client一個文件ID，文件上傳結束。
 
-> 下载流程
+> 下載流程
 
 ![img](https://img-blog.csdnimg.cn/20181215150912300.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2x5ajIwMThneXE=,size_16,color_FFFFFF,t_70)
 
 
-1. Client通过Tracker server查找要下载文件所在的的Storage server。
-2. Tracker server向Client返回包含指定文件的某个Storage server的IP地址和端口号。
-3. Client直接通过Tracker server返回的IP地址和端口与其中一台Storage server建立连接并指定要下载文件。
-4. 下载文件成功。
+1. Client通過Tracker server查找要下載文件所在的的Storage server。
+2. Tracker server向Client返回包含指定文件的某個Storage server的IP地址和端口號。
+3. Client直接通過Tracker server返回的IP地址和端口與其中一台Storage server建立連接並指定要下載文件。
+4. 下載文件成功。
 
-### 2.14 用户中心微服务
+### 2.14 用戶中心微服務
 
 提供的接口：
 
-- 检查用户名和手机号是否可用
-- 发送短信验证码
-- 用户注册
-- 用户查询
-- 修改用户个人资料
+- 檢查用戶名和手機號是否可用
+- 發送短信驗證碼
+- 用戶註冊
+- 用戶查詢
+- 修改用戶個人資料
 
-### 三、如何启动项目
+### 三、如何啟動項目
 
-在虚拟机中进行以下中间件的配置：
+在虛擬機中進行以下中間件的配置：
 
 - ES：搜索
-- FDFS：文件上传
-- nginx：代理FDFS中的图片及静态图片
-- Rabbitmq：数据同步
-- Redis：缓存
+- FDFS：文件上傳
+- nginx：代理FDFS中的圖片及靜態圖片
+- Rabbitmq：數據同步
+- Redis：緩存
 
-并将配置文件中所有和虚拟机相关的ip进行修改
+並將配置文件中所有和虛擬機相關的ip進行修改
 
-本机中需要的配置：
+本機中需要的配置：
 
-- nginx：前端所有请求统一代理到网关，域名的反向代理
-             - host：实现域名访问
+- nginx：前端所有請求統一代理到網關，域名的反向代理
+             - host：實現域名訪問
 
-具体请参照：https://blog.csdn.net/lyj2018gyq/article/details/83654179#2.1%20Nginx
+具體請參照：https://blog.csdn.net/lyj2018gyq/article/details/83654179#2.1%20Nginx
 
-### 四、数据库
+### 四、數據庫
 
-我的版本是最老的一般，所以数据库可能会和新的不一致，关键就是在商品详情页面的显示上，可以参考我`jiwell-goods-web`中的写法，最终效果一致。
+我的版本是最老的一般，所以數據庫可能會和新的不一致，關鍵就是在商品詳情頁面的顯示上，可以參考我`jiwell-goods-web`中的寫法，最終效果一致。
 
-另外在数据库中又多了几张表：`tb_address`、`tb_seckill_order`、`tb_seckill_sku`，地址表建议保留，其他的可以连同秒杀微服务一起删掉（如果你不需要的话）
+另外在數據庫中又多了幾張表：`tb_address`、`tb_seckill_order`、`tb_seckill_sku`，地址表建議保留，其他的可以連同秒殺微服務一起刪掉（如果你不需要的話）
 
 ### 五、博客地址
 
-[传送门](https://blog.csdn.net/lyj2018gyq/article/category/7963560)
+[傳送門](https://blog.csdn.net/lyj2018gyq/article/category/7963560)
 
 mac 打開docker port
-docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 10.140.0.3:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run/docker.sock
-在Mac OSX系统的Docker机上启用Docker远程API功能
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 10.140.0.3:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run /docker.sock
+在Mac OSX系統的Docker機上啟用Docker遠程API功能
 https://blog.csdn.net/chszs/article/details/50650214
 
 
@@ -279,10 +278,10 @@ https://blog.csdn.net/chszs/article/details/50650214
 | JDK           | 1.8    | https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html |
 | Mysql         | 5.7    | https://www.mysql.com/                                       |
 | Redis         | 5.0.5  | https://redis.io/download                                    |
-| Elasticsearch | 6.8.5  | https://www.elastic.co/downloads                             |
+| Elasticsearch | 6.8.5  | https://www.elastic.co/downloads
 | MongoDb       | 4.2.6  | https://www.mongodb.com/download-center                      |
 | RabbitMq      | 3.7.14 | http://www.rabbitmq.com/download.html                        |
-| Nginx         | 1.10   | http://nginx.org/en/download.html                            |
+| Nginx         | 1.17.0 | http://nginx.org/en/download.html                            |
 
 
 安裝部置於GCP Linux環境下，系統為CenterOS 7.6 使用Docker容器中安裝Mysql、Redis、Nginx、RabbitMQ、Elasticsearch、Mongodb，以及SpringBoot應用部署
@@ -410,6 +409,7 @@ elasticsearch 的docker會無法起動， 重新執行 docker start elasticsearc
 
 安裝中文分詞器IKAnalyzer，並重新啟動：
 docker exec -it elasticsearch /bin/bash
+
 #此命令需要在容器中運行
 elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.8.5/elasticsearch-analysis-ik-6.8.5.zip
 
@@ -437,7 +437,6 @@ firewall-cmd --zone=public --add-port=5601/tcp --permanent
 firewall-cmd --reload
 
 訪問地址進行測試：http://35.194.244.197:5601
-
 
 Mongodb安装
 下载mongo4.2.6的docker镜像：
@@ -506,7 +505,9 @@ kill nginx: master 端口號，即53536
 kill -QUIT 53536
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-fastdfs安裝(內含nginx 所以要安裝到獨立一台VM，要不含nginx的自行上網找)
+
+#fastdfs安裝(內含nginx 所以要安裝到獨立一台VM，要不含nginx的自行上網找)
+
 1.下載 fastdfs 從docker （使用delron/fastdfs）
 docker pull delron/fastdfs
 
@@ -618,6 +619,7 @@ curl http://10.140.0.4:8888/group1/M00/00/00/rBEACV8o-XSAP8erAAAbo5WgO4U286.png
 參考：https://www.codenong.com/c3125732/
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 本文主要介紹如何使用Maven插件將SpringBoot應用打包為Docker鏡像，並上傳到私有鏡像倉庫Docker Registry的過程。
 
 Docker Registry
