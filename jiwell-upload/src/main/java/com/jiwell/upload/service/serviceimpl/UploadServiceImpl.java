@@ -75,6 +75,16 @@ public class UploadServiceImpl implements UploadService {
         }
     }
 
+    @Override
+    public Boolean deleteFile(String filePath){
+        try {
+            this.storageClient.deleteFile(filePath);
+            return true;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
     public String getExtension(String fileName){
         return StringUtils.substringAfterLast(fileName,".");
     }

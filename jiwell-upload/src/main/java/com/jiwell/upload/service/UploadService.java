@@ -14,4 +14,5 @@ public interface UploadService {
      * @return
      */
     String upload(MultipartFile file);
+    Boolean deleteFile(String filePath);
 }
