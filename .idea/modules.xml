@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/jiwell.iml" filepath="$PROJECT_DIR$/jiwell.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-api-gateway/jiwell-api-gateway.iml" filepath="$PROJECT_DIR$/jiwell-api-gateway/jiwell-api-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-authentication/jiwell-authentication.iml" filepath="$PROJECT_DIR$/jiwell-authentication/jiwell-authentication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-authentication/jiwell-authentication-common/jiwell-authentication-common.iml" filepath="$PROJECT_DIR$/jiwell-authentication/jiwell-authentication-common/jiwell-authentication-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-authentication/jiwell-authentication-service/jiwell-authentication-service.iml" filepath="$PROJECT_DIR$/jiwell-authentication/jiwell-authentication-service/jiwell-authentication-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-cart/jiwell-cart.iml" filepath="$PROJECT_DIR$/jiwell-cart/jiwell-cart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-comments/jiwell-comments.iml" filepath="$PROJECT_DIR$/jiwell-comments/jiwell-comments.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-comments/jiwell-comments-interface/jiwell-comments-interface.iml" filepath="$PROJECT_DIR$/jiwell-comments/jiwell-comments-interface/jiwell-comments-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-comments/jiwell-comments-service/jiwell-comments-service.iml" filepath="$PROJECT_DIR$/jiwell-comments/jiwell-comments-service/jiwell-comments-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-common/jiwell-common.iml" filepath="$PROJECT_DIR$/jiwell-common/jiwell-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-config/jiwell-config.iml" filepath="$PROJECT_DIR$/jiwell-config/jiwell-config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-item/jiwell-item.iml" filepath="$PROJECT_DIR$/jiwell-item/jiwell-item.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-item/jiwell-item-interface/jiwell-item-interface.iml" filepath="$PROJECT_DIR$/jiwell-item/jiwell-item-interface/jiwell-item-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-item/jiwell-item-service/jiwell-item-service.iml" filepath="$PROJECT_DIR$/jiwell-item/jiwell-item-service/jiwell-item-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-order/jiwell-order.iml" filepath="$PROJECT_DIR$/jiwell-order/jiwell-order.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-order/jiwell-order-interface/jiwell-order-interface.iml" filepath="$PROJECT_DIR$/jiwell-order/jiwell-order-interface/jiwell-order-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-order/jiwell-order-service/jiwell-order-service.iml" filepath="$PROJECT_DIR$/jiwell-order/jiwell-order-service/jiwell-order-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-registry/jiwell-registry.iml" filepath="$PROJECT_DIR$/jiwell-registry/jiwell-registry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-search/jiwell-search.iml" filepath="$PROJECT_DIR$/jiwell-search/jiwell-search.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-secskill/jiwell-seckill-interface/jiwell-seckill-interface.iml" filepath="$PROJECT_DIR$/jiwell-secskill/jiwell-seckill-interface/jiwell-seckill-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-secskill/jiwell-seckill-service/jiwell-seckill-service.iml" filepath="$PROJECT_DIR$/jiwell-secskill/jiwell-seckill-service/jiwell-seckill-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-secskill/jiwell-secskill.iml" filepath="$PROJECT_DIR$/jiwell-secskill/jiwell-secskill.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-sms/jiwell-sms.iml" filepath="$PROJECT_DIR$/jiwell-sms/jiwell-sms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-upload/jiwell-upload.iml" filepath="$PROJECT_DIR$/jiwell-upload/jiwell-upload.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-user/jiwell-user.iml" filepath="$PROJECT_DIR$/jiwell-user/jiwell-user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-user/jiwell-user-interface/jiwell-user-interface.iml" filepath="$PROJECT_DIR$/jiwell-user/jiwell-user-interface/jiwell-user-interface.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiwell-user/jiwell-user-service/jiwell-user-service.iml" filepath="$PROJECT_DIR$/jiwell-user/jiwell-user-service/jiwell-user-service.iml" />
+    </modules>
+  </component>
+</project>
