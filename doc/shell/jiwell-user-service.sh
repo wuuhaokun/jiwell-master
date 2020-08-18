@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-app_name='jiwell-config'
-app_port='10011'
+app_name='jiwell-user-service'
+app_port='8085'
 docker stop ${app_name}
 echo '----stop container----'
 docker rm ${app_name}
@@ -13,4 +13,3 @@ docker run -p ${app_port}:${app_port} --name ${app_name} \
 -v /mydata/rsa:/mydata/rsa \
 -d jiwell/${app_name}:1.0.0-SNAPSHOT
 echo '----start container----'
-

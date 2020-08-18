@@ -770,7 +770,7 @@ npm run build
 
 4.安裝zip程式
 yum install zip unzip
- apt-get zip unzip
+apt-get zip unzip
 
 5.壓縮 dist(使用zip或其他即可)
 套件名稱：zip。
@@ -825,6 +825,131 @@ Jenkins的配置
 
 目前設定帳號：ji-well  密碼:ji-well
 
+
+準備工作
+ssh 產生
+ssh-keygen -t rsa
+後可到以下路徑下觀看
+cat /root/.ssh/id_rsa.pub
+
+cat /root/.ssh/id_rsa.pub
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3mqhj0+ShiWnLdhI7EXJKJ72Wvv/XQoxuqtSAkOI2IynsgnpC+PLULB74FlchkZBtYnngqhLEusE
+kNcTbObma3Xni6UtK7N4lUQCjSKg6QSqeQZ9mxuBqDbdTn3u05/asUQiHtKlZ1ifkgkjwz9FAUOMKTGb8sOmpT04HH0iFg/oqNq2MDajxBCu4AXI6nE
+bJDOJ7sxkgwC4ky3mrqLAEtxTkHIrJh6IMmbpa81hoGcd7j3YTHu54EHzrqn+HAPMPR6k9ExKmXUDIlHtbRty8MSl1v0ndjVkq5Au4t93NH/e09CH1n
+GzB51W2/3TFGTmHTFFAQlM8aO91KewAR7Sr root@d4e12b008090
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3C2+AjCZ3yMLXw12RDFdfYndInDSNVnxkMacOVsYhOMhrZG1eXqzAh5+GubjoMtVTJTWJwLO3V8c
+R7iyy8vaIZJsPb77qQEkgm1E/3QF54xFcuWszh2YrmzvoZQWil4FNNEhBO69b1TEn443bF5/Y+GMQupJ61XRRcWyeYpZnLFLN9X77DozWIVGDG+s29T
+wukDtSAUXRrRSvnYmEwu3FAUxDnZPKhYoC9LpxDxSi1m5ADzH/RxtvsTr3uKy5Ww7hm9IVmwKsDAJOeE7Dk//DNiy02qEAcLMdjN+P4SegYmpqQwuCX
+09qzPsbJszPPrFVyQSD/0io8T+EqmLRm+2D google-ssh {"userName":"w.sirius@gmail.com","expireOn":"2020-08-12T02:11:25+0000"}
+cat /root/.ssh/id_rsa
+
+MIIEpAIBAAKCAQEAt5qoY9PkoYlpy3YSOxFySie9lr7/10KMbqrUgJDiNiMp7IJ6
+Qvjy1Cwe+BZXIZGQbWJ54KoSxLrBJDXE2zm5mt154ulLSuzeJVEAo0ioOkEqnkGf
+Zsbgag23U597tOf2rFEIh7SpWdYn5IJI8M/RQFDjCkxm/LDpqU9OBx9IhYP6Kjat
+jA2o8QQruAFyOpxGyQzie7MZIMAuJMt5q6iwBLcU5ByKyYeiDJm6WvNYaBnHe492
+Ex7ueBB866p/hwDzD0epPRMSpl1AyJR7W0bcvDEpdb9J3Y1ZKuQLuLfdzR/3tPQh
+9ZxswedVtv90xRk5h0xRQEJTPGjvdSnsAEe0qwIDAQABAoIBAQCM5n1Pju8oIII2
+B/hZqDvjOLhAFXfVRFbtHuBRgd532Wh0/nTBLLd9qBZkIRDgzArgRvBtP1eD7iYG
+mdTmwFf1xv2g65RCfaDFVnJ83GdtvVDtfkLL5teVy8ziucN/w3wEJXO8YSKNtNGM
+hYdgdruI9gomfxeR2FqY+ilRQeqvupks2atiIWu8HT1TYtdoe1Ze+Q8jjZnE6Kgx
+9XOlR78IBtgklcf1IFgU5RfZv+Z/UDbmqG6dgpSm5YWROYNAY5CShLVBJFxO74h5
+jEhfh1VC41RO9kAiDGhAjhvH5AT8pjS/f5nKGJruqZRoBHCdq+TdCu90FluI2nNG
+dd1xihABAoGBAOdf4iVH9zACAdtc3Sl4VFLJY1PG2SmpuxJbrWemFhM0tJ28yUe5
+P+uZ0cHV7qUy6cNVzuK5pYGOSN1912ZrKkfTIWUZF75dkzb1sSFRswTcKIXRMV/K
+Unj3MlewPBjMsSpsCG4RQP1zc9iQi/pblu9hUA7sxNTF9JD8BBlFw8CrAoGBAMsl
+NDrBYYAvK2TDltEisYG0ZK2UZ0epvtRT/I80BxzMZXTODlRYSGDgwurqJi5m0oKx
+PnJQtABLM+1LCJegxt/lerthnUHh2TMZR6gzlQ+UaaPDcr+H4afPKdZe6fR1Rj9N
+zi8VXMNeGwc3HzGNZC8qjqrXJqOSxpqC1Vwc09wBAoGABsSSO97wBxJ39W+w9G6V
+oNpNMn0liwdw9meCGf8MtEEda2PDS3rKuNyF+zKDyYdEuTcAVzdw9OoxjXEJ5PAL
+i5BMcMWcITBhhwEGzl+yadj6wndNB21Gnk00xsXb7CnIoOIKGRYeHYvL/rCzt34I
+WzYwfk9Erqifr8H/aLHWuQMCgYBAj4ZV1feCoXsM/wwDUx9OtWH5uFxKbivzlu2B
+JWvNPzhPMt1i+NunzkakGd4giRUF7AaIlhVesofCNkJ4zePmbCvhOVidA4Xfs30O
+e7Y3yVb5cLgbHrgceL43HtsDkfHNVJDebc+ZV2MHnAER4nmgc8n7iX0CJzdvC317
+VL4QAQKBgQDa9NpMMlJteN2pEPxnnXSl+u196bXGWvJy7EsCDgVepQa8mzxgOEdU
+UW5ujs83ONY6cdVp/dmlzFo4zk/nyMlrkjKR1EbTjO6Uj1y+HRQ3V2DbGs42mUW6
+NXY9tMLBS++BqWv+rGFNhuZ5CZcDn9LkQPWwviQKlpn8VbYS41PHyQ==
+
+
+
+ssh-keygen -f ~/.ssh/jenkins -C "w.sirius@gmail.com"
+
+cat /root/.ssh/jenkins.pub
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDGImmfWVaVfxCwr0Szvr1aMcnU/tVwDfDSNaGqMfuJbngR+xNYpjy6t3lJJ8L1CWOCpIW2OEuqU4T
+i8tPuTdaiTPGBOEmzclwrGdEaPknFwr0wn6o9l4twFuA8tk4ner+O3wsIPpnJw/Lzv/f0igjHpbF5OJcUOjS3GMMNQrxUWNt0cPFQxeWD6Wj1Y8zM8Y
+sUI5JPpXBTmbBH+EEDYrOfAPSo7al/QEerley4S0Jpcv4t9H+qXKUbHlBBIR/yovKLUorDmD0+UUKSNpb6nfiLBKLddCJ8MEiSoANE/u8Bs61buQqgv
+UrEnqYfZdxszylDPFQBVtIOI8g1gxprFsyj google-ssh {"userName":"w.sirius@gmail.com","expireOn":"2020-08-12T02:11:25+0000"}
+
+cat /root/.ssh/jenkins
+
+MIIEowIBAAKCAQEAxiJpn1lWlX8QsK9Es769WjHJ1P7VcA3w0jWhqjH7iW54EfsT
+WKY8urd5SSfC9QljgqSFtjhLqlOE4vLT7k3WokzxgThJs3JcKxnRGj5JxcK9MJ+q
+PZeLcBbgPLZOJ3q/jt8LCD6ZycPy87/39IoIx6WxeTiXFDo0txjDDUK8VFjbdHDx
+UMXlg+lo9WPMzPGLFCOST6VwU5mwR/hBA2KznwD0qO2pf0BHq5XsuEtCaXL+LfR/
+qlylGx5QQSEf8qLyi1KKw5g9PlFCkjaW+p34iwSi3XQifDBIkqADRP7vAbOtW7kK
+oL1KxJ6mH2XcbM8pQzxUAVbSDiPINYMaaxbMowIDAQABAoIBABWGh5MYUZ/MPjPz
+1rLwdgHmhtbtGKMj4JX13apv47P6nHDXpjJrXQ2sATFBcJzOeFEpLp2tYAsRJ87A
+MuYg7sCTO2meg+NK+Vh1ZZJEUh96GLO/pO8sF6oF0jbGV5dSbp1G/hvXMT4KW8q/
+gGDA3lNSXQWecEtyR2fc+NPn/C3tiF6A9ACuFL7VqDyTeIeKBAMd8QkZpRt4gs2K
+P6CeHL4kACqljxEn9VR1d3muUrECyf+7ovXTIuUVlAIVXtQ2W9qRsH4BjD7WFamY
+XBWf1/kCycY8eJZ5XIt69Ul8W5irsS1o1k/3kD0KJ/2JdcHWtiLv6LE0Bfsm4f9R
+r6RrY4ECgYEA8MEpLcwFxiR2KGI9Ponf6GiFDX/Zzg/xhEGg8J4zg/QTB7ZTsOGC
+GkhEL7mQvyuR3v3KUZXRslKGOUBWtcg69ygZOlPgSmCGMWLhqaaVOUpp43DkZhGF
+nZDRmXPF6hkSXqOh3l7bm932W7wGBYXmKeGZLOXA0FS7RskPd/zWTscCgYEA0q5X
+yA/kvtYoyWlPN5LxAR6a6vVhRXXKwDrMMqpMntTl7rjeFJBCQjoWDiPp0O234Yrb
+RQn38C/XCzjUvKlbUswDalXB72agVaei9gerEAxxOjWvazI4FBv/3CNtwyVZCxWA
+UMI+3w8g6zCyj7x3YWhSxUUf0NrjJJSWw5PS50UCgYA6U0Fro+K+NvUdIXee3/4L
+qs6ZD6Evh7NGDDQ2Ns1aKVY25xftYSSIw3spaLZFagPD1w4dp8MOhWmZExoundyT
+Jfa+p7VNr4azDjaHSCEcqQdwH1hl1dbd7kio+WA4L2zA2rmLSsW/RA27+Zgn3GF/
+QfU+6EZG8lAQfQMvWWR93wKBgHLi86d7U0flzRQYQ0SQ8q+jmuMpsEOKemfdKGEw
+kNvESSam1SPtjtRCjKhlWSm/mBh7+hpp1zS5QdEyyn+e8tfxvKMN5NXB5wkOg0Ua
+5WO5BT2y7NfN6Nq+cgX/o+lYwnfS38gqRNKqk07tnVHYelk55HkCutjPpDHcfWJl
+iArpAoGBANKetb8CBmuGONN/gWeqHWCQIbIzV4ci+B7Kr0d8/g0i/4J6X7PEQjFO
+NTznhBXkaAWHXGP78orz0NtrtYhxNlYuHIUumCGo0uBUH6WPsU4cj7ih/FNaTnYu
+N5Sdsi+5JxMhjfIlgNipuYO2NWvVk03vCXrYnlTlbHyULZuIFitz
+
+
+
+
+1.將jiwell-sms.sh上傳至GCP VM主機上（會放在你的home/user-name目錄)
+2.執行 mv /home/w_sirius/jiwell-sms.sh /mydata/sh/jiwell-sms.sh
+3.给.sh脚本添加可执行权限: chmod +x ./mall-tiny-jenkins.sh
+4.
+
+
+ssh 建立參考 Google Cloud Platform(GCP)] SSH 連線到 VM(虛擬機器)
+http://blog.ufirst.tw/google-cloud-platformgcp-ssh-連線到-vm虛擬機器/
+Jenkins ssh 憑證 設定
+https://juejin.im/post/6844903895823548430
+
+
+為 Jenkins User 建立 SSH Keys
+https://readbook-tw.gitbooks.io/git-jenkins-docker-workshop/content/jenkins/setup/ssh.html
+
+https://my.oschina.net/u/4324548/blog/4069294/print
+
+docker下的Jenkins安装和体验【转】
+
+使用 Jenkins 部署 Spring Boot
+
+原文網址：https://kknews.cc/code/x6elxxq.html
+https://blog.yowko.com/jenkins-ssh-ad-ldap-git-server/
+
+使用Jenkins配置SpringBoot的自动化构建
+https://blog.csdn.net/u010870518/article/details/78733729
+
+https://kknews.cc/zh-tw/code/x6elxxq.html
+
+Jenkins SSH 远程执行 Shell 脚本
+https://fanlychie.github.io/post/jenkins-remote-ssh.html
+
+參考這個建立GCP 金
+https://98goto.com/bitblog/blog/2020/02/27/我的gcp學習日誌3/
+
+還沒看可能可以。。。。
+https://zhuanlan.zhihu.com/p/40983101
 =========================================================
 
 ********************* GCP instance 位置 ******************
@@ -916,3 +1041,98 @@ ns28.domaincontrol.com
 ##問題及參考
 maven 上架遇到 spring-boot-maven-plugin not found的解决方案
 https://www.cnblogs.com/vevy/p/12246679.html
+
+#查詢及工具
+My IP - 外部實體IP查詢程式、網路IP偵測工具
+https://www.rus.net.tw/myip.php
+
+我的IP：101.12.5.226
+
+ssh -i ~/.ssh/id_rsa w_sirius@10.140.0.3
+
+
+Docker 常用的清理 images、container 招式
+把 tag 是 <none> 沒 build 成功的 images 砍掉
+$ docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+把所有 container 砍掉
+$ docker rm `docker ps -f "status=exited"`
+用 exited 的狀態碼來過濾
+$ docker rm `docker ps -a -f 'exited=2'`
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+specifications 全部規格參數數據
+
+'[{\"group\":\"主体\",\"params\":
+[{\"k\":\"品牌\",\"searchable\":false,\"global\":true,\"v\":null},
+{\"k\":\"型号\",\"searchable\":false,\"global\":true,\"v\":\"G9青春版（全网通版）\"},
+{\"k\":\"上市年份\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"年\",\"v\":2016.0}]},
+
+{\"group\":\"基本信息\",\"params\":
+[{\"k\":\"机身颜色\",\"searchable\":false,\"global\":false,\"options\":[\"白色\",\"金色\",\"玫瑰金\"]},
+{\"k\":\"机身重量（g）\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"g\",\"v\":143},
+{\"k\":\"机身材质工艺\",\"searchable\":true,\"global\":true,\"v\":null}]},
+
+{\"group\":\"操作系统\",\"params\":
+[{\"k\":\"操作系统\",\"searchable\":true,\"global\":true,\"v\":\"Android\"}]},
+
+{\"group\":\"主芯片\",\"params\":
+[{\"k\":\"CPU品牌\",\"searchable\":true,\"global\":true,\"v\":\"骁龙（Snapdragon)\"},
+{\"k\":\"CPU型号\",\"searchable\":false,\"global\":true,\"v\":\"骁龙617（msm8952）\"},
+{\"k\":\"CPU核数\",\"searchable\":true,\"global\":true,\"v\":\"八核\"},
+{\"k\":\"CPU频率\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"GHz\",\"v\":1.5}]},
+
+{\"group\":\"存储\",\"params\":
+[{\"k\":\"内存\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"3GB\"]},
+{\"k\":\"机身存储\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"16GB\"]}]},
+
+{\"group\":\"屏幕\",\"params\":
+[{\"k\":\"主屏幕尺寸（英寸）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"英寸\",\"v\":5.2},
+{\"k\":\"分辨率\",\"searchable\":false,\"global\":true,\"v\":\"1920*1080(FHD)\"}]},
+
+{\"group\":\"摄像头\",\"params\":
+[{\"k\":\"前置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":800.0},
+{\"k\":\"后置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":1300.0}]},
+
+{\"group\":\"电池信息\",\"params\":
+[{\"k\":\"电池容量（mAh）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"mAh\",\"v\":3000.0}]}]', 
+
+spec_template 特有規格參數及可選值信息，json格式
+'{\"机身颜色\":[\"白色\",\"金色\",\"玫瑰金\"],\"内存\":[\"3GB\"],\"机身存储\":[\"16GB\"]}'
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+'[{\"group\":\"主体\",\"params\":
+[{\"k\":\"品牌\",\"searchable\":false,\"global\":true,\"v\":\"三星（SAMSUNG）\"},
+{\"k\":\"型号\",\"searchable\":false,\"global\":true,\"v\":\"SM-C5000\"},
+{\"k\":\"上市年份\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"年\",\"v\":2016.0}]},
+
+{\"group\":\"基本信息\",\"params\":
+[{\"k\":\"机身颜色\",\"searchable\":false,\"global\":false,\"options\":[\"金\",\"粉\",\"灰\",\"银\"]},
+{\"k\":\"机身重量（g）\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"g\",\"v\":143},
+{\"k\":\"机身材质工艺\",\"searchable\":true,\"global\":true,\"v\":null}]},
+
+{\"group\":\"操作系统\",\"params\":
+[{\"k\":\"操作系统\",\"searchable\":true,\"global\":true,\"v\":\"Android\"}]},
+
+{\"group\":\"主芯片\",\"params\":
+[{\"k\":\"CPU品牌\",\"searchable\":true,\"global\":true,\"v\":\"骁龙（Snapdragon)\"},
+{\"k\":\"CPU型号\",\"searchable\":false,\"global\":true,\"v\":\"骁龙617（msm8952）\"},
+{\"k\":\"CPU核数\",\"searchable\":true,\"global\":true,\"v\":\"八核\"},
+{\"k\":\"CPU频率\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"GHz\",\"v\":1.5}]},
+
+{\"group\":\"存储\",\"params\":
+[{\"k\":\"内存\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"4GB\"]},
+{\"k\":\"机身存储\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"32GB\"]}]},
+
+{\"group\":\"屏幕\",\"params\":
+[{\"k\":\"主屏幕尺寸（英寸）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"英寸\",\"v\":5.2},
+{\"k\":\"分辨率\",\"searchable\":false,\"global\":true,\"v\":\"1920*1080(FHD)\"}]},
+
+{\"group\":\"摄像头\",\"params\":
+[{\"k\":\"前置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":800.0},{\"k\":\"后置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":1600.0}]},
+{\"group\":\"电池信息\",\"params\":[{\"k\":\"电池容量（mAh）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"mAh\",\"v\":2600}]}]', 
+
+spec_template 特有規格參數及可選值信息，json格式
+'{\"机身颜色\":[\"金\",\"粉\",\"灰\",\"银\"],\"内存\":[\"4GB\"],\"机身存储\":[\"32GB\"]}',
