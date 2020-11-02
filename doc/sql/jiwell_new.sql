@@ -62,16 +62,55 @@ CREATE TABLE `tb_brand` (
   `image` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '品牌圖片地址',
   `letter` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '品牌的首字母',
   `title` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '品牌主標題',
-  `internal_category` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '品牌內產品分類，json格式',
+  `incategory` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '品牌內產品分類，json格式',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '品牌表，一個品牌下有多個商品（spu），一對多關係' ROW_FORMAT = Dynamic;
+
 
 -- ----------------------------
 -- Records of tb_brand
 -- 王品牛排 參考https://licavona.pixnet.net/blog/post/47394869
 -- ----------------------------
-INSERT INTO `tb_brand` VALUES (1, '50嵐', 'http://img12.360buyimg.com/popshop/jfs/t2989/240/151377693/3895/30ad9044/574d36dbN262ef26d.jpg', 'N','新鮮現調茶飲','{\"找好茶\":\"0\",\"找新鮮\":\"1\",\"找奶茶\":\"2\",\"找拿鐵\":\"3\"}');
-INSERT INTO `tb_brand` VALUES (2, '王品牛排', 'http://img12.360buyimg.com/popshop/jfs/t2989/240/151377693/3895/30ad9044/574d36dbN262ef26d.jpg', 'W','王品牛排-尊貴服務 為您創造甜蜜記憶','{\"經典牛小排\":\"0\",\"王品盛宴主餐\":\"1\"}');
+INSERT INTO `tb_brand` VALUES (1, '50嵐', 'http://img12.360buyimg.com/popshop/jfs/t2989/240/151377693/3895/30ad9044/574d36dbN262ef26d.jpg', 'N','新鮮現調茶飲','{\"1\":\"找好茶\",\"2\":\"找新鮮\",\"3\":\"找奶茶\",\"4\":\"找拿鐵\"}');
+INSERT INTO `tb_brand` VALUES (2, '王品牛排', 'http://img12.360buyimg.com/popshop/jfs/t2989/240/151377693/3895/30ad9044/574d36dbN262ef26d.jpg', 'W','王品牛排-尊貴服務 為您創造甜蜜記憶','{\"1\":\"經典牛小排\",\"2\":\"王品盛宴主餐\"}');
+-- INSERT INTO `tb_brand` VALUES (3, '早安美芝城', 'http://img12.360buyimg.com/popshop/jfs/t2989/240/151377693/3895/30ad9044/574d36dbN262ef26d.jpg', 'M','美味早餐-活力滿滿','{\"1\":\"美式漢堡\",\"2\":\"現烤吐司\",\"3\":\"美式貝果\",\"4\":\"嚴選飲品\",\"5\":\"點心小品\"}');
+
+-- ----------------------------
+-- Table structure for tb_buy_type
+-- ----------------------------
+
+DROP TABLE IF EXISTS `tb_buy_type`;
+CREATE TABLE `tb_buy_type` (
+                            `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '購買方式id',
+                            `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '購買方式名稱',
+                            PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '購買方式對應到品牌' ROW_FORMAT = Dynamic;
+
+
+-- ----------------------------
+-- Records of tb_buy_type
+-- 王品牛排 參考https://licavona.pixnet.net/blog/post/47394869
+-- ----------------------------
+ INSERT INTO `tb_buy_type` VALUES (1, '預定點餐');
+ INSERT INTO `tb_buy_type` VALUES (2, '預定訂位');
+
+-- ----------------------------
+-- Table structure for tb_category_brand
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_buytype_brand`;
+CREATE TABLE `tb_buytype_brand` (
+                                     `buy_type_id` bigint(20) NOT NULL COMMENT '商品類目id',
+                                     `brand_id` bigint(20) NOT NULL COMMENT '品牌id',
+                                     PRIMARY KEY (`buy_type_id`, `brand_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '商品分類和品牌的中間表，兩者是多對多關係' ROW_FORMAT = Dynamic;
+-- ----------------------------
+-- Records of tb_buytype_brand
+-- ----------------------------
+
+INSERT INTO `tb_buytype_brand` VALUES (1, 1);
+INSERT INTO `tb_buytype_brand` VALUES (1, 2);
+INSERT INTO `tb_buytype_brand` VALUES (2, 2);
+-- INSERT INTO `tb_buytype_brand` VALUES (1, 3);
 -- ----------------------------
 -- Table structure for tb_category
 -- ----------------------------
@@ -108,6 +147,10 @@ INSERT INTO `tb_category` VALUES (19, '牛排館', 18, 0, 0);
 INSERT INTO `tb_category` VALUES (20, '日式料理', 18, 0, 1);
 INSERT INTO `tb_category` VALUES (21, '義大利麵', 18, 0, 2);
 
+-- 第二層
+-- INSERT INTO `tb_category` VALUES (30, '早午餐', 14, 1, 0);
+--      第三層
+-- INSERT INTO `tb_category` VALUES (301, '早餐', 30, 0, 0);
 -- ----------------------------
 -- Table structure for tb_category_brand
 -- ----------------------------
@@ -125,6 +168,8 @@ INSERT INTO `tb_category_brand` VALUES (16, 1);
 -- 手搖飲(id=16)對應到50嵐(id=1)
 INSERT INTO `tb_category_brand` VALUES (19, 2);
 -- 牛排館(id=19)對應到王品牛排(id=2)
+INSERT INTO `tb_category_brand` VALUES (30, 3);
+-- 早午餐(id=30)對應到早安美芝城(id=2)
 
 -- ----------------------------
 -- Table structure for tb_order
@@ -177,6 +222,7 @@ CREATE TABLE `tb_order_detail` (
   `num` int(11) NOT NULL COMMENT '購買數量',
   `title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品標題',
   `own_spec` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '商品動態屬性鍵值集',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '商品sku相關描述',
   `price` bigint(20) NOT NULL COMMENT '價格,單位：分',
   `image` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '商品圖片',
   PRIMARY KEY (`id`) USING BTREE,
@@ -187,10 +233,10 @@ CREATE TABLE `tb_order_detail` (
 
 
 -- ----------------------------
-INSERT INTO `tb_order_detail` VALUES (1, 1072137062385324032, 1, 1, '茉莉綠茶-大杯(加椰果，蘆薈)', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\"}', 30, 'http://image.ji-well.com/images/ 4/11/1524297413085.jpg');
-INSERT INTO `tb_order_detail` VALUES (2, 1072137913355079680, 1, 1, '奶茶-調味奶-大杯', '{\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\"}' , 30, 'http://image.ji-well.com/images/ 4/11/1524297413085.jpg');
-INSERT INTO `tb_order_detail` VALUES (3, 1072139076506882048, 1, 2, '奶茶-調味奶-大杯', '{\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\"}', 60, 'http://image.ji-well.com/ images/6/0/1524297482931.jpg');
-INSERT INTO `tb_order_detail` VALUES (4, 1072139922451861504, 1, 1, '檸檬汁-大杯', '{\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\"}', 30, 'http://image.ji-well.com/ images/6/0/1524297482931.jpg');
+INSERT INTO `tb_order_detail` VALUES (1, 1072137062385324032, 101, 1, '茉莉綠茶-大杯(加椰果，蘆薈)', '{\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\"}', '大杯-正常冰-全糖-不加料', 30, 'http://image.ji-well.com/images/ 4/11/1524297413085.jpg');
+INSERT INTO `tb_order_detail` VALUES (2, 1072137913355079680, 126, 5, '奶茶-調味奶-大杯', '{\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\"}' , '大杯-正常冰-全糖-不加料', 30, 'http://image.ji-well.com/images/ 4/11/1524297413085.jpg');
+INSERT INTO `tb_order_detail` VALUES (3, 1072139076506882048, 126, 2, '奶茶-調味奶-大杯', '{\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\"}', '大杯-正常冰-全糖-不加料', 60, 'http://image.ji-well.com/ images/6/0/1524297482931.jpg');
+INSERT INTO `tb_order_detail` VALUES (4, 1072139922451861504, 122, 19, '檸檬汁-大杯', '{\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\"}', '大杯-正常冰-全糖-不加料', 30, 'http://image.ji-well.com/ images/6/0/1524297482931.jpg');
 -- ----------------------------
 -- Table structure for tb_order_status
 -- ----------------------------
@@ -269,48 +315,53 @@ CREATE TABLE `tb_spu` (
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '添加時間',
   `last_update_time` datetime(0) NULL DEFAULT NULL COMMENT '最後修改時間',
   `internal_category_id` bigint(20) NOT NULL COMMENT 'internal category id(品牌內產品分類對應id)',
+  `image` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '品牌圖片地址',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 208 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'spu表，该表描述的是一个抽象性的商品，比如 iphone8' ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of tb_spu
 
 -- 50嵐 找新鮮系列
-INSERT INTO `tb_spu` VALUES (1, '茉莉綠茶', '茉莉綠茶', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 0);
-INSERT INTO `tb_spu` VALUES (2, '阿薩姆紅茶', '阿薩姆紅茶', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 0);
--- INSERT INTO `tb_spu` VALUES (2, '四季春青茶', '四季春青茶', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 0);
--- INSERT INTO `tb_spu` VALUES (3, '黃金烏龍', '黃金烏龍'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 0);
+INSERT INTO `tb_spu` VALUES (1, '茉莉綠茶', '茉莉綠茶', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (2, '阿薩姆紅茶', '阿薩姆紅茶', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (2, '四季春青茶', '四季春青茶', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (3, '黃金烏龍', '黃金烏龍'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- 50嵐 找好茶系列
-INSERT INTO `tb_spu` VALUES (4, '檸檬汁', '檸檬汁'      , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1);
--- INSERT INTO `tb_spu` VALUES (5, '檸檬蜜', '檸檬蜜'      , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1);
--- INSERT INTO `tb_spu` VALUES (6, '金桔檸檬', '金桔檸檬'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1);
--- INSERT INTO `tb_spu` VALUES (7, '金桔檸蜜', '金桔檸蜜'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1);
--- INSERT INTO `tb_spu` VALUES (8, '檸檬梅汁', '檸檬梅汁'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1);
--- INSERT INTO `tb_spu` VALUES (9, '檸檬多多蜜', '檸檬多多蜜', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1);
+INSERT INTO `tb_spu` VALUES (4, '檸檬汁', '檸檬汁'      , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (5, '檸檬蜜', '檸檬蜜'      , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (6, '金桔檸檬', '金桔檸檬'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (7, '金桔檸蜜', '金桔檸蜜'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (8, '檸檬梅汁', '檸檬梅汁'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (9, '檸檬多多蜜', '檸檬多多蜜', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- 50嵐 找奶茶系列
-INSERT INTO `tb_spu` VALUES (10, '奶茶', '奶茶'                 , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2);
--- INSERT INTO `tb_spu` VALUES (11, '奶綠', '奶綠'                 , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2);
--- INSERT INTO `tb_spu` VALUES (12, '烏龍奶', '烏龍奶'              , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2);
--- INSERT INTO `tb_spu` VALUES (13, '珍珠奶茶(小顆)', '珍珠奶茶(小顆)', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2);
--- INSERT INTO `tb_spu` VALUES (14, '波霸奶茶(大顆)', '波霸奶茶(大顆)', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2);
--- INSERT INTO `tb_spu` VALUES (15, '燕麥奶茶', '燕麥奶茶'           , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2);
--- INSERT INTO `tb_spu` VALUES (16, '燕麥奶青', '燕麥奶青'           , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2);
--- INSERT INTO `tb_spu` VALUES (17, '蜂蜜奶茶', '蜂蜜奶茶'           , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2);
+INSERT INTO `tb_spu` VALUES (10, '奶茶', '奶茶'                 , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (11, '奶綠', '奶綠'                 , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (12, '烏龍奶', '烏龍奶'              , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (13, '珍珠奶茶(小顆)', '珍珠奶茶(小顆)', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (14, '波霸奶茶(大顆)', '波霸奶茶(大顆)', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (15, '燕麥奶茶', '燕麥奶茶'           , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (16, '燕麥奶青', '燕麥奶青'           , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (17, '蜂蜜奶茶', '蜂蜜奶茶'           , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- 50嵐 找拿鐵系列
-INSERT INTO `tb_spu` VALUES (18, '紅茶/綠茶拿鐵', '紅茶/綠茶拿鐵' , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3);
--- INSERT INTO `tb_spu` VALUES (19, '烏龍拿鐵', '烏龍拿鐵'         , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3);
--- INSERT INTO `tb_spu` VALUES (20, '珍珠紅茶拿鐵', '珍珠紅茶拿鐵'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3);
+INSERT INTO `tb_spu` VALUES (18, '紅茶/綠茶拿鐵', '紅茶/綠茶拿鐵' , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 4,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (19, '烏龍拿鐵', '烏龍拿鐵'         , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 4,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- INSERT INTO `tb_spu` VALUES (20, '珍珠紅茶拿鐵', '珍珠紅茶拿鐵'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 4,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 
 -- INSERT INTO `tb_spu` VALUES (3, '三星 Galaxy C5（SM-C5000）4GB+32GB ', '5.2英寸AMOLED屏，800+1600万像素，金属机身，小巧便捷，续航能力强大！<a href=\'https://sale.jd.com/act/T15MnRgiasWe8L.html\' target=\'_blank\'>三星S9震撼上市详情猛戳>></a>', 74, 75, 76, 15127, 1, 1, '2018-04-21 15:55:18', '2018-04-21 15:55:18');
 
 -- 王品王品牛排套餐
-INSERT INTO `tb_spu` VALUES (30, '王品牛小排', '套餐包含氣泡飲、麵包、沙拉、湯品、主餐、甜點與飲料' , 14, 18, 19, 2, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 0);
-INSERT INTO `tb_spu` VALUES (31, '王品牛小排佐犢牛肋排', '王品牛小排 或 王品牛小排佐犢牛肋排 或 王品牛小排佐海大蝦' , 14, 18, 19, 2, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 0);
+INSERT INTO `tb_spu` VALUES (30, '王品牛小排', '套餐包含氣泡飲、麵包、沙拉、湯品、主餐、甜點與飲料' , 14, 18, 19, 2, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (31, '王品牛小排佐犢牛肋排', '王品牛小排 或 王品牛小排佐犢牛肋排 或 王品牛小排佐海大蝦' , 14, 18, 19, 2, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 
 -- 王者盛宴套餐
-INSERT INTO `tb_spu` VALUES (32, '酥烤牛小排(8oz)', '酥烤牛小排(8oz)' , 14, 18, 19, 2, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1);
-INSERT INTO `tb_spu` VALUES (33, '炙烤帶骨牛小排', '炙烤帶骨牛小排' , 14, 18, 19, 1, 2, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1);
-INSERT INTO `tb_spu` VALUES (34, '黑松露紐約客牛排', '黑松露紐約客牛排' , 14, 18, 19, 2, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1);
+INSERT INTO `tb_spu` VALUES (32, '酥烤牛小排(8oz)', '酥烤牛小排(8oz)' , 14, 18, 19, 2, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (33, '炙烤帶骨牛小排', '炙烤帶骨牛小排' , 14, 18, 19, 1, 2, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (34, '黑松露紐約客牛排', '黑松露紐約客牛排' , 14, 18, 19, 2, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 
+-- 早安美芝城
+INSERT INTO `tb_spu` VALUES (50, '招牌豬肉堡', '使用精選台灣頂級國產豬肉--究好豬 100%的全豬肉' , 14, 15, 30, 3, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (51, '黃金蝦餅堡', '黃金蝦餅堡' , 14, 15, 30, 3, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+-- 菜單參考 https://www.macc.com.tw/product.php#2
 
 -- ----------------------------
 -- Table structure for tb_spu_detail
@@ -328,21 +379,22 @@ CREATE TABLE `tb_spu_detail` (
 
 -- ----------------------------
 -- Records of tb_spu_detail
+
 -- ----------------------------{\"name\":\"正常冰\",\"price\":\"0\"} 正常冰\",\"少冰\",\"去冰\,\"熱\,\"溫
-INSERT INTO `tb_spu_detail` VALUES (1, '茉莉綠茶', '[{\"group\":\"主体\",\"params\":[{\"k\":\"大小選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":true,\"options\":[\"正常\",\"7分糖\",\"半糖\,\"3分糖\,\"無糖\"]},{\"k\":\"加料選擇\",\"searchable\":false,\"global\":false,\"multiple_options\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}]}]','{\"加料選擇\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}','', '');
-INSERT INTO `tb_spu_detail` VALUES (2, '阿薩姆紅茶', '[{\"group\":\"主体\",\"params\":[{\"k\":\"大小選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":true,\"options\":[\"正常\",\"7分糖\",\"半糖\,\"3分糖\,\"無糖\"]},{\"k\":\"加料選擇\",\"searchable\":false,\"global\":false,\"multiple_options\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}]}]','{\"加料選擇\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}', '', '');
-INSERT INTO `tb_spu_detail` VALUES (4, '檸檬汁', '[{\"group\":\"主体\",\"params\":[{\"k\":\"大小選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":true,\"options\":[\"正常\",\"7分糖\",\"半糖\,\"3分糖\,\"無糖\"]}]','{}', '', '');
-INSERT INTO `tb_spu_detail` VALUES (10, '奶茶', '[{\"group\":\"主体\",\"params\":[{\"k\":\"牛奶選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"調味奶\",\"price\":\"0\"},{\"name\":\"牛奶\",\"price\":\"10\"}]},{,{\"k\":\"大小選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":true,\"options\":[\"正常\",\"7分糖\",\"半糖\,\"3分糖\,\"無糖\"]},{\"k\":\"加料選擇\",\"searchable\":false,\"global\":false,\"multiple_options\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}]}]','{\"加料選擇\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}', '', '');
-INSERT INTO `tb_spu_detail` VALUES (13, '珍珠奶茶', '[{\"group\":\"主体\",\"params\":[{\"k\":\"牛奶選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"調味奶\",\"price\":\"0\"},{\"name\":\"牛奶\",\"price\":\"10\"}]},{\"k\":\"粉圓選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"大顆珍珠\",\"price\":\"0\"},{\"name\":\"小顆珍珠\",\"price\":\"0\"}]},{,{\"k\":\"大小選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":true,\"options\":[\"正常\",\"7分糖\",\"半糖\,\"3分糖\,\"無糖\"]},{\"k\":\"加料選擇\",\"searchable\":false,\"global\":false,\"multiple_options\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}]}]','{\"加料選擇\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}', '', '');
-INSERT INTO `tb_spu_detail` VALUES (18, '紅茶/綠茶拿鐵', '[{\"group\":\"主体\",\"params\":[{,{\"k\":\"大小選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":true,\"options\":[\"正常\",\"7分糖\",\"半糖\,\"3分糖\,\"無糖\"]}]}]','{}', '', '');
+INSERT INTO `tb_spu_detail` VALUES (1, '茉莉綠茶', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"大小選擇\",\"searchable\":false,\"global\":false,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":false,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":false,\"options\":[{\"name\":\"正常\",\"price\":\"0\"},{\"name\":\"7分糖\",\"price\":\"0\"},{\"name\":\"半糖\",\"price\":\"0\"},{\"name\":\"3分糖\",\"price\":\"0\"},{\"name\":\"無糖\",\"price\":\"0\"}]},{\"k\":\"加料選擇\",\"searchable\":false,\"global\":false,\"multiple_options\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}]}]}','{\"加料選擇\":[{\"name\":\"不加選\",\"price\":\"0\"},{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}','', '');
+INSERT INTO `tb_spu_detail` VALUES (2, '阿薩姆紅茶', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"大小選擇\",\"searchable\":false,\"global\":false,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常\",\"price\":\"0\"},{\"name\":\"7分糖\",\"price\":\"0\"},{\"name\":\"半糖\",\"price\":\"0\"},{\"name\":\"3分糖\",\"price\":\"0\"},{\"name\":\"無糖\",\"price\":\"0\"}]},{\"k\":\"加料選擇\",\"searchable\":false,\"global\":false,\"multiple_options\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}]}]}','{\"加料選擇\":[{\"name\":\"不加選\",\"price\":\"0\"},{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}', '', '');
+INSERT INTO `tb_spu_detail` VALUES (4, '檸檬汁', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"大小選擇\",\"searchable\":false,\"global\":false,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常\",\"price\":\"0\"},{\"name\":\"7分糖\",\"price\":\"0\"},{\"name\":\"半糖\",\"price\":\"0\"},{\"name\":\"3分糖\",\"price\":\"0\"},{\"name\":\"無糖\",\"price\":\"0\"}]}]','{}', '', '');
+INSERT INTO `tb_spu_detail` VALUES (10, '奶茶', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"牛奶選擇\",\"searchable\":false,\"global\":false,\"options\":[{\"name\":\"調味奶\",\"price\":\"0\"},{\"name\":\"牛奶\",\"price\":\"10\"}]},{,{\"k\":\"大小選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常\",\"price\":\"0\"},{\"name\":\"7分糖\",\"price\":\"0\"},{\"name\":\"半糖\",\"price\":\"0\"},{\"name\":\"3分糖\",\"price\":\"0\"},{\"name\":\"無糖\",\"price\":\"0\"}]},{\"k\":\"加料選擇\",\"searchable\":false,\"global\":false,\"multiple_options\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}]}]}','{\"加料選擇\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}', '', '');
+INSERT INTO `tb_spu_detail` VALUES (13, '珍珠奶茶', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"牛奶選擇\",\"searchable\":false,\"global\":false,\"options\":[{\"name\":\"調味奶\",\"price\":\"0\"},{\"name\":\"牛奶\",\"price\":\"10\"}]},{\"k\":\"粉圓選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"大顆珍珠\",\"price\":\"0\"},{\"name\":\"小顆珍珠\",\"price\":\"0\"}]},{,{\"k\":\"大小選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常\",\"price\":\"0\"},{\"name\":\"7分糖\",\"price\":\"0\"},{\"name\":\"半糖\",\"price\":\"0\"},{\"name\":\"3分糖\",\"price\":\"0\"},{\"name\":\"無糖\",\"price\":\"0\"}]},{\"k\":\"加料選擇\",\"searchable\":false,\"global\":false,\"multiple_options\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}]}]}','{\"加料選擇\":[{\"name\":\"椰果\",\"price\":\"10\"},{\"name\":\"蘆薈\",\"price\":\"10\"}]}', '', '');
+INSERT INTO `tb_spu_detail` VALUES (18, '紅茶/綠茶拿鐵', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{,{\"k\":\"大小選擇\",\"searchable\":false,\"global\":false,\"options\":[{\"name\":\"大\",\"price\":\"10\"},{\"name\":\"中\",\"price\":\"0\"}]},{\"k\":\"冰熱選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"正常冰\",\"price\":\"0\"},{\"name\":\"少冰\",\"price\":\"0\"},{\"name\":\"去冰\",\"price\":\"0\"},{\"name\":\"熱\",\"price\":\"0\"},{\"name\":\"溫\",\"price\":\"0\"}]},{\"k\":\"甜度選擇\",\"searchable\":false,\"global\":true,\"options\":[\"正常\",\"7分糖\",\"半糖\",\"3分糖\",\"無糖\"]}]}]}','{}', '', '');
 
 -- 王品王品牛排套餐
-INSERT INTO `tb_spu_detail` VALUES (30, '王品牛小排', '[{\"group\":\"主体\",\"params\":[{\"k\":\"沙拉選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"香煎干貝杏鮑菇\",\"price\":\"0\"},{\"name\":\"蔬菜棒沙拉\",\"price\":\"0\"},{\"name\":\"香蘋蘿美鮭魚\",\"price\":\"0\"},{\"name\":\"菲達起司鮮果沙拉\",\"price\":\"0\"}]},{\"k\":\"湯選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"松露蕈菇濃湯\",\"price\":\"0\"},{\"name\":\"番茄海鮮濃湯\",\"price\":\"0\"},{\"name\":\"海鮮清湯\",\"price\":\"0\"},{\"name\":\"法式牛尾清湯\",\"price\":\"0\"}]}]}]','{}', '', '');
-INSERT INTO `tb_spu_detail` VALUES (31, '王品牛小排佐犢牛肋排', '[{\"group\":\"主体\",\"params\":[{\"k\":\"沙拉選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"香煎干貝杏鮑菇\",\"price\":\"0\"},{\"name\":\"蔬菜棒沙拉\",\"price\":\"0\"},{\"name\":\"香蘋蘿美鮭魚\",\"price\":\"0\"},{\"name\":\"菲達起司鮮果沙拉\",\"price\":\"0\"}]},{\"k\":\"湯選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"松露蕈菇濃湯\",\"price\":\"0\"},{\"name\":\"番茄海鮮濃湯\",\"price\":\"0\"},{\"name\":\"海鮮清湯\",\"price\":\"0\"},{\"name\":\"法式牛尾清湯\",\"price\":\"0\"}]}]}]','{}', '', '');
+INSERT INTO `tb_spu_detail` VALUES (30, '王品牛小排', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"沙拉選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"香煎干貝杏鮑菇\",\"price\":\"0\"},{\"name\":\"蔬菜棒沙拉\",\"price\":\"0\"},{\"name\":\"香蘋蘿美鮭魚\",\"price\":\"0\"},{\"name\":\"菲達起司鮮果沙拉\",\"price\":\"0\"}]},{\"k\":\"湯選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"松露蕈菇濃湯\",\"price\":\"0\"},{\"name\":\"番茄海鮮濃湯\",\"price\":\"0\"},{\"name\":\"海鮮清湯\",\"price\":\"0\"},{\"name\":\"法式牛尾清湯\",\"price\":\"0\"}]}]}]}','{}', '', '');
+INSERT INTO `tb_spu_detail` VALUES (31, '王品牛小排佐犢牛肋排', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"沙拉選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"香煎干貝杏鮑菇\",\"price\":\"0\"},{\"name\":\"蔬菜棒沙拉\",\"price\":\"0\"},{\"name\":\"香蘋蘿美鮭魚\",\"price\":\"0\"},{\"name\":\"菲達起司鮮果沙拉\",\"price\":\"0\"}]},{\"k\":\"湯選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"松露蕈菇濃湯\",\"price\":\"0\"},{\"name\":\"番茄海鮮濃湯\",\"price\":\"0\"},{\"name\":\"海鮮清湯\",\"price\":\"0\"},{\"name\":\"法式牛尾清湯\",\"price\":\"0\"}]}]}]}','{}', '', '');
 -- 王者盛宴套餐
-INSERT INTO `tb_spu_detail` VALUES (32, '酥烤牛小排(8oz)', '[{\"group\":\"主体\",\"params\":[{\"k\":\"甜點選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"熔岩巧克力冰淇淋\",\"price\":\"0\"},{\"name\":\"焦糖布蕾佐莓果冰\",\"price\":\"0\"},{\"name\":\"重乳酪蛋糕\",\"price\":\"0\"}]},{\"k\":\"飲料選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"唐寧果研茶\",\"price\":\"0\"},{\"name\":\"耶加雪菲(水洗)\",\"price\":\"0\"},{\"name\":\"皇家伯爵茶\",\"price\":\"0\"}]}]}]','{}', '', '');
-INSERT INTO `tb_spu_detail` VALUES (33, '炙烤帶骨牛小排', '[{\"group\":\"主体\",\"params\":[{\"k\":\"甜點選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"熔岩巧克力冰淇淋\",\"price\":\"0\"},{\"name\":\"焦糖布蕾佐莓果冰\",\"price\":\"0\"},{\"name\":\"重乳酪蛋糕\",\"price\":\"0\"}]},{\"k\":\"飲料選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"唐寧果研茶\",\"price\":\"0\"},{\"name\":\"耶加雪菲(水洗)\",\"price\":\"0\"},{\"name\":\"皇家伯爵茶\",\"price\":\"0\"}]}]}]','{}', '', '');
-INSERT INTO `tb_spu_detail` VALUES (34, '黑松露紐約客牛排', '[{\"group\":\"主体\",\"params\":[{\"k\":\"甜點選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"熔岩巧克力冰淇淋\",\"price\":\"0\"},{\"name\":\"焦糖布蕾佐莓果冰\",\"price\":\"0\"},{\"name\":\"重乳酪蛋糕\",\"price\":\"0\"}]},{\"k\":\"飲料選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"唐寧果研茶\",\"price\":\"0\"},{\"name\":\"耶加雪菲(水洗)\",\"price\":\"0\"},{\"name\":\"皇家伯爵茶\",\"price\":\"0\"}]}]}]','{}', '', '');
+INSERT INTO `tb_spu_detail` VALUES (32, '酥烤牛小排(8oz)', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"甜點選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"熔岩巧克力冰淇淋\",\"price\":\"0\"},{\"name\":\"焦糖布蕾佐莓果冰\",\"price\":\"0\"},{\"name\":\"重乳酪蛋糕\",\"price\":\"0\"}]},{\"k\":\"飲料選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"唐寧果研茶\",\"price\":\"0\"},{\"name\":\"耶加雪菲(水洗)\",\"price\":\"0\"},{\"name\":\"皇家伯爵茶\",\"price\":\"0\"}]}]}]}','{}', '', '');
+INSERT INTO `tb_spu_detail` VALUES (33, '炙烤帶骨牛小排', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"甜點選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"熔岩巧克力冰淇淋\",\"price\":\"0\"},{\"name\":\"焦糖布蕾佐莓果冰\",\"price\":\"0\"},{\"name\":\"重乳酪蛋糕\",\"price\":\"0\"}]},{\"k\":\"飲料選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"唐寧果研茶\",\"price\":\"0\"},{\"name\":\"耶加雪菲(水洗)\",\"price\":\"0\"},{\"name\":\"皇家伯爵茶\",\"price\":\"0\"}]}]}]}','{}', '', '');
+INSERT INTO `tb_spu_detail` VALUES (34, '黑松露紐約客牛排', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"甜點選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"熔岩巧克力冰淇淋\",\"price\":\"0\"},{\"name\":\"焦糖布蕾佐莓果冰\",\"price\":\"0\"},{\"name\":\"重乳酪蛋糕\",\"price\":\"0\"}]},{\"k\":\"飲料選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"唐寧果研茶\",\"price\":\"0\"},{\"name\":\"耶加雪菲(水洗)\",\"price\":\"0\"},{\"name\":\"皇家伯爵茶\",\"price\":\"0\"}]}]}]}','{}', '', '');
 
 -- INSERT INTO `tb_spu_detail` VALUES (7, '<div class=\"content_tpl\"><div class=\"formwork\">\n<div class=\"formwork_img\"><img src=\"//img20.360buyimg.com/vc/jfs/t4213/90/1925235383/1883395/257851f6/58ca51bfNab5c7d9d.jpg\" /></div>\n</div></div><br/>', '[{\"group\":\"主体\",\"params\":[{\"k\":\"品牌\",\"searchable\":false,\"global\":true,\"v\":null},{\"k\":\"型号\",\"searchable\":false,\"global\":true,\"v\":\"MLA-TL10（移动定制版）\"},{\"k\":\"上市年份\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"年\",\"v\":2016.0}]},{\"group\":\"基本信息\",\"params\":[{\"k\":\"机身颜色\",\"searchable\":false,\"global\":false,\"options\":[\"铂雅金\",\"月光银\"]},{\"k\":\"机身重量（g）\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"g\",\"v\":160.0},{\"k\":\"机身材质工艺\",\"searchable\":true,\"global\":true,\"v\":null}]},{\"group\":\"操作系统\",\"params\":[{\"k\":\"操作系统\",\"searchable\":true,\"global\":true,\"v\":\"Android\"}]},{\"group\":\"主芯片\",\"params\":[{\"k\":\"CPU品牌\",\"searchable\":true,\"global\":true,\"v\":\"骁龙（Snapdragon)\"},{\"k\":\"CPU型号\",\"searchable\":false,\"global\":true,\"v\":\"骁龙625（MSM8953）\"},{\"k\":\"CPU核数\",\"searchable\":true,\"global\":true,\"v\":\"八核\"},{\"k\":\"CPU频率\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"GHz\",\"v\":2.0}]},{\"group\":\"存储\",\"params\":[{\"k\":\"内存\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"3GB\"]},{\"k\":\"机身存储\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"32GB\"]}]},{\"group\":\"屏幕\",\"params\":[{\"k\":\"主屏幕尺寸（英寸）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"英寸\",\"v\":5.5},{\"k\":\"分辨率\",\"searchable\":false,\"global\":true,\"v\":\"1920*1080(FHD)\"}]},{\"group\":\"摄像头\",\"params\":[{\"k\":\"前置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":800.0},{\"k\":\"后置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":1600.0}]},{\"group\":\"电池信息\",\"params\":[{\"k\":\"电池容量（mAh）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"mAh\",\"v\":3340.0}]}]', '{\"机身颜色\":[\"铂雅金\",\"月光银\"],\"内存\":[\"3GB\"],\"机身存储\":[\"32GB\"]}', '手机X1、耳机X1、快速指南X1、USB 线X1、充电器X1、卡针X1', '本产品全国联保，享受三包服务，质保期为：一年质保');
 
@@ -359,121 +411,408 @@ CREATE TABLE `tb_sku` (
   `price` bigint(15) NOT NULL DEFAULT 0 COMMENT '銷售價格，單位為分',
   `indexes` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '特有規格屬性在spu屬性模板中的對應下標組合',
   `own_spec` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT 'sku的特有規格參數鍵值對，json格式，反序列化時請使用linkedHashMap，保證有序',
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT 'sku相關描述',
   `enable` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否有效，0無效，1有效',
   `create_time` datetime(0) NOT NULL COMMENT '添加時間',
   `last_update_time` datetime(0) NOT NULL COMMENT '最後修改時間',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `key_spu_id`(`spu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 500 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku表,該表表示具體的商品實體,如黑色的 64g的iphone 8' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5000 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'sku表,該表表示具體的商品實體,如黑色的 64g的iphone 8' ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of tb_sku
 -- ----------------------------
 
 -- 冰熱選擇不同
-
+-- 大小選擇 ＋ 冰熱選擇 + 甜度選擇 + 加料選擇
 -- 茉莉綠茶
-INSERT INTO `tb_sku` VALUES (101, 1, '茉莉綠茶-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_11', '{\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (102, 1, '茉莉綠茶-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_10', '{\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (103, 1, '茉莉綠茶-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_01', '{\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (104, 1, '茉莉綠茶-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '1_00', '{\"大小選擇\":\"大\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+-- INSERT INTO `tb_sku` VALUES (101, 1, '茉莉綠茶-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_00', '{\"大小選擇\":\"大\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+-- INSERT INTO `tb_sku` VALUES (102, 1, '茉莉綠茶-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_01', '{\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+-- INSERT INTO `tb_sku` VALUES (103, 1, '茉莉綠茶-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_10', '{\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+-- INSERT INTO `tb_sku` VALUES (104, 1, '茉莉綠茶-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_11', '{\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
-INSERT INTO `tb_sku` VALUES (105, 1, '茉莉綠茶-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_11', '{\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (106, 1, '茉莉綠茶-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_10', '{\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (107, 1, '茉莉綠茶-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_01', '{\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (108, 1, '茉莉綠茶-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '1_00', '{\"大小選擇\":\"中\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (101, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_0_0_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"\"}', '大杯-正常冰-全糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (102, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_0_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"\"}', '大杯-少冰-全糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (103, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_2_0_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"\"}', '大杯-去冰-全糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (104, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_3_0_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"正常\",\"加料選擇\":\"\"}', '大杯-熱-全糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (105, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_4_0_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"正常\",\"加料選擇\":\"\"}' , '大杯-溫-全糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (106, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_0_1_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"\"}','大杯-正常冰-7分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (107, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_1_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"\"}','大杯-少冰-7分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (108, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_2_1_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"\"}','大杯-去冰-7分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (109, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_3_1_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"\"}','大杯-熱-7分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (110, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_4_1_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"\"}','大杯-溫-7分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (111, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_0_2_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"\"}','大杯-正常冰-半糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (112, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_2_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"\"}', '大杯-少冰-半糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (113, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_2_2_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"\"}', '大杯-去冰-半糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (114, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_3_2_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"\"}', '大杯-熱-半糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (115, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_4_2_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"\"}', '大杯-溫-半糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (116, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_0_3_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"\"}','大杯-正常冰-3分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (117, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_3_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"\"}','大杯-少冰-3分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (118, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_2_3_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"\"}', '大杯-去冰-3分糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (119, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_3_3_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"\"}', '大杯-熱-3分糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (120, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_4_3_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"\"}', '大杯-溫-3分糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (121, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_0_4_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"\"}', '大杯-正常冰-無糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (122, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_4_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"\"}', '大杯-少冰-無糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (123, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_2_4_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"\"}', '大杯-去冰-無糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (124, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_3_4_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"\"}', '大杯-熱-無糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (125, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_4_4_00', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"\"}', '大杯-溫-無糖-不加料',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (126, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_0_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果\"}', '大杯-正常冰-全糖-加椰果',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (127, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_0_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果\"}', '大杯-少冰-全糖-加椰果',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (128, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_2_0_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果\"}', '大杯-去冰-全糖-加椰果',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (129, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_3_0_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果\"}', '大杯-熱-全糖-加椰果',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (130, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_4_0_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果\"}', '大杯-溫-全糖-加椰果',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (131, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_1_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果\"}', '大杯-正常冰-7分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (132, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_1_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果\"}', '大杯-少冰-7分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (133, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_2_1_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果\"}', '大杯-去冰-7分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (134, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_3_1_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果\"}', '大杯-熱-7分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (135, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_4_1_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果\"}', '大杯-溫-7分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (136, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_2_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果\"}', '大杯-正常冰-半糖-加椰果',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (137, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_2_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果\"}', '大杯-少冰-半糖-加椰果',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (138, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_2_2_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果\"}', '大杯-去冰-半糖-加椰果',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (139, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_3_2_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果\"}', '大杯-熱-半糖-加椰果',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (140, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_4_2_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果\"}', '大杯-溫-半糖-加椰果',1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (141, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_3_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果\"}', '大杯-正常冰-3分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (142, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_3_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果\"}', '大杯-少冰-3分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (143, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_2_3_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果\"}', '大杯-去冰-3分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (144, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_3_3_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果\"}', '大杯-熱-3分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (145, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_4_3_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果\"}', '大杯-溫-3分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (146, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_4_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果\"}', '大杯-正常冰-無糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (147, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_4_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果\"}', '大杯-少冰-無糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (148, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_2_4_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果\"}', '大杯-去冰-無糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (149, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_3_4_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果\"}', '大杯-熱-無糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (150, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_4_4_10', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果\"}', '大杯-溫-無糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+
+INSERT INTO `tb_sku` VALUES (151, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_0_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"蘆薈\"}', '大杯-正常冰-全糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (152, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_0_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"蘆薈\"}', '大杯-少冰-全糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (153, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_2_0_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"蘆薈\"}', '大杯-去冰-全糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (154, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_3_0_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"正常\",\"加料選擇\":\"蘆薈\"}', '大杯-熱-全糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (155, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_4_0_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"正常\",\"加料選擇\":\"蘆薈\"}', '大杯-溫-全糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (156, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_1_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"蘆薈\"}', '大杯-正常冰-7分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (157, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_1_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"蘆薈\"}', '大杯-少冰-7分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (158, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_2_1_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"蘆薈\"}', '大杯-去冰-7分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (159, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_3_1_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"蘆薈\"}', '大杯-熱-7分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (160, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_4_1_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"蘆薈\"}', '大杯-溫-7分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (161, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_2_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"蘆薈\"}', '大杯-正常冰-半糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (162, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_2_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"蘆薈\"}', '大杯-少冰-半糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (163, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_2_2_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"蘆薈\"}', '大杯-去冰-半糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (164, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_3_2_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"蘆薈\"}', '大杯-熱-半糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (165, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_4_2_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"蘆薈\"}', '大杯-溫-半糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (166, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_3_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"蘆薈\"}', '大杯-正常冰-3分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (167, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_3_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"蘆薈\"}', '大杯-少冰-3分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (168, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_2_3_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"蘆薈\"}', '大杯-去冰-3分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (169, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_3_3_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"蘆薈\"}', '大杯-熱-3分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (170, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_4_3_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"蘆薈\"}', '大杯-溫-3分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (171, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_4_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"蘆薈\"}', '大杯-正常冰-無糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (172, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_4_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"蘆薈\"}', '大杯-少冰-無糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (173, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_2_4_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"蘆薈\"}', '大杯-去冰-無糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (174, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_3_4_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"蘆薈\"}', '大杯-熱-無糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (175, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_4_4_01', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"蘆薈\"}', '大杯-溫-無糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (176, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_0_0_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-正常冰-全糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (177, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_0_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-少冰-全糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (178, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_2_0_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-去冰-全糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (179, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_3_0_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-熱-全糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (180, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_4_0_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-溫-全糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (181, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_0_1_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-正常冰-7分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (182, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_1_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-少冰-7分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (183, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_2_1_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-去冰-7分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (184, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_3_1_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-熱-7分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (185, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_4_1_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-溫-7分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (186, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_0_2_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-正常冰-半糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (187, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_2_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-少冰-半糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (188, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_2_2_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-去冰-半糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (189, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_3_2_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-熱-半糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (190, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_4_2_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-溫-半糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (191, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_0_3_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-正常冰-3分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (192, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_3_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-少冰-3分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (193, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_2_3_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-去冰-3分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (194, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_3_3_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-熱-3分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (195, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_4_3_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-溫-3分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (196, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_0_4_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (197, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_4_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (198, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_2_4_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (199, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_3_4_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (200, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_4_4_11', '{\"大小選擇\":\"大\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '大杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+-- ＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋
+INSERT INTO `tb_sku` VALUES (201, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_0_0_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"\"}', '中杯-正常冰-全糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (202, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_1_0_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"\"}', '中杯-少冰-全糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (203, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_2_0_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"\"}', '中杯-去冰-全糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (204, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_3_0_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"正常\",\"加料選擇\":\"\"}', '中杯-熱-全糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (205, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_4_0_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"正常\",\"加料選擇\":\"\"}', '中杯-溫-全糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (206, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_0_1_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"\"}', '中杯-正常冰-7分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (207, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_1_1_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"\"}', '中杯-少冰-7分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (208, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_2_1_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"\"}', '中杯-去冰-7分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (209, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_3_1_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"\"}', '中杯-熱-7分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (210, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_4_1_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"\"}', '中杯-溫-7分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (211, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_0_2_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"\"}', '中杯-正常冰-半糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (212, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_1_2_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"\"}', '中杯-少冰-半糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (213, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_2_2_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"\"}', '中杯-去冰-半糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (214, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_3_2_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"\"}', '中杯-熱-半糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (215, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_4_2_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"\"}', '中杯-溫-半糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (216, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_0_3_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"\"}', '中杯-正常冰-3分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (217, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_1_3_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"\"}', '中杯-少冰-3分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (218, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_2_3_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"\"}', '中杯-去冰-3分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (219, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_3_3_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"\"}', '中杯-熱-3分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (220, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_4_3_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"\"}', '中杯-溫-3分糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (221, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_0_4_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (222, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_1_4_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"\"}', '中杯-少冰-無糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (223, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_2_4_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"\"}', '中杯-去冰-無糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (224, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_3_4_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"\"}', '中杯-熱-無糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (225, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, '1_4_4_00', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"\"}', '中杯-溫-無糖-不加料', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (226, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_0_0_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-全糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (227, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_1_0_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果\"}', '中杯-少冰-全糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (228, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_2_0_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果\"}', '中杯-去冰-全糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (229, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_3_0_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果\"}', '中杯-熱-全糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (230, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_4_0_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果\"}', '中杯-溫-全糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (231, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_0_1_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-7分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (232, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_1_1_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果\"}', '中杯-少冰-7分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (233, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_2_1_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果\"}', '中杯-去冰-7分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (234, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_3_1_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果\"}', '中杯-熱-7分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (235, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_4_1_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果\"}', '中杯-溫-7分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (236, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_0_2_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-半糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (237, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_1_2_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果\"}', '中杯-少冰-半糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (238, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_2_2_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果\"}', '中杯-去冰-半糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (239, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_3_2_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果\"}', '中杯-熱-半糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (240, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_4_2_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果\"}', '中杯-溫-半糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (241, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_0_3_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-3分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (242, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_1_3_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果\"}', '中杯-少冰-3分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (243, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_2_3_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果\"}', '中杯-去冰-3分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (244, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_3_3_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果\"}', '中杯-熱-3分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (245, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_4_3_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果\"}', '中杯-溫-3分糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (246, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_0_4_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (247, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_1_4_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果\"}', '中杯-少冰-無糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (248, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_2_4_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果\"}', '中杯-去冰-無糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (249, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_3_4_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果\"}', '中杯-熱-無糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (250, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_4_4_10', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果\"}', '中杯-溫-無糖-加椰果', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+
+INSERT INTO `tb_sku` VALUES (251, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_0_0_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-全糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (252, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_1_0_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"蘆薈\"}', '中杯-少冰-全糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (253, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_2_0_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"蘆薈\"}', '中杯-去冰-全糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (254, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_3_0_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"正常\",\"加料選擇\":\"蘆薈\"}', '中杯-熱-全糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (255, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_4_0_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"正常\",\"加料選擇\":\"蘆薈\"}', '中杯-溫-全糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (256, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_0_1_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-7分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (257, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_1_1_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"蘆薈\"}', '中杯-少冰-7分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (258, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_2_1_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"蘆薈\"}', '中杯-去冰-7分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (259, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_3_1_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"蘆薈\"}', '中杯-熱-7分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (260, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_4_1_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"蘆薈\"}', '中杯-溫-7分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (261, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_0_2_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-半糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (262, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_1_2_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"蘆薈\"}', '中杯-少冰-半糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (263, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_2_2_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"蘆薈\"}', '中杯-去冰-半糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (264, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_3_2_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"蘆薈\"}', '中杯-熱-半糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (265, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_4_2_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"蘆薈\"}', '中杯-溫-半糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (266, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_0_3_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-3分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (267, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_1_3_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"蘆薈\"}', '中杯-少冰-3分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (268, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_2_3_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"蘆薈\"}', '中杯-去冰-3分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (269, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_3_3_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"蘆薈\"}', '中杯-熱-3分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (270, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_4_3_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"蘆薈\"}', '中杯-溫-3分糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (271, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_0_4_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (272, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_1_4_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"蘆薈\"}', '中杯-少冰-無糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (273, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_2_4_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"蘆薈\"}', '中杯-去冰-無糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (274, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_3_4_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"蘆薈\"}', '中杯-熱-無糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (275, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 35, '1_4_4_01', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"蘆薈\"}', '中杯-溫-無糖-加蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (276, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_0_0_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-全糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (277, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_1_0_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-少冰-全糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (278, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_2_0_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-去冰-全糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (279, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_3_0_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-熱-全糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (280, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_4_0_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-溫-全糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (281, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_0_1_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-7分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (282, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_1_1_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-少冰-7分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (283, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_2_1_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-去冰-7分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (284, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_3_1_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-熱-7分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (285, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_4_1_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"7分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-溫-7分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (286, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_0_2_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-半糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (287, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_1_2_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-少冰-半糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (288, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_2_2_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-去冰-半糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (289, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_3_2_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-熱-半糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (290, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_4_2_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"半糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-溫-半糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (291, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_0_3_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-3分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (292, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_1_3_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-少冰-3分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (293, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_2_3_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-去冰-3分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (294, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_3_3_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-熱-3分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (295, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_4_3_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"3分糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-溫-3分糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (296, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_0_4_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (297, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_1_4_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-少冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (298, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_2_4_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"去冰\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-去冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (299, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_3_4_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"熱\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-熱-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (300, 1, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 45, '1_4_4_11', '{\"大小選擇\":\"中\",\"冰熱選擇\":\"溫\",\"甜度選擇\":\"無糖\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-溫-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+-- ////////////////////////////
+
+
+
+
+
+
+
+-- INSERT INTO `tb_sku` VALUES (105, 1, '茉莉綠茶-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '1_00', '{\"大小選擇\":\"中\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+-- INSERT INTO `tb_sku` VALUES (106, 1, '茉莉綠茶-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_01', '{\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+-- INSERT INTO `tb_sku` VALUES (107, 1, '茉莉綠茶-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_10', '{\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+-- INSERT INTO `tb_sku` VALUES (108, 1, '茉莉綠茶-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_11', '{\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
 
 -- 阿薩姆紅茶
-INSERT INTO `tb_sku` VALUES (111, 2, '阿薩姆紅茶-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_11', '{\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (112, 2, '阿薩姆紅茶-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_10', '{\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (113, 2, '阿薩姆紅茶-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_01', '{\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (114, 2, '阿薩姆紅茶-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '1_00', '{\"大小選擇\":\"大\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1111, 2, '阿薩姆紅茶-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_00', '{\"大小選擇\":\"大\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1112, 2, '阿薩姆紅茶-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_01', '{\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1113, 2, '阿薩姆紅茶-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_10', '{\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1114, 2, '阿薩姆紅茶-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_11', '{\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
-INSERT INTO `tb_sku` VALUES (115, 2, '阿薩姆紅茶-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_11', '{\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (116, 2, '阿薩姆紅茶-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_10', '{\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (117, 2, '阿薩姆紅茶-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_01', '{\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (118, 2, '阿薩姆紅茶-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '1_00', '{\"大小選擇\":\"中\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (1115, 2, '阿薩姆紅茶-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '1_00', '{\"大小選擇\":\"中\",\"加料選擇\":\"\"}' , '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1116, 2, '阿薩姆紅茶-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_01', '{\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1117, 2, '阿薩姆紅茶-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_10', '{\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1118, 2, '阿薩姆紅茶-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_11', '{\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+
 
 -- 檸檬汁
-INSERT INTO `tb_sku` VALUES (121, 4, '檸檬汁-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, NULL, NULL, 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (122, 4, '檸檬汁-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, NULL, NULL, 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1121, 4, '檸檬汁-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1122, 4, '檸檬汁-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
 
 -- 奶茶
-INSERT INTO `tb_sku` VALUES (123, 10, '奶茶-調味奶-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_11', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (124, 10, '奶茶-調味奶-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_10', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (125, 10, '奶茶-調味奶-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_01', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (126, 10, '奶茶-調味奶-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_00', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1123, 10, '奶茶-調味奶-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_0_00', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1124, 10, '奶茶-調味奶-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_01', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1125, 10, '奶茶-調味奶-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_10', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1126, 10, '奶茶-調味奶-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_0_11', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
-INSERT INTO `tb_sku` VALUES (201, 10, '奶茶-牛奶-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 60, '1_1_11', '{"牛奶選擇\":\"牛奶奶\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (202, 10, '奶茶-牛奶-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_10', '{"牛奶選擇\":\"牛奶奶\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (203, 10, '奶茶-牛奶-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_01', '{"牛奶選擇\":\"牛奶奶\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (204, 10, '奶茶-牛奶-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_00', '{"牛奶選擇\":\"牛奶奶\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1201, 10, '奶茶-牛奶-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_0_00', '{"牛奶選擇\":\"牛奶奶\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1202, 10, '奶茶-牛奶-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_0_01', '{"牛奶選擇\":\"牛奶奶\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1203, 10, '奶茶-牛奶-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_0_10', '{"牛奶選擇\":\"牛奶奶\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1204, 10, '奶茶-牛奶-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 60, '1_0_11', '{"牛奶選擇\":\"牛奶奶\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
-INSERT INTO `tb_sku` VALUES (205, 10, '奶茶-調味奶-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_11', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (206, 10, '奶茶-調味奶-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_10', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (207, 10, '奶茶-調味奶-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_01', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (208, 10, '奶茶-調味奶-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_00', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
-INSERT INTO `tb_sku` VALUES (209, 10, '奶茶-調味奶-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_11', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (210, 10, '奶茶-調味奶-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_10', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (211, 10, '奶茶-調味奶-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_01', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (212, 10, '奶茶-調味奶-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '1_1_00', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (1205, 10, '奶茶-調味奶-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_00', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1206, 10, '奶茶-調味奶-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_01', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1207, 10, '奶茶-調味奶-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_10', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1208, 10, '奶茶-調味奶-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_11', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (1209, 10, '奶茶-調味奶-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_00', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1210, 10, '奶茶-調味奶-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_01', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1211, 10, '奶茶-調味奶-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_10', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1212, 10, '奶茶-調味奶-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_11', '{"牛奶選擇\":\"調味奶\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
 
 -- 珍珠奶茶--大珍珠
-INSERT INTO `tb_sku` VALUES (301, 13, '珍珠奶茶-調味奶-大珍珠-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (302, 13, '珍珠奶茶-調味奶-大珍珠-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (303, 13, '珍珠奶茶-調味奶-大珍珠-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (304, 13, '珍珠奶茶-調味奶-大珍珠-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1301, 13, '珍珠奶茶-調味奶-大珍珠-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_0_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1302, 13, '珍珠奶茶-調味奶-大珍珠-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1303, 13, '珍珠奶茶-調味奶-大珍珠-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_0_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1304, 13, '珍珠奶茶-調味奶-大珍珠-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_0_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
-INSERT INTO `tb_sku` VALUES (371, 13, '珍珠奶茶-牛奶-大珍珠-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 60, '1_1_11', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (372, 13, '珍珠奶茶-牛奶-大珍珠-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_10', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (373, 13, '珍珠奶茶-牛奶-大珍珠-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_01', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (374, 13, '珍珠奶茶-牛奶-大珍珠-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_00', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1371, 13, '珍珠奶茶-牛奶-大珍珠-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_0_00', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1372, 13, '珍珠奶茶-牛奶-大珍珠-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_0_01', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1373, 13, '珍珠奶茶-牛奶-大珍珠-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_0_10', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1374, 13, '珍珠奶茶-牛奶-大珍珠-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 60, '1_0_11', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"大\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
-INSERT INTO `tb_sku` VALUES (305, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (306, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (307, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (308, 13, '珍珠奶茶-調味奶-大珍珠-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
-INSERT INTO `tb_sku` VALUES (309, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (310, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (311, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (312, 13, '珍珠奶茶-調味奶-大珍珠-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '1_1_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (1305, 13, '珍珠奶茶-調味奶-大珍珠-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1306, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1307, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1308, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+
+INSERT INTO `tb_sku` VALUES (1309, 13, '珍珠奶茶-調味奶-大珍珠-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '1_1_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1310, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1311, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1312, 13, '珍珠奶茶-調味奶-大珍珠-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"大\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
 
 -- 珍珠奶茶--小珍珠
-INSERT INTO `tb_sku` VALUES (313, 13, '珍珠奶茶-調味奶-小珍珠-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (314, 13, '珍珠奶茶-調味奶-小珍珠-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (315, 13, '珍珠奶茶-調味奶-小珍珠-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (316, 13, '珍珠奶茶-調味奶-小珍珠-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1313, 13, '珍珠奶茶-調味奶-小珍珠-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1314, 13, '珍珠奶茶-調味奶-小珍珠-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1315, 13, '珍珠奶茶-調味奶-小珍珠-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1316, 13, '珍珠奶茶-調味奶-小珍珠-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
-INSERT INTO `tb_sku` VALUES (321, 13, '珍珠奶茶-牛奶-小珍珠-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 60, '1_1_11', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (322, 13, '珍珠奶茶-牛奶-小珍珠-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_10', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (323, 13, '珍珠奶茶-牛奶-小珍珠-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_01', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (324, 13, '珍珠奶茶-牛奶-小珍珠-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_00', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1321, 13, '珍珠奶茶-牛奶-小珍珠-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_00', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1322, 13, '珍珠奶茶-牛奶-小珍珠-大杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_01', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1323, 13, '珍珠奶茶-牛奶-小珍珠-大杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_10', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1324, 13, '珍珠奶茶-牛奶-小珍珠-大杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 60, '1_1_11', '{"牛奶選擇\":\"牛奶奶\","粉圓選擇\":\"小\",\"大小選擇\":\"大\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
-INSERT INTO `tb_sku` VALUES (325, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (326, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (327, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (328, 13, '珍珠奶茶-調味奶-小珍珠-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
-INSERT INTO `tb_sku` VALUES (329, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (330, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (331, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (332, 13, '珍珠奶茶-調味奶-小珍珠-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '1_1_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+INSERT INTO `tb_sku` VALUES (1325, 13, '珍珠奶茶-調味奶-小珍珠-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '0_1_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1326, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1327, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '0_1_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1328, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '0_1_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+INSERT INTO `tb_sku` VALUES (1329, 13, '珍珠奶茶-調味奶-小珍珠-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, '1_1_00', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1330, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_01', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1331, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加椰果)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 40, '1_1_10', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1332, 13, '珍珠奶茶-調味奶-小珍珠-中杯(加椰果，蘆薈)', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_1_11', '{"牛奶選擇\":\"調味奶\","粉圓選擇\":\"小\",\"大小選擇\":\"中\",\"加料選擇\":\"椰果＋蘆薈\"}', '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
+
+
 
 -- 紅茶/綠茶拿鐵', '紅茶/綠茶拿鐵
 
-INSERT INTO `tb_sku` VALUES (341, 18, '紅茶/綠茶拿鐵-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, NULL, NULL, 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (342, 18, '紅茶/綠茶拿鐵-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, NULL, NULL, 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1341, 18, '紅茶/綠茶拿鐵-大杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 30, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1342, 18, '紅茶/綠茶拿鐵-中杯', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 25, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
 
 
 -- 王品牛排套餐
-INSERT INTO `tb_sku` VALUES (408, 30, '王品牛小排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1390, NULL, NULL, 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (409, 31, '王品牛小排佐犢牛肋排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1390, NULL, NULL, 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1408, 30, '王品牛小排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1390, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1409, 31, '王品牛小排佐犢牛肋排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1390, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 -- 王者盛宴套餐
-INSERT INTO `tb_sku` VALUES (410, 32, '王品牛小排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1990, NULL, NULL, 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (411, 33, '王品牛小排佐犢牛肋排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1990, NULL, NULL, 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
-INSERT INTO `tb_sku` VALUES (412, 34, '王品牛小排佐犢牛肋排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1990, NULL, NULL, 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1410, 32, '王品牛小排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1990, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1411, 33, '王品牛小排佐犢牛肋排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1990, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1412, 34, '王品牛小排佐犢牛肋排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1990, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
 
 -- ///////

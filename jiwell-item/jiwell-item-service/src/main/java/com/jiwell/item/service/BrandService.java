@@ -3,6 +3,9 @@ package com.jiwell.item.service;
 import com.jiwell.common.pojo.PageResult;
 import com.jiwell.item.pojo.Brand;
 import com.jiwell.parameter.pojo.BrandQueryByPageParameter;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -61,4 +64,12 @@ public interface BrandService {
      * @return
      */
     List<Brand> queryBrandByBrandIds(List<Long> ids);
+
+    /**
+     * 根据品牌id集合，查询品牌信息
+     * @param typeid
+     * @return
+     */
+    List<Brand> queryBrandByBuyTypeId(Long typeid);
+
 }

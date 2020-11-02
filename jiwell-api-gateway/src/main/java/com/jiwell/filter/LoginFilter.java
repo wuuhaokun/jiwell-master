@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * @Author: 98050
  * @Time: 2018-10-24 16:21
- * @Feature: 登录拦截器
+ * @Feature: 登錄攔截器
  */
 @Component
 //@EnableConfigurationProperties({JwtProperties.class,FilterProperties.class})
@@ -47,22 +47,22 @@ public class LoginFilter extends ZuulFilter {
 
     @Override
     public boolean shouldFilter() {
-        //1.获取上下文
+        //1.獲取上下文
         RequestContext context = RequestContext.getCurrentContext();
-        //2.获取request
+        //2.獲取request
         HttpServletRequest request = context.getRequest();
-        //3.获取路径
+        //3.獲取路徑
         String requestUri = request.getRequestURI();
         logger.info(requestUri);
-        //4.判断白名单
+        //4.判斷白名單
         return !isAllowPath(requestUri);
     }
 
     private boolean isAllowPath(String requestUri) {
-        //1.定义一个标记
+        //1.定義一個標記
         boolean flag = false;
 
-        //2.遍历允许访问的路径
+        //2.遍歷允許訪問的路徑
         List<String> paths = Arrays.asList(this.filterProperties.getAllowPaths().split(" "));
         for (String path : paths){
             if (requestUri.startsWith(path)){
@@ -73,22 +73,22 @@ public class LoginFilter extends ZuulFilter {
         return flag;
     }
 
-//    private static boolean isBlank(final CharSequence cs) {
-//        int strLen;
-//        if (cs == null || (strLen = cs.length()) == 0) {
-//            return true;
-//        }
-//        for (int i = 0; i < strLen; i++) {
-//            if (!Character.isWhitespace(cs.charAt(i))) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
+// private static boolean isBlank(final CharSequence cs) {
+// int strLen;
+// if (cs == null || (strLen = cs.length()) == 0) {
+// return true;
+// }
+// for (int i = 0; i < strLen; i++) {
+// if (!Character.isWhitespace(cs.charAt(i))) {
+// return false;
+// }
+// }
+// return true;
+// }
 
-//    private static boolean isNotBlank(final CharSequence cs) {
-//        return !isBlank(cs);
-//    }
+// private static boolean isNotBlank(final CharSequence cs) {
+// return !isBlank(cs);
+// }
 
     private String getJwtFromRequest111(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
@@ -100,21 +100,21 @@ public class LoginFilter extends ZuulFilter {
 
     @Override
     public Object run() throws ZuulException {
-        //1.获取上下文
+        //1.獲取上下文
         RequestContext context = RequestContext.getCurrentContext();
-        //2.获取request
+        //2.獲取request
         HttpServletRequest request = context.getRequest();
-        //3.获取token
+        //3.獲取token
         String token = CookieUtils.getCookieValue(request,this.properties.getCookieName());
-        //4.校验
+        //4.校驗
         try{
-            //4.1 校验通过，放行
+            //4.1 校驗通過，放行
             if(token == null || token.isEmpty()){
                 token = JwtUtils.getJwtFromRequest(request);
             }
             JwtUtils.getInfoFromToken(token,this.properties.getPublicKey());
         }catch (Exception e){
-            //4.2 校验不通过，返回403
+            //4.2 校驗不通過，返回403
             context.setSendZuulResponse(false);
             context.setResponseStatusCode(HttpStatus.FORBIDDEN.value());
         }

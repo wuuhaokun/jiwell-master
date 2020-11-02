@@ -18,11 +18,18 @@ public class Sku {
     /**
      * 商品特殊规格的键值对
      */
+
+    /**
+     * 商品相關描述
+     */
+    private String description;
+
     private String ownSpec;
     /**
      * 商品特殊规格的下标
      */
     private String indexes;
+
     /**
      * 是否有效，逻辑删除用
      */
@@ -89,6 +96,14 @@ public class Sku {
         this.ownSpec = ownSpec;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getIndexes() {
         return indexes;
     }
@@ -138,6 +153,7 @@ public class Sku {
                 ", images='" + images + '\'' +
                 ", price=" + price +
                 ", ownSpec='" + ownSpec + '\'' +
+                ", description='" + description + '\'' +
                 ", indexes='" + indexes + '\'' +
                 ", enable=" + enable +
                 ", createTime=" + createTime +

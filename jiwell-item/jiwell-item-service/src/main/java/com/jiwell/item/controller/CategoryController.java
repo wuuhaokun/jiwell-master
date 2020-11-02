@@ -1,5 +1,6 @@
 package com.jiwell.item.controller;
 
+import com.jiwell.item.pojo.BuyType;
 import com.jiwell.item.pojo.Category;
 import com.jiwell.item.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -127,6 +129,21 @@ public class CategoryController {
     @GetMapping("all/level/{cid3}")
     public ResponseEntity<List<Category>> queryAllCategoryLevelByCid3(@PathVariable("cid3")Long id){
         List<Category> list = categoryService.queryAllCategoryLevelByCid3(id);
+        if (list == null || list.size() < 1){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }else {
+            return ResponseEntity.ok(list);
+        }
+    }
+
+    /**
+     * 購買方法分類
+     * @param
+     * @return
+     */
+    @GetMapping("buyType")
+    ResponseEntity<List<BuyType>> queryBuyType(){
+        List< BuyType > list =  categoryService.queryAllBuyType();
         if (list == null || list.size() < 1){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }else {

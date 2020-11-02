@@ -131,4 +131,17 @@ public class BrandController {
         return ResponseEntity.ok(list);
     }
 
+    /**
+     * 根据品牌id集合，查询品牌信息
+     * @param typeid
+     * @return
+     */
+    @GetMapping("list/{typeid}")
+    public ResponseEntity<List<Brand>> queryBrandByBuyTypeId(@PathVariable("typeid") Long typeid){
+        List<Brand> list = this.brandService.queryBrandByBuyTypeId(typeid);
+        if (list == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(list);
+    }
 }

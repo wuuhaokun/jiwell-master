@@ -18,6 +18,8 @@ public class SpuQueryByPageParameter extends BrandQueryByPageParameter{
 
     private Long cid3;
 
+    private Long brandId;
+
     public Boolean getSaleable() {
         return saleable;
     }
@@ -34,10 +36,19 @@ public class SpuQueryByPageParameter extends BrandQueryByPageParameter{
         this.cid3 = cid3;
     }
 
-    public SpuQueryByPageParameter(Integer page, Integer rows, String sortBy, Boolean desc, String key, Boolean saleable, long cid3) {
+    public long getBrandId() {
+        return brandId;
+    }
+
+    public void setBrandId(long brandId) {
+        this.brandId = brandId;
+    }
+
+    public SpuQueryByPageParameter(Integer page, Integer rows, String sortBy, Boolean desc, String key, Boolean saleable, long cid3,long brandId) {
         super(page, rows, sortBy, desc, key);
         this.saleable = saleable;
         this.cid3 = cid3;
+        this.brandId = brandId;
     }
 
     public SpuQueryByPageParameter(Boolean saleable) {

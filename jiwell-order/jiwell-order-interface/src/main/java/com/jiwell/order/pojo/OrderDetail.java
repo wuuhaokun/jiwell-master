@@ -48,6 +48,10 @@ public class OrderDetail {
     private String ownSpec;
 
     /**
+     * 商品sku相關描述
+     */
+    private String description;
+    /**
      * 图片
      */
     private String image;
@@ -108,6 +112,14 @@ public class OrderDetail {
         this.ownSpec = ownSpec;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getImage() {
         return image;
     }
@@ -126,6 +138,7 @@ public class OrderDetail {
                 ", title='" + title + '\'' +
                 ", price=" + price +
                 ", ownSpec='" + ownSpec + '\'' +
+                ", description='" + description + '\'' +
                 ", image='" + image + '\'' +
                 '}';
     }

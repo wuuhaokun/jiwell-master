@@ -62,7 +62,7 @@ public class Address {
     private Boolean defaultAddress;
 
     /**
-     * 地址标签
+     * 地址標籤
      */
     private String label;
 

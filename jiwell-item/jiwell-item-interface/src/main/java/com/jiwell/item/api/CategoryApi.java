@@ -31,4 +31,12 @@ public interface CategoryApi {
      */
     @GetMapping("all")
     ResponseEntity<List<Category>> queryCategoryByIds(@RequestParam("ids")List<Long> ids);
+
+    /**
+     * 購買方法分類
+     * @param
+     * @return
+     */
+    @GetMapping("buyType")
+    ResponseEntity<List<String>> queryBuyType();
 }

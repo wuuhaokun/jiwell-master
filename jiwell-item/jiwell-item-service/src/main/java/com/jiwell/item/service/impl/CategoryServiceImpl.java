@@ -1,5 +1,7 @@
 package com.jiwell.item.service.impl;
 
+import com.jiwell.item.mapper.BuyTypeMapper;
+import com.jiwell.item.pojo.BuyType;
 import com.jiwell.item.pojo.Category;
 import com.jiwell.item.mapper.CategoryMapper;
 import com.jiwell.item.service.CategoryService;
@@ -11,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,6 +28,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @Autowired
+    private BuyTypeMapper buyTypeMapper;
 
     /**
      * 根据父节点id查询分类
@@ -170,6 +175,16 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> queryCategoryByIds(List<Long> ids) {
         return this.categoryMapper.selectByIdList(ids);
+    }
+
+    /**
+     * 購買方法分類
+     * @param
+     * @return
+     */
+    @Override
+    public List<BuyType> queryAllBuyType(){
+        return buyTypeMapper.selectAll();
     }
 
     /**

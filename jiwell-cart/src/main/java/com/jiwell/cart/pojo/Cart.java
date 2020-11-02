@@ -41,6 +41,8 @@ public class Cart {
      */
     private String ownSpec;
 
+    private String description;
+
     public Long getUserId() {
         return userId;
     }
@@ -97,6 +99,15 @@ public class Cart {
         this.ownSpec = ownSpec;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
     @Override
     public String toString() {
         return "Cart{" +
@@ -107,6 +118,7 @@ public class Cart {
                 ", price=" + price +
                 ", num=" + num +
                 ", ownSpec='" + ownSpec + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

@@ -25,22 +25,3 @@ sudo rabbitmq-server
 #echo "=======================elasticsearch========================"
 ##cd /Users/chao-kun.wu/Desktop/jiwell_shopmaoll/elasticsearch-7.5.0/bin
 #sudo elasticsearch
-
-
-      listen 9001  default;
-
-      server_name  localhost;
-
-      location / {
-
-#配置网站根目录，即index.html和static所在的路径
-
-        root   /Users/chao-kun.wu/Desktop/dist;
-
-        try_files $uri $uri/ /index.html last;
-
-        index  index.html;
-
-        add_header Access-Control-Allow-Origin *;
-
-      }

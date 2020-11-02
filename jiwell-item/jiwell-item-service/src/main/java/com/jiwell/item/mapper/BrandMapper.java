@@ -1,6 +1,7 @@
 package com.jiwell.item.mapper;
 
 import com.jiwell.item.pojo.Brand;
+import com.jiwell.item.pojo.Category;
 import org.apache.ibatis.annotations.*;
 import tk.mybatis.mapper.additional.idlist.SelectByIdListMapper;
 import tk.mybatis.mapper.common.Mapper;
@@ -38,4 +39,13 @@ public interface BrandMapper extends Mapper<Brand>, SelectByIdListMapper<Brand,L
      */
     @Select("SELECT b.* FROM tb_brand b LEFT JOIN tb_category_brand cb ON b.id=cb.brand_id WHERE cb.category_id=#{cid}")
     List<Brand> queryBrandByCategoryId(Long cid);
+
+    /**
+     * 根据品牌id查询商品分类
+     * @param tid
+     * @return
+     */
+
+    @Select("SELECT * FROM tb_brand WHERE id IN (SELECT brand_id FROM tb_buytype_brand WHERE buy_type_id=#{typeid}) ")
+    List<Brand> queryBrandByBuyTypeId(@Param("typeid") Long tid);
 }

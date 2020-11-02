@@ -16,19 +16,19 @@ import java.security.PublicKey;
 /**
  * @Author: 98050
  * @Time: 2018-10-24 16:12
- * @Feature: jwt属性
+ * @Feature: jwt屬性
  */
 //@ConfigurationProperties(prefix = "jiwell.jwt")
 @Configuration
 @RefreshScope
 public class JwtProperties {
     /**
-     * 公钥
+     * 公鑰
      */
     private PublicKey publicKey;
 
     /**
-     * 公钥地址
+     * 公鑰地址
      */
     @Value("${jiwell.jwt.pubKeyPath}")
     private String pubKeyPath;
@@ -70,15 +70,15 @@ public class JwtProperties {
     }
 
     /**
-     * @PostConstruct :在构造方法执行之后执行该方法
+     * @PostConstruct :在構造方法執行之後執行該方法
      */
     @PostConstruct
     public void init(){
         try {
-            // 获取公钥
+            // 獲取公鑰
             this.publicKey = RsaUtils.getPublicKey(pubKeyPath);
         } catch (Exception e) {
-            logger.error("获取公钥失败！", e);
+            logger.error("獲取公鑰失敗！", e);
             throw new RuntimeException();
         }
     }

@@ -1,5 +1,6 @@
 package com.jiwell.item.service;
 
+import com.jiwell.item.pojo.BuyType;
 import com.jiwell.item.pojo.Category;
 import com.jiwell.myexception.MyException;
 
@@ -70,4 +71,11 @@ public interface CategoryService {
      * @return
      */
     List<Category> queryAllCategoryLevelByCid3(Long id);
+
+    /**
+     * 購買方法分類
+     * @param
+     * @return
+     */
+    List<BuyType> queryAllBuyType();
 }

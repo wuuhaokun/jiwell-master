@@ -71,8 +71,6 @@ public class UserServiceImpl implements UserService {
 
         try {
             Map<String,String> msg = new HashMap<>();
-            msg.put("phone",phone);
-            msg.put("code",code);
             //2.发送短信
             this.amqpTemplate.convertAndSend("jiwell.sms.exchange","sms.verify.code",msg);
 

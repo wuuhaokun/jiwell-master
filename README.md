@@ -402,6 +402,15 @@ docker run -p 9200:9200 -p 9300:9300 --name elasticsearch \
 -v /mydata/elasticsearch/data:/usr/share/elasticsearch/data \
 -d elasticsearch:6.8.5
 
+//local 使用
+docker run -p 9200:9200 -p 9300:9300 --name elasticsearch \
+-e "discovery.type=single-node" \
+-e "cluster.name=elasticsearch" \
+-v /Users/chao-kun.wu/Documents/jiwell_setting/mydata:/usr/share/elasticsearch/plugins \
+-v /Users/chao-kun.wu/Documents/jiwell_setting/mydata:/usr/share/elasticsearch/data \
+-d elasticsearch:6.8.5
+
+
 啟動時會發現/usr/share/elasticsearch/data目錄沒有訪問權限，只需要修改/mydata/elasticsearch/data目錄的權限，再重新啟動。
 chmod 777 /mydata/elasticsearch/data/
 
@@ -1059,80 +1068,8 @@ $ docker rm `docker ps -f "status=exited"`
 用 exited 的狀態碼來過濾
 $ docker rm `docker ps -a -f 'exited=2'`
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+Managing SSH keys in metadata
+https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys#createsshkeys
 
-specifications 全部規格參數數據
-
-'[{\"group\":\"主体\",\"params\":
-[{\"k\":\"品牌\",\"searchable\":false,\"global\":true,\"v\":null},
-{\"k\":\"型号\",\"searchable\":false,\"global\":true,\"v\":\"G9青春版（全网通版）\"},
-{\"k\":\"上市年份\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"年\",\"v\":2016.0}]},
-
-{\"group\":\"基本信息\",\"params\":
-[{\"k\":\"机身颜色\",\"searchable\":false,\"global\":false,\"options\":[\"白色\",\"金色\",\"玫瑰金\"]},
-{\"k\":\"机身重量（g）\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"g\",\"v\":143},
-{\"k\":\"机身材质工艺\",\"searchable\":true,\"global\":true,\"v\":null}]},
-
-{\"group\":\"操作系统\",\"params\":
-[{\"k\":\"操作系统\",\"searchable\":true,\"global\":true,\"v\":\"Android\"}]},
-
-{\"group\":\"主芯片\",\"params\":
-[{\"k\":\"CPU品牌\",\"searchable\":true,\"global\":true,\"v\":\"骁龙（Snapdragon)\"},
-{\"k\":\"CPU型号\",\"searchable\":false,\"global\":true,\"v\":\"骁龙617（msm8952）\"},
-{\"k\":\"CPU核数\",\"searchable\":true,\"global\":true,\"v\":\"八核\"},
-{\"k\":\"CPU频率\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"GHz\",\"v\":1.5}]},
-
-{\"group\":\"存储\",\"params\":
-[{\"k\":\"内存\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"3GB\"]},
-{\"k\":\"机身存储\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"16GB\"]}]},
-
-{\"group\":\"屏幕\",\"params\":
-[{\"k\":\"主屏幕尺寸（英寸）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"英寸\",\"v\":5.2},
-{\"k\":\"分辨率\",\"searchable\":false,\"global\":true,\"v\":\"1920*1080(FHD)\"}]},
-
-{\"group\":\"摄像头\",\"params\":
-[{\"k\":\"前置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":800.0},
-{\"k\":\"后置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":1300.0}]},
-
-{\"group\":\"电池信息\",\"params\":
-[{\"k\":\"电池容量（mAh）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"mAh\",\"v\":3000.0}]}]', 
-
-spec_template 特有規格參數及可選值信息，json格式
-'{\"机身颜色\":[\"白色\",\"金色\",\"玫瑰金\"],\"内存\":[\"3GB\"],\"机身存储\":[\"16GB\"]}'
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-'[{\"group\":\"主体\",\"params\":
-[{\"k\":\"品牌\",\"searchable\":false,\"global\":true,\"v\":\"三星（SAMSUNG）\"},
-{\"k\":\"型号\",\"searchable\":false,\"global\":true,\"v\":\"SM-C5000\"},
-{\"k\":\"上市年份\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"年\",\"v\":2016.0}]},
-
-{\"group\":\"基本信息\",\"params\":
-[{\"k\":\"机身颜色\",\"searchable\":false,\"global\":false,\"options\":[\"金\",\"粉\",\"灰\",\"银\"]},
-{\"k\":\"机身重量（g）\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"g\",\"v\":143},
-{\"k\":\"机身材质工艺\",\"searchable\":true,\"global\":true,\"v\":null}]},
-
-{\"group\":\"操作系统\",\"params\":
-[{\"k\":\"操作系统\",\"searchable\":true,\"global\":true,\"v\":\"Android\"}]},
-
-{\"group\":\"主芯片\",\"params\":
-[{\"k\":\"CPU品牌\",\"searchable\":true,\"global\":true,\"v\":\"骁龙（Snapdragon)\"},
-{\"k\":\"CPU型号\",\"searchable\":false,\"global\":true,\"v\":\"骁龙617（msm8952）\"},
-{\"k\":\"CPU核数\",\"searchable\":true,\"global\":true,\"v\":\"八核\"},
-{\"k\":\"CPU频率\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"GHz\",\"v\":1.5}]},
-
-{\"group\":\"存储\",\"params\":
-[{\"k\":\"内存\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"4GB\"]},
-{\"k\":\"机身存储\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"32GB\"]}]},
-
-{\"group\":\"屏幕\",\"params\":
-[{\"k\":\"主屏幕尺寸（英寸）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"英寸\",\"v\":5.2},
-{\"k\":\"分辨率\",\"searchable\":false,\"global\":true,\"v\":\"1920*1080(FHD)\"}]},
-
-{\"group\":\"摄像头\",\"params\":
-[{\"k\":\"前置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":800.0},{\"k\":\"后置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":1600.0}]},
-{\"group\":\"电池信息\",\"params\":[{\"k\":\"电池容量（mAh）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"mAh\",\"v\":2600}]}]', 
-
-spec_template 特有規格參數及可選值信息，json格式
-'{\"机身颜色\":[\"金\",\"粉\",\"灰\",\"银\"],\"内存\":[\"4GB\"],\"机身存储\":[\"32GB\"]}',
+华夏ERP基
+https://gitee.com/jishenghua/JSH_ERP

@@ -53,8 +53,9 @@ public class GoodsController{
             @RequestParam(value = "desc", defaultValue = "false") Boolean desc,
             @RequestParam(value = "key", required = false) String key,
             @RequestParam(value = "saleable",defaultValue = "true") Boolean saleable,
-            @RequestParam(value = "cid3",defaultValue = "-1") long cid3){
-        SpuQueryByPageParameter spuQueryByPageParameter = new SpuQueryByPageParameter(page,rows,sortBy,desc,key,saleable,cid3);
+            @RequestParam(value = "cid3",defaultValue = "-1") long cid3,
+            @RequestParam(value = "brandId",defaultValue = "-1") long brandId){
+        SpuQueryByPageParameter spuQueryByPageParameter = new SpuQueryByPageParameter(page,rows,sortBy,desc,key,saleable,cid3,brandId);
         //分页查询spu信息
         PageResult<SpuBo> result = this.goodsService.querySpuByPageAndSort(spuQueryByPageParameter);
         System.out.println("查询数据量："+result.getTotal());

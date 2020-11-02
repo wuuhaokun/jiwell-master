@@ -24,7 +24,7 @@ public class Brand implements Serializable {
      */
     private String image;
     private Character letter;
-
+    private String incategory;
 
     public Long getId() {
         return id;
@@ -58,13 +58,20 @@ public class Brand implements Serializable {
         this.letter = letter;
     }
 
+    public String getIncategory() { return incategory; }
+
+    public void setIncategory(String incategory) {
+        this.incategory = incategory;
+    }
+
     @Override
     public String toString() {
         return "Brand{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
-                ", letter=" + letter +
+                ", letter=" + letter +'\'' +
+                ", incategory=" + incategory +
                 '}';
     }
 }

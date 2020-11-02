@@ -52,6 +52,9 @@ public class Spu {
      */
     private Date lastUpdateTime;
 
+    private Long internalCategoryId;
+
+    private String image;
 
     public Long getId() {
         return id;
@@ -141,10 +144,26 @@ public class Spu {
         this.lastUpdateTime = lastUpdateTime;
     }
 
+    public Long getInternalCategoryId() {
+        return internalCategoryId;
+    }
+
+    public void setInternalCategoryId(Long internalCategoryId) {
+        this.internalCategoryId = internalCategoryId;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public Spu() {
     }
 
-    public Spu(Long brandId, Long cid1, Long cid2, Long cid3, String title, String subTitle, Boolean saleable, Boolean valid, Date createTime, Date lastUpdateTime) {
+    public Spu(Long brandId, Long cid1, Long cid2, Long cid3, String title, String subTitle, Boolean saleable, Boolean valid, Date createTime, Date lastUpdateTime,long internalCategoryId,String image) {
         this.brandId = brandId;
         this.cid1 = cid1;
         this.cid2 = cid2;
@@ -155,5 +174,7 @@ public class Spu {
         this.valid = valid;
         this.createTime = createTime;
         this.lastUpdateTime = lastUpdateTime;
+        this.internalCategoryId = internalCategoryId;
+        this.image = image;
     }
 }

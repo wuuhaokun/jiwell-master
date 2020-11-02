@@ -97,6 +97,10 @@ public class GoodsServiceImpl implements GoodsService {
             criteria.andEqualTo("cid3", spuQueryByPageParameter.getCid3());
         }
 
+        if (spuQueryByPageParameter.getBrandId() != -1) {
+            criteria.andEqualTo("brandId", spuQueryByPageParameter.getBrandId());
+        }
+
         //3.4 是否排序 ??這里寫法有錯
 //        if (StringUtils.isNotBlank(spuQueryByPageParameter.getSortBy())){
 ////            example.setOrderByClause(spuQueryByPageParameter.getSortBy()+(spuQueryByPageParameter.getDesc()? " DESC":" ASC"));
@@ -116,7 +120,7 @@ public class GoodsServiceImpl implements GoodsService {
             Brand brand = this.brandMapper.selectByPrimaryKey(spu.getBrandId());
 
             //kun add
-            //SpuDetail spuDetail = this.spuDetailMapper.selectByPrimaryKey(spu.getId());
+            SpuDetail spuDetail = this.spuDetailMapper.selectByPrimaryKey(spu.getId());
             Example example1 = new Example(Sku.class);
             example1.createCriteria().andEqualTo("spuId",spu.getId());
             List<Sku> skuList = this.skuMapper.selectByExample(example1);
@@ -133,7 +137,7 @@ public class GoodsServiceImpl implements GoodsService {
                 }
             }
 
-            //spuBo.setSpuDetail(spuDetail);
+            spuBo.setSpuDetail(spuDetail);
             spuBo.setSkus(skuList);
             ///////////////////////////////////////////////////////////////
             spuBo.setBname(brand.getName());
@@ -204,7 +208,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
 
         SpuBo spuBo = new SpuBo(spu.getBrandId(),spu.getCid1(),spu.getCid2(),spu.getCid3(),spu.getTitle(),
-                spu.getSubTitle(),spu.getSaleable(),spu.getValid(),spu.getCreateTime(),spu.getLastUpdateTime());
+                spu.getSubTitle(),spu.getSaleable(),spu.getValid(),spu.getCreateTime(),spu.getLastUpdateTime(), spu.getInternalCategoryId(), spu.getImage());
 
         //kun add
         //2.查询spu的商品分类名称，各级分类
