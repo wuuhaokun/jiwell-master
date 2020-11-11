@@ -31,6 +31,9 @@ public class Goods {
      * 卖点
      */
     private String subTitle;
+
+    private String title;
+
     /**
      * 品牌id
      */
@@ -55,15 +58,15 @@ public class Goods {
      * 价格
      */
     private List<Long> price;
-    @Field(type = FieldType.Keyword, index = false)
-    /**
-     * sku信息的json结构
-     */
-    private String skus;
+//    @Field(type = FieldType.Keyword, index = false)
+//    /**
+//     * sku信息的json结构
+//     */
+//    private String skus;
     /**
      * 可搜索的规格参数，key是参数名，值是参数值
      */
-    private Map<String, Object> specs;
+//    private Map<String, Object> specs;
 
     public Goods() {
     }
@@ -90,6 +93,14 @@ public class Goods {
 
     public void setSubTitle(String subTitle) {
         this.subTitle = subTitle;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Long getBrandId() {
@@ -140,21 +151,21 @@ public class Goods {
         this.price = price;
     }
 
-    public String getSkus() {
-        return skus;
-    }
-
-    public void setSkus(String skus) {
-        this.skus = skus;
-    }
-
-    public Map<String, Object> getSpecs() {
-        return specs;
-    }
-
-    public void setSpecs(Map<String, Object> specs) {
-        this.specs = specs;
-    }
+//    public String getSkus() {
+//        return skus;
+//    }
+//
+//    public void setSkus(String skus) {
+//        this.skus = skus;
+//    }
+//
+//    public Map<String, Object> getSpecs() {
+//        return specs;
+//    }
+//
+//    public void setSpecs(Map<String, Object> specs) {
+//        this.specs = specs;
+//    }
 
     @Override
     public String toString() {
@@ -162,14 +173,15 @@ public class Goods {
                 "id=" + id +
                 ", all='" + all + '\'' +
                 ", subTitle='" + subTitle + '\'' +
+                ", title='" + title + '\'' +
                 ", brandId=" + brandId +
                 ", cid1=" + cid1 +
                 ", cid2=" + cid2 +
                 ", cid3=" + cid3 +
                 ", createTime=" + createTime +
                 ", price=" + price +
-                ", skus='" + skus + '\'' +
-                ", specs=" + specs +
+//                ", skus='" + skus + '\'' +
+//                ", specs=" + specs +
                 '}';
     }
 }

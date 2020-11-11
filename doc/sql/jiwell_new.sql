@@ -63,6 +63,8 @@ CREATE TABLE `tb_brand` (
   `letter` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '品牌的首字母',
   `title` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '品牌主標題',
   `incategory` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '品牌內產品分類，json格式',
+  `newbrand` tinyint(1) NOT NULL COMMENT '是否新品，0為否，1為是',
+  `hotbrand` tinyint(1) NOT NULL COMMENT '是否新品，0為否，1為是',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '品牌表，一個品牌下有多個商品（spu），一對多關係' ROW_FORMAT = Dynamic;
 
@@ -71,9 +73,30 @@ CREATE TABLE `tb_brand` (
 -- Records of tb_brand
 -- 王品牛排 參考https://licavona.pixnet.net/blog/post/47394869
 -- ----------------------------
-INSERT INTO `tb_brand` VALUES (1, '50嵐', 'http://img12.360buyimg.com/popshop/jfs/t2989/240/151377693/3895/30ad9044/574d36dbN262ef26d.jpg', 'N','新鮮現調茶飲','{\"1\":\"找好茶\",\"2\":\"找新鮮\",\"3\":\"找奶茶\",\"4\":\"找拿鐵\"}');
-INSERT INTO `tb_brand` VALUES (2, '王品牛排', 'http://img12.360buyimg.com/popshop/jfs/t2989/240/151377693/3895/30ad9044/574d36dbN262ef26d.jpg', 'W','王品牛排-尊貴服務 為您創造甜蜜記憶','{\"1\":\"經典牛小排\",\"2\":\"王品盛宴主餐\"}');
--- INSERT INTO `tb_brand` VALUES (3, '早安美芝城', 'http://img12.360buyimg.com/popshop/jfs/t2989/240/151377693/3895/30ad9044/574d36dbN262ef26d.jpg', 'M','美味早餐-活力滿滿','{\"1\":\"美式漢堡\",\"2\":\"現烤吐司\",\"3\":\"美式貝果\",\"4\":\"嚴選飲品\",\"5\":\"點心小品\"}');
+INSERT INTO `tb_brand` VALUES (1, '50嵐', 'http://img12.360buyimg.com/popshop/jfs/t2989/240/151377693/3895/30ad9044/574d36dbN262ef26d.jpg', 'N','新鮮現調茶飲','{\"1\":\"找好茶\",\"2\":\"找新鮮\",\"3\":\"找奶茶\",\"4\":\"找拿鐵\"}',1,1);
+INSERT INTO `tb_brand` VALUES (2, '王品牛排', 'http://img12.360buyimg.com/popshop/jfs/t2989/240/151377693/3895/30ad9044/574d36dbN262ef26d.jpg', 'W','王品牛排-尊貴服務 為您創造甜蜜記憶','{\"1\":\"經典牛小排\",\"2\":\"王品盛宴主餐\"}',1,0);
+INSERT INTO `tb_brand` VALUES (3, '早安美芝城', 'http://img12.360buyimg.com/popshop/jfs/t2989/240/151377693/3895/30ad9044/574d36dbN262ef26d.jpg', 'M','美味早餐-活力滿滿','{\"1\":\"美式漢堡\",\"2\":\"現烤吐司\""}',1,1);
+-- {\"1\":\"美式漢堡\",\"2\":\"現烤吐司\",\"3\":\"美式貝果\",\"4\":\"嚴選飲品\",\"5\":\"點心小品\"}
+-- ----------------------------
+-- Table structure for tb_banner
+-- ----------------------------
+
+DROP TABLE IF EXISTS `tb_banner`;
+CREATE TABLE `tb_banner` (
+                            `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'banner id',
+                            `create_time` datetime(0) NULL DEFAULT NULL COMMENT 'Banner創建時間',
+                            `brand_id` bigint(20) NOT NULL COMMENT '品牌id',
+                            `image` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '品牌圖片地址',
+                            `page` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '所在頁面',
+                            `param` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '參數，json格式',
+                            `title` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '品牌主標題',
+                            `type` char(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '連結方式',
+                            `url` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '外部鏈接',
+                            PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '品牌表，一個品牌下有多個商品（spu），一對多關係' ROW_FORMAT = Dynamic;
+
+INSERT INTO `tb_banner` VALUES (1, '2020-09-10 22:32:50', 1,'75b1e658-161e-4b12-83b0-abd2c1bead39.jpg','goods','{\"id\":1}', '打開外部鏈接','index','https://translate.google.com.tw/?hl=zh-TW');
+INSERT INTO `tb_banner` VALUES (2, '2020-09-10 22:32:50', 2,'75b1e658-161e-4b12-83b0-abd2c1bead39.jpg','goods','{\"id\":2}', '打開外部鏈接','index','https://translate.google.com.tw/?hl=zh-TW');
 
 -- ----------------------------
 -- Table structure for tb_buy_type
@@ -110,7 +133,7 @@ CREATE TABLE `tb_buytype_brand` (
 INSERT INTO `tb_buytype_brand` VALUES (1, 1);
 INSERT INTO `tb_buytype_brand` VALUES (1, 2);
 INSERT INTO `tb_buytype_brand` VALUES (2, 2);
--- INSERT INTO `tb_buytype_brand` VALUES (1, 3);
+INSERT INTO `tb_buytype_brand` VALUES (1, 3);
 -- ----------------------------
 -- Table structure for tb_category
 -- ----------------------------
@@ -148,9 +171,9 @@ INSERT INTO `tb_category` VALUES (20, '日式料理', 18, 0, 1);
 INSERT INTO `tb_category` VALUES (21, '義大利麵', 18, 0, 2);
 
 -- 第二層
--- INSERT INTO `tb_category` VALUES (30, '早午餐', 14, 1, 0);
---      第三層
--- INSERT INTO `tb_category` VALUES (301, '早餐', 30, 0, 0);
+INSERT INTO `tb_category` VALUES (30, '早午餐', 14, 1, 0);
+-- 第三層
+INSERT INTO `tb_category` VALUES (31, '早餐', 30, 0, 0);
 -- ----------------------------
 -- Table structure for tb_category_brand
 -- ----------------------------
@@ -230,7 +253,6 @@ CREATE TABLE `tb_order_detail` (
 ) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '訂單詳情表' ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of tb_order_detail
-
 
 -- ----------------------------
 INSERT INTO `tb_order_detail` VALUES (1, 1072137062385324032, 101, 1, '茉莉綠茶-大杯(加椰果，蘆薈)', '{\"冰熱選擇\":\"正常冰\",\"甜度選擇\":\"正常\"}', '大杯-正常冰-全糖-不加料', 30, 'http://image.ji-well.com/images/ 4/11/1524297413085.jpg');
@@ -322,19 +344,19 @@ CREATE TABLE `tb_spu` (
 -- Records of tb_spu
 
 -- 50嵐 找新鮮系列
-INSERT INTO `tb_spu` VALUES (1, '茉莉綠茶', '茉莉綠茶', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
-INSERT INTO `tb_spu` VALUES (2, '阿薩姆紅茶', '阿薩姆紅茶', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (1, '茉莉綠茶', '天然綠茶，自然最好', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (2, '阿薩姆紅茶', '來自英國～阿薩姆紅茶', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (2, '四季春青茶', '四季春青茶', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (3, '黃金烏龍', '黃金烏龍'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- 50嵐 找好茶系列
-INSERT INTO `tb_spu` VALUES (4, '檸檬汁', '檸檬汁'      , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (4, '檸檬汁', '台農1號-檸檬汁'      , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (5, '檸檬蜜', '檸檬蜜'      , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (6, '金桔檸檬', '金桔檸檬'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (7, '金桔檸蜜', '金桔檸蜜'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (8, '檸檬梅汁', '檸檬梅汁'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (9, '檸檬多多蜜', '檸檬多多蜜', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- 50嵐 找奶茶系列
-INSERT INTO `tb_spu` VALUES (10, '奶茶', '奶茶'                 , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (10, '奶茶', '台灣奶茶最好'                 , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (11, '奶綠', '奶綠'                 , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (12, '烏龍奶', '烏龍奶'              , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (13, '珍珠奶茶(小顆)', '珍珠奶茶(小顆)', 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
@@ -343,7 +365,7 @@ INSERT INTO `tb_spu` VALUES (10, '奶茶', '奶茶'                 , 14, 15, 16
 -- INSERT INTO `tb_spu` VALUES (16, '燕麥奶青', '燕麥奶青'           , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (17, '蜂蜜奶茶', '蜂蜜奶茶'           , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- 50嵐 找拿鐵系列
-INSERT INTO `tb_spu` VALUES (18, '紅茶/綠茶拿鐵', '紅茶/綠茶拿鐵' , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 4,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (18, '紅茶/綠茶拿鐵', '紅茶/綠茶拿鐵三兄弟' , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 4,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (19, '烏龍拿鐵', '烏龍拿鐵'         , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 4,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- INSERT INTO `tb_spu` VALUES (20, '珍珠紅茶拿鐵', '珍珠紅茶拿鐵'   , 14, 15, 16, 1, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 4,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 
@@ -359,8 +381,8 @@ INSERT INTO `tb_spu` VALUES (33, '炙烤帶骨牛小排', '炙烤帶骨牛小排
 INSERT INTO `tb_spu` VALUES (34, '黑松露紐約客牛排', '黑松露紐約客牛排' , 14, 18, 19, 2, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 
 -- 早安美芝城
-INSERT INTO `tb_spu` VALUES (50, '招牌豬肉堡', '使用精選台灣頂級國產豬肉--究好豬 100%的全豬肉' , 14, 15, 30, 3, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
-INSERT INTO `tb_spu` VALUES (51, '黃金蝦餅堡', '黃金蝦餅堡' , 14, 15, 30, 3, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 3,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (50, '招牌豬肉堡', '使用精選台灣頂級國產豬肉--究好豬 100%的全豬肉' , 14, 15, 30, 3, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 1,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
+INSERT INTO `tb_spu` VALUES (51, '黃金蝦餅堡', '黃金蝦餅堡' , 14, 15, 30, 3, 1, 1, '2020-10-15 15:55:15', '2020-10-15 15:55:15', 2,'http://image.ji-well.com/images/9/5/1524297314398.jpg');
 -- 菜單參考 https://www.macc.com.tw/product.php#2
 
 -- ----------------------------
@@ -397,7 +419,8 @@ INSERT INTO `tb_spu_detail` VALUES (33, '炙烤帶骨牛小排', '{\"specificati
 INSERT INTO `tb_spu_detail` VALUES (34, '黑松露紐約客牛排', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"甜點選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"熔岩巧克力冰淇淋\",\"price\":\"0\"},{\"name\":\"焦糖布蕾佐莓果冰\",\"price\":\"0\"},{\"name\":\"重乳酪蛋糕\",\"price\":\"0\"}]},{\"k\":\"飲料選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"唐寧果研茶\",\"price\":\"0\"},{\"name\":\"耶加雪菲(水洗)\",\"price\":\"0\"},{\"name\":\"皇家伯爵茶\",\"price\":\"0\"}]}]}]}','{}', '', '');
 
 -- INSERT INTO `tb_spu_detail` VALUES (7, '<div class=\"content_tpl\"><div class=\"formwork\">\n<div class=\"formwork_img\"><img src=\"//img20.360buyimg.com/vc/jfs/t4213/90/1925235383/1883395/257851f6/58ca51bfNab5c7d9d.jpg\" /></div>\n</div></div><br/>', '[{\"group\":\"主体\",\"params\":[{\"k\":\"品牌\",\"searchable\":false,\"global\":true,\"v\":null},{\"k\":\"型号\",\"searchable\":false,\"global\":true,\"v\":\"MLA-TL10（移动定制版）\"},{\"k\":\"上市年份\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"年\",\"v\":2016.0}]},{\"group\":\"基本信息\",\"params\":[{\"k\":\"机身颜色\",\"searchable\":false,\"global\":false,\"options\":[\"铂雅金\",\"月光银\"]},{\"k\":\"机身重量（g）\",\"searchable\":false,\"global\":true,\"numerical\":true,\"unit\":\"g\",\"v\":160.0},{\"k\":\"机身材质工艺\",\"searchable\":true,\"global\":true,\"v\":null}]},{\"group\":\"操作系统\",\"params\":[{\"k\":\"操作系统\",\"searchable\":true,\"global\":true,\"v\":\"Android\"}]},{\"group\":\"主芯片\",\"params\":[{\"k\":\"CPU品牌\",\"searchable\":true,\"global\":true,\"v\":\"骁龙（Snapdragon)\"},{\"k\":\"CPU型号\",\"searchable\":false,\"global\":true,\"v\":\"骁龙625（MSM8953）\"},{\"k\":\"CPU核数\",\"searchable\":true,\"global\":true,\"v\":\"八核\"},{\"k\":\"CPU频率\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"GHz\",\"v\":2.0}]},{\"group\":\"存储\",\"params\":[{\"k\":\"内存\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"3GB\"]},{\"k\":\"机身存储\",\"searchable\":true,\"global\":false,\"numerical\":false,\"unit\":\"GB\",\"options\":[\"32GB\"]}]},{\"group\":\"屏幕\",\"params\":[{\"k\":\"主屏幕尺寸（英寸）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"英寸\",\"v\":5.5},{\"k\":\"分辨率\",\"searchable\":false,\"global\":true,\"v\":\"1920*1080(FHD)\"}]},{\"group\":\"摄像头\",\"params\":[{\"k\":\"前置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":800.0},{\"k\":\"后置摄像头\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"万\",\"v\":1600.0}]},{\"group\":\"电池信息\",\"params\":[{\"k\":\"电池容量（mAh）\",\"searchable\":true,\"global\":true,\"numerical\":true,\"unit\":\"mAh\",\"v\":3340.0}]}]', '{\"机身颜色\":[\"铂雅金\",\"月光银\"],\"内存\":[\"3GB\"],\"机身存储\":[\"32GB\"]}', '手机X1、耳机X1、快速指南X1、USB 线X1、充电器X1、卡针X1', '本产品全国联保，享受三包服务，质保期为：一年质保');
-
+INSERT INTO `tb_spu_detail` VALUES (50, '招牌豬肉堡', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"甜點選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"熔岩巧克力冰淇淋\",\"price\":\"0\"},{\"name\":\"焦糖布蕾佐莓果冰\",\"price\":\"0\"},{\"name\":\"重乳酪蛋糕\",\"price\":\"0\"}]},{\"k\":\"飲料選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"唐寧果研茶\",\"price\":\"0\"},{\"name\":\"耶加雪菲(水洗)\",\"price\":\"0\"},{\"name\":\"皇家伯爵茶\",\"price\":\"0\"}]}]}]}','{}', '', '');
+INSERT INTO `tb_spu_detail` VALUES (51, '黃金蝦餅堡', '{\"specifications\":[{\"group\":\"主体\",\"params\":[{\"k\":\"甜點選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"熔岩巧克力冰淇淋\",\"price\":\"0\"},{\"name\":\"焦糖布蕾佐莓果冰\",\"price\":\"0\"},{\"name\":\"重乳酪蛋糕\",\"price\":\"0\"}]},{\"k\":\"飲料選擇\",\"searchable\":false,\"global\":true,\"options\":[{\"name\":\"唐寧果研茶\",\"price\":\"0\"},{\"name\":\"耶加雪菲(水洗)\",\"price\":\"0\"},{\"name\":\"皇家伯爵茶\",\"price\":\"0\"}]}]}]}','{}', '', '');
 
 -- ----------------------------
 -- Table structure for tb_sku
@@ -814,6 +837,9 @@ INSERT INTO `tb_sku` VALUES (1410, 32, '王品牛小排', 'http://image.ji-well.
 INSERT INTO `tb_sku` VALUES (1411, 33, '王品牛小排佐犢牛肋排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1990, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 INSERT INTO `tb_sku` VALUES (1412, 34, '王品牛小排佐犢牛肋排', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 1990, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
 
+INSERT INTO `tb_sku` VALUES (1413, 50, '招牌豬肉堡', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 90, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+INSERT INTO `tb_sku` VALUES (1414, 51, '黃金蝦餅堡', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 100, NULL, NULL, '中杯-正常冰-無糖-加椰果/蘆薈', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
+
 
 -- ///////
 -- INSERT INTO `tb_sku` VALUES (2600246, 0, '茉莉綠茶', 'http://image.ji-well.com/images/9/15/1524297313793.jpg ', 50, '1_0_11', '{\"冰熱選擇\":\"少冰\",\"甜度選擇\":\"正常\",\"加料選擇\":\"椰果＋蘆薈\"} ', 1, '2020-09-11 15:55:14', '2020-09-11 15:55:14');
@@ -984,11 +1010,12 @@ INSERT INTO `tb_stock` VALUES (102, 20, 20, 9979);
 INSERT INTO `tb_stock` VALUES (103, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (104, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (105, NULL, NULL, 9999);
-
 INSERT INTO `tb_stock` VALUES (106, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (107, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (108, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (109, NULL, NULL, 9999);
 
+INSERT INTO `tb_stock` VALUES (110, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (111, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (112, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (113, NULL, NULL, 9999);
@@ -997,15 +1024,97 @@ INSERT INTO `tb_stock` VALUES (115, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (116, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (117, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (118, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (119, NULL, NULL, 9999);
 
-
+INSERT INTO `tb_stock` VALUES (120, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (121, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (122, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (123, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (124, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (125, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (126, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (127, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (128, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (129, NULL, NULL, 9999);
 
+INSERT INTO `tb_stock` VALUES (130, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (131, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (132, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (133, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (134, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (135, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (136, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (137, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (138, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (139, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (140, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (141, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (142, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (143, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (144, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (145, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (146, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (147, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (148, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (149, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (150, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (151, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (152, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (153, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (154, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (155, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (156, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (157, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (158, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (159, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (160, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (161, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (162, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (163, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (164, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (165, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (166, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (167, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (168, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (169, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (170, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (171, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (172, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (173, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (174, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (175, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (176, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (177, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (178, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (179, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (180, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (181, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (182, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (183, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (184, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (185, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (186, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (187, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (188, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (189, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (190, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (191, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (192, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (193, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (194, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (195, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (196, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (197, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (198, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (199, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (200, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (201, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (202, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (203, NULL, NULL, 9999);
@@ -1015,51 +1124,230 @@ INSERT INTO `tb_stock` VALUES (206, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (207, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (208, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (209, NULL, NULL, 9999);
+
 INSERT INTO `tb_stock` VALUES (210, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (211, NULL, NULL, 9999);
 INSERT INTO `tb_stock` VALUES (212, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (213, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (214, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (215, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (216, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (217, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (218, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (219, NULL, NULL, 9999);
 
-INSERT INTO `tb_stock` VALUES (301, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (302, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (303, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (304, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (305, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (306, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (307, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (308, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (309, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (310, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (311, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (312, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (220, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (221, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (222, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (223, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (224, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (225, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (226, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (227, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (228, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (229, NULL, NULL, 9999);
 
-INSERT INTO `tb_stock` VALUES (371, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (372, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (373, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (374, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (230, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (231, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (232, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (233, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (234, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (235, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (236, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (237, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (238, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (239, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (240, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (241, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (242, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (243, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (244, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (245, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (246, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (247, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (248, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (249, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (250, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (251, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (252, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (253, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (254, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (255, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (256, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (257, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (258, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (259, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (260, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (261, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (262, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (263, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (264, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (265, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (266, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (267, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (268, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (269, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (270, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (271, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (272, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (273, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (274, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (275, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (276, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (277, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (278, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (279, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (280, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (281, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (282, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (283, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (284, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (285, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (286, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (287, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (288, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (289, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (290, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (291, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (292, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (293, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (294, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (295, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (296, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (297, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (298, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (299, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (300, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1111, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1112, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1113, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1114, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1115, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1116, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1117, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1118, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1121, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1122, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1123, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1124, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1125, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1126, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1201, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1202, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1203, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1204, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1205, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1206, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1207, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1208, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1209, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1210, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1211, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1212, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1301, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1302, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1303, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1304, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1305, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1306, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1307, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1308, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1309, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1310, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1311, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1312, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1313, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1314, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1315, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1316, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1321, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1322, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1323, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1324, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1325, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1326, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1327, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1328, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1329, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1330, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1331, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1332, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1341, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1342, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1371, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1372, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1373, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1374, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1408, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1409, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1410, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1411, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1412, NULL, NULL, 9999);
+
+INSERT INTO `tb_stock` VALUES (1413, NULL, NULL, 9999);
+INSERT INTO `tb_stock` VALUES (1414, NULL, NULL, 9999);
 
 
-INSERT INTO `tb_stock` VALUES (321, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (322, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (323, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (324, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (325, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (326, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (327, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (328, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (329, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (330, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (331, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (332, NULL, NULL, 9999);
 
-INSERT INTO `tb_stock` VALUES (341, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (342, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (300, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (301, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (302, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (303, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (304, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (305, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (306, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (307, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (308, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (309, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (310, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (311, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (312, NULL, NULL, 9999);
+
+-- INSERT INTO `tb_stock` VALUES (371, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (372, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (373, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (374, NULL, NULL, 9999);
 
 
-INSERT INTO `tb_stock` VALUES (408, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (409, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (410, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (411, NULL, NULL, 9999);
-INSERT INTO `tb_stock` VALUES (412, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (321, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (322, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (323, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (324, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (325, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (326, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (327, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (328, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (329, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (330, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (331, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (332, NULL, NULL, 9999);
+
+-- INSERT INTO `tb_stock` VALUES (341, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (342, NULL, NULL, 9999);
+
+
+-- INSERT INTO `tb_stock` VALUES (408, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (409, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (410, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (411, NULL, NULL, 9999);
+-- INSERT INTO `tb_stock` VALUES (412, NULL, NULL, 9999);
 
 -- ----------------------------
 -- Table structure for tb_user

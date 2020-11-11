@@ -3,7 +3,9 @@ package com.jiwell.item.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jiwell.common.pojo.PageResult;
+import com.jiwell.item.mapper.BannerMapper;
 import com.jiwell.item.mapper.BrandMapper;
+import com.jiwell.item.pojo.Banner;
 import com.jiwell.item.pojo.Brand;
 import com.jiwell.item.service.BrandService;
 import com.jiwell.parameter.pojo.BrandQueryByPageParameter;
@@ -25,6 +27,9 @@ public class BrandServiceImpl implements BrandService {
 
     @Autowired
     private BrandMapper brandMapper;
+
+    @Autowired
+    private BannerMapper bannerMapper;
 
     /**
      * 分页查询
@@ -155,6 +160,15 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public List<Brand> queryBrandByBuyTypeId(Long typeid){
         return this.brandMapper.queryBrandByBuyTypeId(typeid);
+    }
+
+    /**
+     * 根据品牌id集合，查询品牌信息
+     * @return
+     */
+    @Override
+    public List<Banner> queryBannerList(){
+        return this.bannerMapper.selectAll();
     }
 
 }

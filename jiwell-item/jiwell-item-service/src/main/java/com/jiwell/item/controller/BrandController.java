@@ -1,6 +1,7 @@
 package com.jiwell.item.controller;
 
 import com.jiwell.common.pojo.PageResult;
+import com.jiwell.item.pojo.Banner;
 import com.jiwell.parameter.pojo.BrandQueryByPageParameter;
 import com.jiwell.item.pojo.Brand;
 import com.jiwell.item.service.BrandService;
@@ -144,4 +145,20 @@ public class BrandController {
         }
         return ResponseEntity.ok(list);
     }
+
+    /**
+     * 根据品牌id集合，查询品牌信息
+     * @return
+     */
+    @GetMapping("banner/list")
+    public ResponseEntity<List<Banner>> queryBannerList(){
+        List<Banner> list = this.brandService.queryBannerList();
+        if (list == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(list);
+    }
+
+//    tb_banner
+
 }

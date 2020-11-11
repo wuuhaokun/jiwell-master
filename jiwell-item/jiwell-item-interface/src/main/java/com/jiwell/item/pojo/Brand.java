@@ -24,7 +24,10 @@ public class Brand implements Serializable {
      */
     private String image;
     private Character letter;
+    private String title;
     private String incategory;
+    private Boolean newbrand;
+    private Boolean hotbrand;
 
     public Long getId() {
         return id;
@@ -58,10 +61,34 @@ public class Brand implements Serializable {
         this.letter = letter;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getIncategory() { return incategory; }
 
     public void setIncategory(String incategory) {
         this.incategory = incategory;
+    }
+
+    public Boolean getNewbrand() {
+        return newbrand;
+    }
+
+    public void setNewbrand(Boolean newbrand) {
+        this.newbrand = newbrand;
+    }
+
+    public Boolean getHotbrand() {
+        return hotbrand;
+    }
+
+    public void setHotbrand(Boolean hotbrand) {
+        this.hotbrand = hotbrand;
     }
 
     @Override
@@ -71,7 +98,10 @@ public class Brand implements Serializable {
                 ", name='" + name + '\'' +
                 ", image='" + image + '\'' +
                 ", letter=" + letter +'\'' +
+                ", title=" + title +'\'' +
                 ", incategory=" + incategory +
+                ", new_brand=" + newbrand +
+                ", hot_brand=" + hotbrand +
                 '}';
     }
 }

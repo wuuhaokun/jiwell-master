@@ -1,6 +1,8 @@
 package com.jiwell.item.service.impl;
 
+import com.jiwell.item.mapper.BannerMapper;
 import com.jiwell.item.mapper.BuyTypeMapper;
+import com.jiwell.item.pojo.Banner;
 import com.jiwell.item.pojo.BuyType;
 import com.jiwell.item.pojo.Category;
 import com.jiwell.item.mapper.CategoryMapper;
@@ -30,6 +32,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private BuyTypeMapper buyTypeMapper;
+
+    @Autowired
+    private BannerMapper bannerMapper;
 
     /**
      * 根据父节点id查询分类
@@ -184,7 +189,18 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     public List<BuyType> queryAllBuyType(){
-        return buyTypeMapper.selectAll();
+        List<BuyType> buyTypeLists = buyTypeMapper.selectAll();
+//        List<BuyType> buyTypes = null;
+//        for(BuyType buyType :buyTypeLists){
+//
+//            buyType.setBannerList(banners);
+//            buyTypes.add(buyType);
+//        }
+        for(int i = 0; i < buyTypeLists.size();i ++){
+            List<Banner> banners = bannerMapper.selectAll();
+            buyTypeLists.get(i).setBannerList(banners);
+        }
+        return buyTypeLists;
     }
 
     /**
