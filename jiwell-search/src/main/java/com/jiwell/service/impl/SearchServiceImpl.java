@@ -104,10 +104,11 @@ public class SearchServiceImpl implements SearchService {
             skuLists.add(skuMap);
         });
 
-        //提取公共属性
-        List<Map<String,Object>> genericSpecs = mapper.readValue(spuDetail.getSpecifications(),new TypeReference<List<Map<String,Object>>>(){});
-        //提取特有属性
-        Map<String,Object> specialSpecs = mapper.readValue(spuDetail.getSpecTemplate(),new TypeReference<Map<String,Object>>(){});
+
+//        //提取公共属性
+//        List<Map<String,Object>> genericSpecs = mapper.readValue(spuDetail.getSpecifications(),new TypeReference<List<Map<String,Object>>>(){});
+//        //提取特有属性
+//        Map<String,Object> specialSpecs = mapper.readValue(spuDetail.getSpecTemplate(),new TypeReference<Map<String,Object>>(){});
 
         //过滤规格模板，把所有可搜索的信息保存到Map中
         Map<String,Object> specMap = new HashMap<>();
@@ -117,20 +118,21 @@ public class SearchServiceImpl implements SearchService {
         String k = "k";
         String options = "options";
 
-        genericSpecs.forEach(m -> {
-            List<Map<String, Object>> params = (List<Map<String, Object>>) m.get("params");
-            params.forEach(spe ->{
-                if ((boolean)spe.get(searchable)){
-                    if (spe.get(v) != null){
-                        specMap.put(spe.get(k).toString(), spe.get(v));
-                    }else if (spe.get(options) != null){
-                        specMap.put(spe.get(k).toString(), spe.get(options));
-                    }
-                }
-            });
-        });
+//        genericSpecs.forEach(m -> {
+//            List<Map<String, Object>> params = (List<Map<String, Object>>) m.get("params");
+//            params.forEach(spe ->{
+//                if ((boolean)spe.get(searchable)){
+//                    if (spe.get(v) != null){
+//                        specMap.put(spe.get(k).toString(), spe.get(v));
+//                    }else if (spe.get(options) != null){
+//                        specMap.put(spe.get(k).toString(), spe.get(options));
+//                    }
+//                }
+//            });
+//        });
         goods.setId(spu.getId());
         goods.setSubTitle(spu.getSubTitle());
+        goods.setTitle(spu.getTitle());
         goods.setBrandId(spu.getBrandId());
         goods.setCid1(spu.getCid1());
         goods.setCid2(spu.getCid2());
@@ -138,8 +140,8 @@ public class SearchServiceImpl implements SearchService {
         goods.setCreateTime(spu.getCreateTime());
         goods.setAll(spu.getTitle() + " " + StringUtils.join(names, " "));
         goods.setPrice(prices);
-        goods.setSkus(mapper.writeValueAsString(skuLists));
-        goods.setSpecs(specMap);
+        //goods.setSkus(mapper.writeValueAsString(skuLists));
+        //goods.setSpecs(specMap);
         return goods;
     }
 
@@ -165,7 +167,7 @@ public class SearchServiceImpl implements SearchService {
         QueryBuilder basicQuery = this.buildBasicQueryWithFilter(searchRequest);
         queryBuilder.withQuery(basicQuery);
         //1.2.通过sourceFilter设置返回的结果字段，只需要id,skus,subTitle
-        queryBuilder.withSourceFilter(new FetchSourceFilter(new String[]{"id","skus","subTitle"},null));
+        queryBuilder.withSourceFilter(new FetchSourceFilter(new String[]{"id","skus","subTitle","title"},null));
         //1.3.分页和排序
         searchWithPageAndSort(queryBuilder,searchRequest);
         //1.4.聚合
@@ -195,7 +197,7 @@ public class SearchServiceImpl implements SearchService {
         List<Map<String,Object>> specs = null;
         if (categories.size() == 1){
             //如果商品分类只有一个进行聚合，并根据分类与基本查询条件聚合
-            specs = getSpec(categories.get(0).getId(),basicQuery);
+            //specs = getSpec(categories.get(0).getId(),basicQuery);
         }
         //4.封装结果，返回
         return new SearchResult<>(total, (long)totalPage,pageInfo.getContent(),categories,brands,specs);
@@ -285,7 +287,7 @@ public class SearchServiceImpl implements SearchService {
         String specsJSONStr = this.specClient.querySpecificationByCategoryId(id).getBody();
         //1.将规格反序列化为集合
         List<Map<String,Object>> specs = null;
-        specs = JsonUtils.nativeRead(specsJSONStr, new TypeReference<List<Map<String, Object>>>() {
+            specs = JsonUtils.nativeRead(specsJSONStr, new TypeReference<List<Map<String, Object>>>() {
         });
         //2.过滤出可以搜索的规格参数名称，分成数值类型、字符串类型
         Set<String> strSpec = new HashSet<>();
