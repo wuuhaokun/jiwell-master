@@ -1,0 +1,37 @@
+server:
+  port: 10080
+spring:
+  application:
+    name: fcm-service
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/jiwell?serverTimezone=CST&characterEncoding=UTF-8&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1234567890
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 10
+  rabbitmq:
+    host: 127.0.0.1
+    username: /ji-well
+    password: ji-well
+    virtual-host: /ji-well
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+    registry-fetch-interval-seconds: 5
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true  #当你获取host时，返回的不是主机名，而是ip
+    ip-address: 127.0.0.1
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+app:
+  firebase-configuration-file: google/jiwellreservation-firebase-adminsdk-tpkx8-fccbc4225a.json
+  notifications:
+    defaults: '{topic: ''common'', title: ''Common topic - Hello'', message: ''Sending
+      test message'', token: ''cBv9PfXHq0jiqRwsxdRK-z:APA91bFqS85i4ZHM5CSGyYxcsI3LzMJ5VB0jTLDu2tsYKiI4B4e05ewln7j9B3zkDmHOry_RU-COnlr4yTqaHXqSOsb8MBDENG61ChvI_qXjU1d_WfD6lgHlraglumtwz1PKZd2FsHks'', payloadMessageId: ''123'', payloadData: ''Hello. This is payload content.''}'
+
+# ios token = cBv9PfXHq0jiqRwsxdRK-z:APA91bFqS85i4ZHM5CSGyYxcsI3LzMJ5VB0jTLDu2tsYKiI4B4e05ewln7j9B3zkDmHOry_RU-COnlr4yTqaHXqSOsb8MBDENG61ChvI_qXjU1d_WfD6lgHlraglumtwz1PKZd2FsHks
+# android token = eOKL71lbSOK1nVuMTauw4Q:APA91bE06gB39r7hp5hFhOyFvqVvDNFqgu2DX0aMiy0e71cjAilW33EfK07ElhGdP2nHosV8RbiZL7O1NHXhZ_A-bp520U7MvicN47P0dt-Z3xTrzBhQ-3AADAa_mo7-76O2oSZpmn8J
