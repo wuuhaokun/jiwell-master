@@ -1,0 +1,54 @@
+server:
+  port: 10081
+spring:
+  application:
+    name: mail-service
+#  datasource:
+#    url: jdbc:mysql://10.140.0.4:3306/jiwell?serverTimezone=CST&characterEncoding=UTF-8&useSSL=false
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: root
+#    password: 1234567890
+#    hikari:
+#      maximum-pool-size: 20
+#      minimum-idle: 10
+  rabbitmq:
+    host: 10.140.0.4
+    username: /ji-well
+    password: ji-well
+    virtual-host: /ji-well
+    freemarker:
+      cache: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    password: vtviuhrskuakilsj
+    properties:
+       mail:
+        smtp:
+          auth: true
+          starttls:
+             enable: true
+             required: true
+    username: sharebard@gmail.com
+eureka:
+  client:
+    service-url:
+      defaultZone: http://10.140.0.3:10086/eureka
+    registry-fetch-interval-seconds: 5
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    prefer-ip-address: true  #当你获取host时，返回的不是主机名，而是ip
+    ip-address: 10.140.0.3
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+mail:
+  from: ${spring.mail.username}
+  to: w.sirius@gmail.com
+
+## TLS , port 587
+#  spring.mail.properties.mail.smtp.starttls.enable=true
+#
+## SSL, post 465
+##spring.mail.properties.mail.smtp.socketFactory.port = 465
+##spring.mail.properties.mail.smtp.socketFactory.class = javax.net.ssl.SSLSocketFactory
+

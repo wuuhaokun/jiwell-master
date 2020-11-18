@@ -1,0 +1,47 @@
+package com.jiwell.mail.listener;
+
+//import com.aliyuncs.exceptions.ClientException;
+//import com.jiwell.sms.pojo.SmsProperties;
+import com.jiwell.mail.service.MailService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.rabbit.annotation.Exchange;
+import org.springframework.amqp.rabbit.annotation.Queue;
+import org.springframework.amqp.rabbit.annotation.QueueBinding;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.Map;
+
+/**
+ * @Author: 98050
+ * @Time: 2018-10-22 19:21
+ * @Feature:短信服务监听器
+ */
+@Component
+public class MailListener {
+
+    @Autowired
+    private MailService mailService;
+
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "jiwell.mail.queue",durable = "true"),
+            exchange = @Exchange(value = "jiwell.mail.exchange",ignoreDeclarationExceptions = "true"),
+            key = {"mail.verify.code"}
+    ))
+    public void listenSms(Map<String,String> msg){
+        if (msg == null || msg.size() <= 0){
+            //不做处理
+            return;
+        }
+        //String mail = msg.get("phone");
+        String mail = "w.sirius@gmail.com";
+        String code = msg.get("code");
+        String verifyCode = "你的驗証碼是" + code;
+        try {
+            mailService.sendSimpleMail("jiwell驗証碼", verifyCode,mail);
+        }catch (Exception e){
+            return;
+        }
+    }
+}
