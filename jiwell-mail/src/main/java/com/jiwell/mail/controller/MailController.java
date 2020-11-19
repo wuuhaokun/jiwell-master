@@ -1,10 +1,5 @@
 package com.jiwell.mail.controller;
 
-//import com.jiwell.common.pojo.PageResult;
-//import com.jiwell.item.pojo.Banner;
-//import com.jiwell.parameter.pojo.BrandQueryByPageParameter;
-//import com.jiwell.item.pojo.Brand;
-//import com.jiwell.item.service.BrandService;
 import com.jiwell.mail.service.MailService;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 /**

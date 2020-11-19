@@ -1,9 +1,6 @@
 package com.jiwell.mail.listener;
 
-//import com.aliyuncs.exceptions.ClientException;
-//import com.jiwell.sms.pojo.SmsProperties;
 import com.jiwell.mail.service.MailService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -35,9 +32,13 @@ public class MailListener {
             return;
         }
         //String mail = msg.get("phone");
+        String password = msg.get("password");
         String mail = "w.sirius@gmail.com";
         String code = msg.get("code");
-        String verifyCode = "你的驗証碼是" + code;
+        String verifyCode = "你的驗証碼是" + (code == null?password:code);
+//        if(!password.isEmpty()){
+//            verifyCode = "你的驗証碼是" + (code.isEmpty()?password:code);
+//        }
         try {
             mailService.sendSimpleMail("jiwell驗証碼", verifyCode,mail);
         }catch (Exception e){
