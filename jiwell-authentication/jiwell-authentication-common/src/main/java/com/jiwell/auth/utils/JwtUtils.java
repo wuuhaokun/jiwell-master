@@ -26,7 +26,7 @@ public class JwtUtils {
     public static String generateToken(UserInfo userInfo, PrivateKey privateKey, int expireMinutes) throws Exception {
         JwtBuilder builder = Jwts.builder()
                 .claim(JwtConstans.JWT_KEY_ID, userInfo.getId())
-                .claim(JwtConstans.JWT_KEY_USER_NAME, userInfo.getUsername())
+                .claim(JwtConstans.JWT_KEY_USER_NAME, userInfo.getAccount())
                 .claim(JwtConstans.JWT_KEY_PHONE, userInfo.getPhone())
                 .claim(JwtConstans.JWT_KEY_GENDER, userInfo.getGender())
                 .claim(JwtConstans.JWT_KEY_NICKNAME, userInfo.getNickname())
@@ -49,7 +49,7 @@ public class JwtUtils {
     public static String generateToken(UserInfo userInfo, byte[] privateKey, int expireMinutes) throws Exception {
         return Jwts.builder()
                 .claim(JwtConstans.JWT_KEY_ID, userInfo.getId())
-                .claim(JwtConstans.JWT_KEY_USER_NAME, userInfo.getUsername())
+                .claim(JwtConstans.JWT_KEY_USER_NAME, userInfo.getAccount())
                 .claim(JwtConstans.JWT_KEY_PHONE, userInfo.getPhone())
                 .claim(JwtConstans.JWT_KEY_GENDER, userInfo.getGender())
                 .claim(JwtConstans.JWT_KEY_NICKNAME, userInfo.getNickname())

@@ -1,11 +1,13 @@
 package com.jiwell.auth.controller;
 
+import com.jiwell.auth.entity.RegisterInfo;
 import com.jiwell.auth.entity.TokenInfo;
 import com.jiwell.auth.entity.UserInfo;
 import com.jiwell.auth.properties.JwtProperties;
 import com.jiwell.auth.service.AuthService;
 import com.jiwell.auth.utils.JwtUtils;
 import com.jiwell.user.pojo.User;
+import com.jiwell.utils.CodecUtils;
 import com.jiwell.utils.CookieUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.PrivateKey;
+import java.util.Date;
 
 /**
  * @Author: 98050
@@ -36,7 +39,7 @@ public class AuthController {
 
     /**
      * 登录授权
-     * @param username
+     * @param account
      * @param password
      * @param request
      * @param response
@@ -44,20 +47,52 @@ public class AuthController {
      */
     @PostMapping("accredit")
     public ResponseEntity<TokenInfo> authentication(
-            @RequestParam("username") String username,
+            @RequestParam("account") String account,
+            @RequestParam("password") String password,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ){
+//        //1.登录校验
+//        String token = this.authService.authentication(account,password);
+//        if (StringUtils.isBlank(token)){
+//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//        }
+//        //2.将token写入cookie，并指定httpOnly为true，防止通过js获取和修改
+//        CookieUtils.setCookie(request,response,properties.getCookieName(),token,properties.getCookieMaxAge(),true);
+//        TokenInfo tokenInfo = new TokenInfo(token);
+//        return ResponseEntity.ok(tokenInfo);
+        String token = this.authService.authentication(account,password);
+        TokenInfo tokenInfo = cretaeTokenInfo(request,response,token);
+        if(tokenInfo == null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        return ResponseEntity.ok(tokenInfo);
+    }
+
+    /**
+     * 登录授权並註冊
+     * @param account
+     * @param password
+     * @param request
+     * @param response
+     * @return
+     */
+    @PostMapping("accredit/code")
+    public ResponseEntity<RegisterInfo> authenticationAndRegister(
+            @RequestParam("account") String account,
             @RequestParam("password") String password,
             HttpServletRequest request,
             HttpServletResponse response
     ){
         //1.登录校验
-        String token = this.authService.authentication(username,password);
-        if (StringUtils.isBlank(token)){
+        RegisterInfo registerInfo = this.authService.authenticationAndRegister(account,password);
+        //String token = this.authService.authenticationAndRegister(account,password);
+        if(registerInfo == null){
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        //2.将token写入cookie，并指定httpOnly为true，防止通过js获取和修改
-        CookieUtils.setCookie(request,response,properties.getCookieName(),token,properties.getCookieMaxAge(),true);
-        TokenInfo tokenInfo = new TokenInfo(token);
-        return ResponseEntity.ok(tokenInfo);
+        TokenInfo tokenInfo = cretaeTokenInfo(request,response,registerInfo.getToken());
+
+        return ResponseEntity.ok(registerInfo);
     }
 
     /**
@@ -82,15 +117,7 @@ public class AuthController {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
                 }
             }
-
-            //1.从token中解析token信息
-            UserInfo userInfo = JwtUtils.getInfoFromToken(userToken,this.properties.getPublicKey());
-            //2.解析成功要重新刷新token
-            token = JwtUtils.generateToken(userInfo,this.properties.getPrivateKey(),this.properties.getExpire());
-            //3.更新Cookie中的token
-            CookieUtils.setCookie(request,response,this.properties.getCookieName(),userToken,this.properties.getCookieMaxAge());
-            //4.解析成功返回用户信息
-            return ResponseEntity.ok(userInfo);
+            return ResponseEntity.ok(this.parseUserFromToken(request, response, userToken));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -107,14 +134,7 @@ public class AuthController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
             }
-            //1.从token中解析token信息
-            UserInfo userInfo = JwtUtils.getInfoFromToken(headerToken, this.properties.getPublicKey());
-            //2.解析成功要重新刷新token
-            headerToken = JwtUtils.generateToken(userInfo, this.properties.getPrivateKey(), this.properties.getExpire());
-            //3.更新Cookie中的token
-            CookieUtils.setCookie(request, response, this.properties.getCookieName(), headerToken, this.properties.getCookieMaxAge());
-            //4.解析成功返回用户信息
-            return ResponseEntity.ok(userInfo);
+            return ResponseEntity.ok(this.parseUserFromToken(request, response, headerToken));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,4 +142,29 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
+    private UserInfo parseUserFromToken(HttpServletRequest request, HttpServletResponse response,String headerToken){
+        try {
+        //1.从token中解析token信息
+        UserInfo userInfo = JwtUtils.getInfoFromToken(headerToken, this.properties.getPublicKey()); //.getInfoFromToken(headerToken, this.properties.getPublicKey());
+        //2.解析成功要重新刷新token
+        headerToken = JwtUtils.generateToken(userInfo, this.properties.getPrivateKey(), this.properties.getExpire());
+        //3.更新Cookie中的token
+        CookieUtils.setCookie(request, response, this.properties.getCookieName(), headerToken, this.properties.getCookieMaxAge());
+        //4.解析成功返回用户信息
+            return userInfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private TokenInfo cretaeTokenInfo(HttpServletRequest request, HttpServletResponse response, String token){
+        if (StringUtils.isBlank(token)){
+            return null;
+        }
+        //2.将token写入cookie，并指定httpOnly为true，防止通过js获取和修改
+        CookieUtils.setCookie(request,response,properties.getCookieName(),token,properties.getCookieMaxAge(),true);
+        //TokenInfo tokenInfo = new TokenInfo(token);
+        return new TokenInfo(token);
+    }
 }
