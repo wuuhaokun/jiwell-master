@@ -9,9 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 public class CodecUtils {
 
-    public static String passwordBcryptEncode(String username,String password){
+    public static String passwordBcryptEncode(String account,String password){
 
-        return new BCryptPasswordEncoder().encode(username + password);
+        return new BCryptPasswordEncoder().encode(account + password);
     }
 
     public static Boolean passwordConfirm(String rawPassword,String encodePassword){
