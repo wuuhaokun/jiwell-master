@@ -17,14 +17,17 @@ import com.jiwell.order.service.OrderStatusService;
 import com.jiwell.order.vo.OrderStatusMessage;
 import com.jiwell.utils.IdWorker;
 import com.jiwell.utils.JsonUtils;
+import com.jiwell.utils.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
@@ -32,9 +35,8 @@ import tk.mybatis.mapper.entity.Example;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sound.midi.SoundbankResource;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -72,6 +74,14 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private SeckillOrderMapper seckillOrderMapper;
 
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+
+//    @Autowired
+//    private StringRedisTemplate stringRedisTemplate;
+
+//    private static final String KEY_PREFIX = "user:code:phone";
+
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Transactional(rollbackFor = Exception.class)
@@ -83,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
         //2.获取登录的用户
         UserInfo userInfo = LoginInterceptor.getLoginUser();
         //3.初始化数据
-        order.setBuyerNick(userInfo.getUsername());
+        order.setBuyerNick(userInfo.getAccount());
         order.setBuyerRate(false);
         order.setCreateTime(new Date());
         order.setOrderId(orderId);
@@ -111,6 +121,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.getOrderDetails().forEach(orderDetail -> this.stockMapper.reduceStock(orderDetail.getSkuId(), orderDetail.getNum()));
 
+        //this.pushNotifycation(userInfo.getId().toString());
         return orderId;
 
     }
@@ -215,8 +226,8 @@ public class OrderServiceImpl implements OrderService {
         orderStatus.setStatus(status);
 
         //延时消息
-        OrderStatusMessage orderStatusMessage = new OrderStatusMessage(id,userInfo.getId(),userInfo.getUsername(),spuId,1);
-        OrderStatusMessage orderStatusMessage2 = new OrderStatusMessage(id,userInfo.getId(),userInfo.getUsername(),spuId,2);
+        OrderStatusMessage orderStatusMessage = new OrderStatusMessage(id,userInfo.getId(),userInfo.getAccount(),spuId,1);
+        OrderStatusMessage orderStatusMessage2 = new OrderStatusMessage(id,userInfo.getId(),userInfo.getAccount(),spuId,2);
         //1.根据状态判断要修改的时间
         switch (status){
             case 2:
@@ -304,5 +315,30 @@ public class OrderServiceImpl implements OrderService {
         example.createCriteria().andEqualTo("orderId", id);
         List<OrderDetail> orderDetail = this.orderDetailMapper.selectByExample(example);
         return orderDetail.get(0).getSkuId();
+    }
+
+    /**
+     * 发送短信验证码
+     * @param userId
+     */
+    //@Override
+    public Boolean pushNotifycation(String userId) {
+        String message = "訂單己成立";
+        try {
+            Map<String,String> msg = new HashMap<>();
+            msg.put("userId",userId);
+            msg.put("message",message);
+            //2.发送短信
+            this.amqpTemplate.convertAndSend("jiwell.fcm.exchange","fcm.verify.code",msg);
+
+            //3.将code存入redis
+            //this.stringRedisTemplate.opsForValue().set(KEY_PREFIX + phone,code,5, TimeUnit.MINUTES);
+
+            return true;
+
+        }catch (Exception e){
+            logger.error("发送短信失败。phone：{}，code：{}",userId,message);
+            return false;
+        }
     }
 }

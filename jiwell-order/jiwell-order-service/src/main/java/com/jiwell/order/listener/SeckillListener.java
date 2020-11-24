@@ -133,7 +133,7 @@ public class SeckillListener {
         //3.1 生成orderId
         long orderId = idWorker.nextId();
         //3.2 初始化数据
-        order.setBuyerNick(userInfo.getUsername());
+        order.setBuyerNick(userInfo.getAccount());
         order.setBuyerRate(false);
         order.setCreateTime(new Date());
         order.setOrderId(orderId);

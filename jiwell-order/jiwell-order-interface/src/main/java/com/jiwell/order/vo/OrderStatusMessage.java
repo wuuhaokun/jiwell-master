@@ -16,7 +16,7 @@ public class OrderStatusMessage {
      */
     private Long userId;
 
-    private String username;
+    private String account;
 
     private Long spuId;
 
@@ -29,20 +29,20 @@ public class OrderStatusMessage {
     public OrderStatusMessage() {
     }
 
-    public OrderStatusMessage(Long orderId, Long userId, String username, Long spuId, int type) {
+    public OrderStatusMessage(Long orderId, Long userId, String account, Long spuId, int type) {
         this.orderId = orderId;
         this.userId = userId;
-        this.username = username;
+        this.account = account;
         this.spuId = spuId;
         this.type = type;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public Long getSpuId() {
@@ -82,7 +82,7 @@ public class OrderStatusMessage {
         return "OrderStatusMessage{" +
                 "orderId=" + orderId +
                 ", userId=" + userId +
-                ", username='" + username + '\'' +
+                ", account='" + account + '\'' +
                 ", spuId=" + spuId +
                 ", type=" + type +
                 '}';

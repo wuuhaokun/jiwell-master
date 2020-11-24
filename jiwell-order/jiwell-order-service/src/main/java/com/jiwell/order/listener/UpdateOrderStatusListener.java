@@ -86,7 +86,7 @@ public class UpdateOrderStatusListener {
         Long spuId = orderStatusMessage.getSpuId();
         String content = "默认好评";
         Long userId = orderStatusMessage.getUserId();
-        String nickname = orderStatusMessage.getUsername();
+        String nickname = orderStatusMessage.getAccount();
         List<String> images = new ArrayList<>();
         boolean iscomment = true;
         String parentId = 0 + "";
