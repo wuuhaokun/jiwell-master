@@ -2,6 +2,7 @@ package com.jiwell.user.controller;
 
 import com.jiwell.user.pojo.User;
 import com.jiwell.user.service.UserService;
+import com.jiwell.user.utils.RegisterState;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,20 @@ public class UserController {
     }
 
     /**
+     * 发送短信碼
+     * @param phone
+     * @return
+     */
+    @PostMapping("register/code")
+    public ResponseEntity sendPassword(@RequestParam("phone") String phone){
+        Boolean result = this.userService.sendPassword(phone);
+        if (result == null || !result){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    /**
      * 注册
      * @param user
      * @param code
@@ -71,13 +86,13 @@ public class UserController {
 
     /**
      * 用户验证
-     * @param username
+     * @param account
      * @param password
      * @return
      */
     @GetMapping("query")
-    public ResponseEntity<User> queryUser(@RequestParam("username")String username,@RequestParam("password")String password){
-        User user = this.userService.queryUser(username,password);
+    public ResponseEntity<User> queryUser(@RequestParam("account")String account,@RequestParam("password")String password){
+        User user = this.userService.queryUser(account,password);
         if (user == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -85,11 +100,35 @@ public class UserController {
     }
 
     @PostMapping("password")
-    public ResponseEntity<Boolean> updatePassword(@RequestParam("username")String username,@RequestParam("oldPassword")String oldPassword, @RequestParam("newPassword")String newPassword){
-        Boolean result = this.userService.updatePassword(username,oldPassword,newPassword);
+    public ResponseEntity<Boolean> updatePassword(@RequestParam("account")String account,@RequestParam("oldPassword")String oldPassword, @RequestParam("newPassword")String newPassword){
+        Boolean result = this.userService.updatePassword(account,oldPassword,newPassword);
         if (result == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok(result);
     }
+
+    @PostMapping("loginAndRegister")
+    public ResponseEntity<RegisterState> loginAndRegister(@RequestParam("account")String account, @RequestParam("password")String password){
+        RegisterState registerState = this.userService.loginAndRegister(account,password);
+        if (registerState == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(registerState);
+    }
+
+    /**
+     * 取得使用者資料
+     * @param account
+     * @return
+     */
+    @GetMapping("queryInfo")
+    public ResponseEntity<User> queryUserByAccount(@RequestParam("account")String account){
+        User user = this.userService.queryUserByAccount(account);
+        if (user == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(user);
+    }
+
 }

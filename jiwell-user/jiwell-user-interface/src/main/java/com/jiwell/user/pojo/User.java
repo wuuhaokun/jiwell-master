@@ -26,7 +26,7 @@ public class User {
      * 用户名
      */
     @Length(min = 4,max = 15,message = "用户名只能在4~15位之间")
-    private String username;
+    private String account;
 
     /**
      * 密码
@@ -60,12 +60,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {
@@ -112,7 +112,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", account='" + account + '\'' +
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", gender=" + gender +'\'' +
