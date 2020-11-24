@@ -7,7 +7,7 @@ public class UserInfo {
 
     private Long id;
 
-    private String username;
+    private String account;
 
     private String phone;
 
@@ -18,9 +18,9 @@ public class UserInfo {
     public UserInfo() {
     }
 
-    public UserInfo(Long id, String username, String phone, String gender, String nickname) {
+    public UserInfo(Long id, String account, String phone, String gender, String nickname) {
         this.id = id;
-        this.username = username;
+        this.account = account;
         this.phone = phone;
         this.gender = gender;
         this.nickname = nickname;
@@ -34,12 +34,12 @@ public class UserInfo {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPhone() {
