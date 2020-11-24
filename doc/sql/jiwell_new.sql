@@ -1355,14 +1355,14 @@ INSERT INTO `tb_stock` VALUES (1414, NULL, NULL, 9999);
 DROP TABLE IF EXISTS `tb_user`;
 CREATE TABLE `tb_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用戶名',
+  `account` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '帳戶名',
   `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密碼，加密存儲',
   `phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '註冊手機號',
   `created` datetime(0) NOT NULL COMMENT '創建時間',
   `gender` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'female' COMMENT '性別',
   `nickname` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'nickname' COMMENT '別名',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `username`(`username`) USING BTREE
+  UNIQUE INDEX `account`(`account`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用戶表' ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Records of tb_user
@@ -1371,6 +1371,27 @@ CREATE TABLE `tb_user` (
 INSERT INTO `tb_user` VALUES (1, 'jiwell','$2a$10$KUFMXKbXCo.WGS91Sr8VQO/FETVdNQkhne5J5GdIqgUhG0YY1tKc.', '15397089001', '2020-09-11 17:21:57', 'female', '極微');
 -- INSERT INTO `tb_user` VALUES (2, 'wukun', '$2a$10$hcDzLMGnz96r7YCTzYwZwehZq7MOzAp13TUgPnsZX1ovhHN6aonJO', '13289393693', '2020-09-10 17:21:54', 'female', '阿坤');
 -- INSERT INTO `tb_user` VALUES (3, 'guest', '$$2a$10$.FT5Yb5ZL/1VbWCqVCGAWOkcBX1ryv.IiamPo20sBFvtnBxvjNbQm', '18834820000', '2020-09-12 17:21:50', 'female', '訪客');
+
+-- ----------------------------
+-- Table structure for tb_user
+-- ----------------------------
+
+DROP TABLE IF EXISTS `tb_jwfirebase`;
+CREATE TABLE `tb_jwfirebase` (
+                            `user_id` bigint(20) NOT NULL COMMENT 'userid',
+                            `token` varchar(1500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT 'Firebase Token',
+                            PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Firebase使用表格' ROW_FORMAT = Dynamic;
+
+
+-- ----------------------------
+-- Records of tb_user
+-- ----------------------------
+
+-- INSERT INTO `tb_user` VALUES (1, 'jiwell','$2a$10$KUFMXKbXCo.WGS91Sr8VQO/FETVdNQkhne5J5GdIqgUhG0YY1tKc.', '15397089001', '2020-09-11 17:21:57', 'female', '極微');
+-- INSERT INTO `tb_user` VALUES (2, 'wukun', '$2a$10$hcDzLMGnz96r7YCTzYwZwehZq7MOzAp13TUgPnsZX1ovhHN6aonJO', '13289393693', '2020-09-10 17:21:54', 'female', '阿坤');
+-- INSERT INTO `tb_user` VALUES (3, 'guest', '$$2a$10$.FT5Yb5ZL/1VbWCqVCGAWOkcBX1ryv.IiamPo20sBFvtnBxvjNbQm', '18834820000', '2020-09-12 17:21:50', 'female', '訪客');
+
 
 -- ----------------------------
 -- View structure for cid3

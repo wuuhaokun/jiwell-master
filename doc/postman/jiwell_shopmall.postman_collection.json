@@ -14,7 +14,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://{{Domain}}{{AuthItem}}/accredit?username=lyj123123&password=123456",
+							"raw": "http://{{Domain}}{{AuthItem}}/accredit?account=lyj123123&password=123456",
 							"protocol": "http",
 							"host": [
 								"{{Domain}}{{AuthItem}}"
