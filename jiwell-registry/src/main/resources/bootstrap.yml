@@ -4,4 +4,5 @@ spring:
       name: registry
       profile: prod
       label: master
-      uri: http://127.0.0.1:10011
+#      uri: http://10.140.0.6:10011
+      uri: http://10.140.0.6:10011
