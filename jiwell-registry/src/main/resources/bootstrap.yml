@@ -2,6 +2,6 @@ spring:
   cloud:
     config:
       name: registry
-      profile: dev
+      profile: prod
       label: master
       uri: http://127.0.0.1:10011
