@@ -4,4 +4,4 @@ spring:
       name: auth
       profile: prod
       label: master
-      uri: http://10.140.0.6:10011
+      uri: http://10.140.0.8:10011
