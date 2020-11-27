@@ -87,45 +87,6 @@
 
     </dependencies>
 
-    <!--    <build>-->
-    <!--        <plugins>-->
-    <!--            <plugin>-->
-    <!--                <groupId>org.springframework.boot</groupId>-->
-    <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-    <!--                <version>${spring-boot-maven-plugin.version}</version>-->
-    <!--            </plugin>-->
-    <!--            &lt;!&ndash; docker的maven插件，官网 https://github.com/spotify/docker-maven-plugin &ndash;&gt;-->
-    <!--            <plugin>-->
-    <!--                <groupId>com.spotify</groupId>-->
-    <!--                <artifactId>docker-maven-plugin</artifactId>-->
-    <!--                <version>${docker.maven.plugin.version}</version>-->
-    <!--                <executions>-->
-    <!--                    <execution>-->
-    <!--                        <id>build-image</id>-->
-    <!--                        <phase>package</phase>-->
-    <!--                        <goals>-->
-    <!--                            <goal>build</goal>-->
-    <!--                        </goals>-->
-    <!--                    </execution>-->
-    <!--                </executions>-->
-
-    <!--                <configuration>-->
-    <!--                    <imageName>${docker.name}/${project.artifactId}:${project.version}</imageName>-->
-    <!--                    <baseImage>java:8</baseImage>-->
-    <!--                    <entryPoint>["java", "-jar","/${project.build.finalName}.jar"]</entryPoint>-->
-    <!--                    <resources>-->
-    <!--                        <resource>-->
-    <!--                            <targetPath>/</targetPath>-->
-    <!--                            <directory>${project.build.directory}</directory>-->
-    <!--                            <include>${project.build.finalName}.jar</include>-->
-    <!--                        </resource>-->
-    <!--                    </resources>-->
-    <!--                    <dockerHost>${docker.host}</dockerHost>-->
-    <!--                </configuration>-->
-    <!--            </plugin>-->
-    <!--        </plugins>-->
-    <!--    </build>-->
-
     <build>
         <plugins>
             <plugin>
@@ -133,7 +94,45 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot-maven-plugin.version}</version>
             </plugin>
+            <!-- docker的maven插件，官网 https://github.com/spotify/docker-maven-plugin -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>build-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <imageName>${docker.name}/${project.artifactId}:${project.version}</imageName>
+                    <baseImage>java:8</baseImage>
+                    <entryPoint>["java", "-jar","/${project.build.finalName}.jar"]</entryPoint>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                    <dockerHost>${docker.host}</dockerHost>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <version>${spring-boot-maven-plugin.version}</version>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 </project>
