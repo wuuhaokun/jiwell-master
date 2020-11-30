@@ -455,6 +455,11 @@ docker run -p 27017:27017 --name mongo \
 -v /mydata/mongo/db:/data/db \
 -d mongo:4.2.6
   
+  
+docker run -p 27017:27017 --name mongo \
+-v /Users/chao-kun.wu/Documents/jiwell_setting/mydata/mongo/db:/data/db \
+-d mongo:4.2.6
+  
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Nginx安裝
 
@@ -476,7 +481,7 @@ docker container cp nginx:/etc/nginx /mydata/nginx/
 cd..
 2.切換到mydata 
 cd mydata
-修改文件名稱：
+修改文件名稱：cd 
 mv nginx conf
 3.上傳自己的nginx.conf檔案，應該傳到你的home目錄下的你的user name 如我的是w_sirius
 4.copy nginx.conf 到 /mydata/conf/nginx/
@@ -663,9 +668,9 @@ ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock
 按下 [Esc] 按鈕回到一般模式。
 在一般模式中按下 :wq 儲存後離開 vi。 離開不儲存更動一般模式中按下 :q!
 
-echo '{ "insecure-registries":["35.201.214.141:5000"] }' > /etc/docker/daemon.json
-echo '{ "insecure-registries":["35.236.155.182:5000"] }' > /etc/docker/daemon.json
-//35.236.174.253 echo '{ "insecure-registries":["35.236.174.253:5000"] }' > /etc/docker/daemon.json
+echo '{ "insecure-registries":["35.236.129.34:5000"] }' > /etc/docker/daemon.json
+echo '{ "insecure-registries":["34.80.78.203:5000"] }' > /etc/docker/daemon.json
+//35.236.174.253 echo '{ "insecure-registries":["34.80.78.203:5000"] }' > /etc/docker/daemon.json
 修改配置後需要使用如下命令使配置生效
 systemctl daemon-reload
 
@@ -761,6 +766,27 @@ docker run -p 8082:8082 --name jiwell-upload \
 -v /etc/localtime:/etc/localtime \
 -v /mydata/app/upload/logs:/var/logs \
 -d jiwell/jiwell-upload:1.0.0-SNAPSHOT
+
+****************** jiwell-sms部署 *********************
+
+docker run -p 8086:8086 --name jiwell-sms \
+-v /etc/localtime:/etc/localtime \
+-v /mydata/app/sms/logs:/var/logs \
+-d jiwell/jiwell-sms:1.0.0-SNAPSHOT
+
+****************** jiwell-fcm部署 *********************
+
+docker run -p 10080:10080 --name jiwell-fcm \
+-v /etc/localtime:/etc/localtime \
+-v /mydata/app/fcm/logs:/var/logs \
+-d jiwell/jiwell-fcm:1.0.0-SNAPSHOT
+
+****************** jiwell-mail部署 *********************
+
+docker run -p 10081:10081 --name jiwell-mail \
+-v /etc/localtime:/etc/localtime \
+-v /mydata/app/mail/logs:/var/logs \
+-d jiwell/jiwell-mail:1.0.0-SNAPSHOT
 
 *********** 前瑞管理程式jiwell-manage-web-master **********
 
@@ -890,7 +916,7 @@ https://kknews.cc/zh-tw/code/x6elxxq.html
 Jenkins SSH 远程执行 Shell 脚本
 https://fanlychie.github.io/post/jenkins-remote-ssh.html
 
-參考這個建立GCP 金
+參考這個建立GCP
 https://98goto.com/bitblog/blog/2020/02/27/我的gcp學習日誌3/
 
 還沒看可能可以。。。。
@@ -1009,3 +1035,330 @@ https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys#creates
 
 华夏ERP基
 https://gitee.com/jishenghua/JSH_ERP
+
+FCM推播參考 https://kknews.cc/zh-tw/tech/ljjaqz2.html
+
+Best Practice for DevOps on GitLab and GCP
+https://ithelp.ithome.com.tw/articles/10213139
+
+properties 轉 yml工具，也支持yml轉properties
+https://www.toyaml.com/index.html
+
+SSH 及GCP SSH設定參考（正在試一直失敗）
+產生SSH Key並且透過KEY進行免密碼登入
+https://xenby.com/b/220-教學-產生ssh-key並且透過key進行免密碼登入
+
+https://readbook-tw.gitbooks.io/git-jenkins-docker-workshop/content/jenkins/setup/ssh.html
+Docker Jenkins Pipeline配置ssh key从gitlab拉取代码
+https://blog.csdn.net/qq_38983728/article/details/85223685
+
+b5647f6320064e64885aeeced6a5cab6cd
+
+為 Jenkins User 建立 SSH Keys
+
+SSH 在自動化的過程扮演很重要的角色，因此我們需要先將 jenkins 的 ssh key 產生出來
+
+透過 jenkins user 建立 ssh key
+
+首先透過下面指令切換到 jenkins 這個 user
+
+sudo su - jenkins
+
+接著透過下面指令產生 ssh key
+
+ssh-keygen -t rsa
+
+default 會產生在 ~/.ssh 將會有 id_rsa, id_rsa.pub 這兩個檔案
+
+如下：
+Your identification has been saved in /var/jenkins_home/.ssh/id_rsa.
+Your public key has been saved in /var/jenkins_home/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:ykb0jADnrwNo8nLzvSGWeiUp2aX8Gy8DavHWvcD9CwE jenkins@d4e12b008090
+The key's randomart image is:
++---[RSA 2048]----+
+|  . .            |
+|   +             |
+|    o E          |
+| .   +.=         |
+|o..+ ++ S        |
+|o.+.B*.o .       |
+|. +=**O.o        |
+| oo=+===.o       |
+| ..o. +=o.o.     |
++----[SHA256]-----+
+public key 如下
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDenqehH1uIKFIcnjVVU+lYooKA+uzwfvxZHUvlhGHWOwf04Yh5bfqw0kpvZZ57uAufzAVlQHJjoos
+      E4SaMivYYJvZnubVHTfQfecU8ghsR1BmD0dLlW59Lhtu2NNzl0b+/eo5LwCW3K0+3epBiAPYqotHYjk4zUb3EmPOYr5jVf4g6amlWFo/gZYQOHpbAVh
+      51ZcdKljRI8ytQlwm0S7B8/3vFnHoA+dHf6te60GCkRJ1MQc7iIOWqDQd+eoRDZLrs53QSW5hDtW0cQCx6650Cu8/3K5CcKcTH8NXrkCpp+quBlADwL
+      IFqwiZCV2f54Cb1+QByZuxyG2NoMr5loD/7 jenkins@d4e12b008090" >> ~/.ssh/authorized_keys
+
+passwd root
+New password:W8786107u
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub azureuser@myserver
+
+private key
+
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEA3p6noR9biChSHJ41VVPpWKKCgPrs8H78WR1L5YRh1jsH9OGI
+eW36sNJKb2Wee7gLn8wFZUByY6KLBOEmjIr2GCb2Z7m1R030H3nFPIIbEdQZg9HS
+5VufS4bbtjTc5dG/v3qOS8AltytPt3qQYgD2KqLR2I5OM1G9xJjzmK+Y1X+IOmpp
+VhaP4GWEDh6WwFYedWXHSpY0SPMrUJcJtEuwfP97xZx6APnR3+rXutBgpESdTEHO
+4iDlqg0HfnqEQ2S67Od0EluYQ7VtHEAseuudArvP9yuQnCnEx/DV65AqafqrgZQA
+8CyBasImQldn+eAm9fkAcmbschtjaDK+ZaA/+wIDAQABAoIBAHSgrbVNlkhox0vS
+3qILSe5zhOdJjiQYgt+053QgvJjdaDe0iCkFoxZLtU9S74plS0G2QwVelA76stYl
+lmp+ypqwntqMghoPDtwGkXw3tTLL6WoT3Obn7zZEOorkeu2zyz7nV/D7g0bI3ASF
+o2qUkmKX1lQbiYB9TGvYrZXKOMlwAoiJBBj8HmkTXngYd++4VkDwmpuDXZuf/Ek7
+4SWmYAdUfRB7R82xotRzHcCqBV4anEkOwcS1uXizVoQ29Pp1jtX1qoTSPeINGsTa
+Iz3wTSTDW2mQrsSmrO2t6btwuysHpzRzEBRSJ0NLIBZn0zMH67B1JbKGP4GBGUmM
+6i0fPTECgYEA9wAkI7j/3yEcMnD9e5gIhFEL1fCMVJuKzneiIVaDMW0oOYtqiQqP
+RNV4fB7T1tf0jPE1xHPTGkXzejBYt7hDNMOZtCglVc6L6h/rn7HqsG4uiFrsjuCe
+vUkaxkhK9YwOLpJGVMYpc5WPKehu+vDLJMwKAG2GpcdzNUnZ7f2jSXcCgYEA5rsb
+AaxML3psQwTDVkxfwCivNwGfoUMKgVBflnEGDozvwbh0iaC0Ta17z43pMl2868c2
+m/qtbQmbEkgkJXCzyhsDknkvizZ2ngHTf3fHkDDBO6TOGl9rOXL5f0a8YZ7eSiwk
+yzsozN0o0fV9KhpAsjsbOpjd0LZBFdYgAAkx3p0CgYEAyJsRvv2iuqrehs0j4nyA
+9k4IqdI7dv/5BWU+hYsI9FyuXcYwWWr9Hy+tMkmrTYOJd+rz+0ECxATqEWQwuc3q
+r3DpZdtxLzaYhic0rDfI31AtdMs783LVGfDE0SOn1bPRVNuySWnEAr8GTkgb0q08
+n/8jZGOQBxZtKGt5lwP32VMCgYA9E2I+uyEfoERwKR6cBXODJkHbSa67vUdWm7Px
+2tFDoMMGgJE4rTWNKlMPyfzkvDN6Ji2qdFzb9CL8X+RRlNfCtAvqBfIz46LaiJk3
+sLk+zekYpLN5/7AecPTiYBMVtDwbXjwPIAXY1OItUdJkBrcBduvqQvTUfqoT4a5u
+1ABDcQKBgQDcnJSolQCIXPLJtcnonlThTo9EiQKUK1otk0uq2tWTe/KFVdpi+tUe
+LV2TgxmaHOLFPg55m3IjIx4r6QCgurHLV96nQ5I5Mug/ffcmceeZB4S8vAL95x3H
+bZUhXdJ0tKdZjwYb9eVff5Y3pVtb5jKp71++f43EgdYDXjz9baYmXg==
+-----END RSA PRIVATE KEY-----
+
+谷歌云（GCP)开启密码与root用户登陆
+https://zhuanlan.zhihu.com/p/75014852
+
+重開SSH
+1.service sshd restart
+2.systemctl restart sshd.service
+3.systemctl enable sshd.service
+
+ssh 評證設定可參考如下：
+如何使用Jenkins部署maven項目到遠端伺服器？只需要這簡單幾步
+原文網址：https://kknews.cc/code/e64qexy.html
+
+遠端連線ssh可成功。其他帳號不行耶？
+ssh jenkins@10.140.0.6 
+jenkins內的所有帳號，己可連線至GCP
+
+https://www.itread01.com/p/159517.html
+SSH遠端登入配置檔案sshd_config詳解
+
+
+Jenkins 打包設定
+1.將上傳的jiwell-config.sh 拷背至/mydata/sh
+cp /home/w_sirius/jiwell-config.sh /mydata/sh/jiwell-config.sh
+2.給.sh腳本添加可執行權限：
+chmod +x ./jiwell-config.sh
+3.執行.sh腳本，測試使用，可以不執行：
+./jiwell-config.sh
+
+4.在Jenkins中創建執行任務(請參考 使用Jenkins一键打包部署SpringBoot应用 https://juejin.cn/post/6844904022097264648)
+
+執行Jenkins如出現，以下錯誤可參考如下 http://andy51002000.blogspot.com/2019/02/docker-permission-denied.html
+docker: Got permission denied while trying to connect to the Docker daemon socket at unix
+docker: permission denied
+因為問題是出在權限不足, 如果以上方法都不管用的話, 可以手動修改權限來解決這個問題
+sudo chmod 777 /var/run/docker.sock
+
+#Jenkins 打包設定
+希望達成功能：使用Jenkins直接打包上傳GCP後直接執行jar開啓伺服器（即自動打包功能）.
+
+Jenkins端工作事項
+
+為 Jenkins User 建立 SSH Keys
+SSH 在自動化的過程扮演很重要的角色，因此我們需要先將 jenkins 的 ssh key 產生出來
+透過 jenkins user 建立 ssh key
+首先透過下面指令切換到 jenkins 這個 user
+sudo su - jenkins
+接著透過下面指令產生 ssh key
+ssh-keygen -t rsa
+（default 會產生在 ~/.ssh 將會有 id_rsa, id_rsa.pub 這兩個檔案)
+完成後如下：
+Your identification has been saved in /var/jenkins_home/.ssh/id_rsa.
+Your public key has been saved in /var/jenkins_home/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:ykb0jADnrwNo8nLzvSGWeiUp2aX8Gy8DavHWvcD9CwE jenkins@d4e12b008090
+The key's randomart image is:
++---[RSA 2048]----+
+|  . .            |
+|   +             |
+|    o E          |
+| .   +.=         |
+|o..+ ++ S        |
+|o.+.B*.o .       |
+|. +=**O.o        |
+| oo=+===.o       |
+| ..o. +=o.o.     |
++----[SHA256]-----+
+
+public key 如下
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDenqehH1uIKFIcnjVVU+lYooKA+uzwfvxZHUvlhGHWOwf04Yh5bfqw0kpvZZ57uAufzAVlQHJjoos
+E4SaMivYYJvZnubVHTfQfecU8ghsR1BmD0dLlW59Lhtu2NNzl0b+/eo5LwCW3K0+3epBiAPYqotHYjk4zUb3EmPOYr5jVf4g6amlWFo/gZYQOHpbAVh
+51ZcdKljRI8ytQlwm0S7B8/3vFnHoA+dHf6te60GCkRJ1MQc7iIOWqDQd+eoRDZLrs53QSW5hDtW0cQCx6650Cu8/3K5CcKcTH8NXrkCpp+quBlADwL
+IFqwiZCV2f54Cb1+QByZuxyG2NoMr5loD/7 jenkins@d4e12b008090
+
+passwd root
+New password:W8786107u
+
+將產出的public key，設定到GCP上
+方法如下
+
+登入GCP → Compute Engine → 中繼資料 → SSH 金鑰(將public key內容加入即可)
+可參考 GCP-ubuntu-連線進入VM 設定 https://snoopy30485.github.io/2018/06/21/GCP-ubuntu-連線進入VM/
+
+完畢後，可以進入Jenkins機器內，執行 ssh jenkins@10.140.0.6 即列連線成功
+如何進Jenkins機器內如下：
+打開GCP->打開ssh連線-》進入ssh 連線後，先切換至root帳號：
+sudo su - 
+後執行 docker exec -it jenkins /bin/bash 進入jenkins container內 在切換到jenkins帳號如下
+su - jenkins 後執行 ssh jenkins@10.140.0.6看是否成功。沒有就是設定有問題？
+
+完成後就進行。Jenkins端設定。4.在Jenkins中創建執行任務(請參考 使用Jenkins一键打包部署SpringBoot应用 https://juejin.cn/post/6844904022097264648)
+設定
+
+執行Jenkins如出現，以下錯誤可參考如下 http://andy51002000.blogspot.com/2019/02/docker-permission-denied.html
+docker: Got permission denied while trying to connect to the Docker daemon socket at unix
+docker: permission denied
+因為問題是出在權限不足, 如果以上方法都不管用的話, 可以手動修改權限來解決這個問題
+可在連線的server上執行如下指令：
+sudo chmod 777 /var/run/docker.sock
+
+private key
+
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEA3p6noR9biChSHJ41VVPpWKKCgPrs8H78WR1L5YRh1jsH9OGI
+eW36sNJKb2Wee7gLn8wFZUByY6KLBOEmjIr2GCb2Z7m1R030H3nFPIIbEdQZg9HS
+5VufS4bbtjTc5dG/v3qOS8AltytPt3qQYgD2KqLR2I5OM1G9xJjzmK+Y1X+IOmpp
+VhaP4GWEDh6WwFYedWXHSpY0SPMrUJcJtEuwfP97xZx6APnR3+rXutBgpESdTEHO
+4iDlqg0HfnqEQ2S67Od0EluYQ7VtHEAseuudArvP9yuQnCnEx/DV65AqafqrgZQA
+8CyBasImQldn+eAm9fkAcmbschtjaDK+ZaA/+wIDAQABAoIBAHSgrbVNlkhox0vS
+3qILSe5zhOdJjiQYgt+053QgvJjdaDe0iCkFoxZLtU9S74plS0G2QwVelA76stYl
+lmp+ypqwntqMghoPDtwGkXw3tTLL6WoT3Obn7zZEOorkeu2zyz7nV/D7g0bI3ASF
+o2qUkmKX1lQbiYB9TGvYrZXKOMlwAoiJBBj8HmkTXngYd++4VkDwmpuDXZuf/Ek7
+4SWmYAdUfRB7R82xotRzHcCqBV4anEkOwcS1uXizVoQ29Pp1jtX1qoTSPeINGsTa
+Iz3wTSTDW2mQrsSmrO2t6btwuysHpzRzEBRSJ0NLIBZn0zMH67B1JbKGP4GBGUmM
+6i0fPTECgYEA9wAkI7j/3yEcMnD9e5gIhFEL1fCMVJuKzneiIVaDMW0oOYtqiQqP
+RNV4fB7T1tf0jPE1xHPTGkXzejBYt7hDNMOZtCglVc6L6h/rn7HqsG4uiFrsjuCe
+vUkaxkhK9YwOLpJGVMYpc5WPKehu+vDLJMwKAG2GpcdzNUnZ7f2jSXcCgYEA5rsb
+AaxML3psQwTDVkxfwCivNwGfoUMKgVBflnEGDozvwbh0iaC0Ta17z43pMl2868c2
+m/qtbQmbEkgkJXCzyhsDknkvizZ2ngHTf3fHkDDBO6TOGl9rOXL5f0a8YZ7eSiwk
+yzsozN0o0fV9KhpAsjsbOpjd0LZBFdYgAAkx3p0CgYEAyJsRvv2iuqrehs0j4nyA
+9k4IqdI7dv/5BWU+hYsI9FyuXcYwWWr9Hy+tMkmrTYOJd+rz+0ECxATqEWQwuc3q
+r3DpZdtxLzaYhic0rDfI31AtdMs783LVGfDE0SOn1bPRVNuySWnEAr8GTkgb0q08
+n/8jZGOQBxZtKGt5lwP32VMCgYA9E2I+uyEfoERwKR6cBXODJkHbSa67vUdWm7Px
+2tFDoMMGgJE4rTWNKlMPyfzkvDN6Ji2qdFzb9CL8X+RRlNfCtAvqBfIz46LaiJk3
+sLk+zekYpLN5/7AecPTiYBMVtDwbXjwPIAXY1OItUdJkBrcBduvqQvTUfqoT4a5u
+1ABDcQKBgQDcnJSolQCIXPLJtcnonlThTo9EiQKUK1otk0uq2tWTe/KFVdpi+tUe
+LV2TgxmaHOLFPg55m3IjIx4r6QCgurHLV96nQ5I5Mug/ffcmceeZB4S8vAL95x3H
+bZUhXdJ0tKdZjwYb9eVff5Y3pVtb5jKp71++f43EgdYDXjz9baYmXg==
+-----END RSA PRIVATE KEY-----
+
+Jiwell Jenkins上傳打包設定：當Jenkins及GCP兩端環境設定完畢，且ssh連線可通狀況下，即可進行上架設定
+
+jiwell-config 打包設定
+    1.將jiwell-config.sh上傳到GCP上 
+    2.將上傳的jiwell-config.sh 拷背至/mydata/sh 指令如下：
+        cp /home/w_sirius/jiwell-config.sh /mydata/sh/jiwell-config.sh
+    3.給.sh腳本添加可執行權限 如下
+        chmod +x ./jiwell-config.sh 或使用chmod +x ./jiwell-*
+
+jiwell-config 打包設定
+    1.將jiwell-config.sh上傳到GCP上 
+    2.將上傳的jiwell-config.sh 拷背至/mydata/sh 指令如下：
+        cp /home/w_sirius/jiwell-config.sh /mydata/sh/jiwell-config.sh
+    3.給.sh腳本添加可執行權限 如下
+        chmod +x ./jiwell-config.sh 或使用chmod +x ./jiwell-*
+        
+jiwell-registry
+Jenkins 打包設定
+    1.將上傳的jiwell-registry.sh 拷背至/mydata/sh
+    cp /home/w_sirius/jiwell-registry.sh /mydata/sh/jiwell-registry.sh
+    2.給.sh腳本添加可執行權限：
+    使用chmod +x ./jiwell-* 或 chmod +x ./jiwell-registry.sh
+    3.執行.sh腳本，測試使用，可以不執行：
+    ./jiwell-registry.sh
+其他參照如上。
+
+jiwell-api-gateway Jenkins 打包設定
+    1.cp /home/w_sirius/jiwell-api-gateway.sh /mydata/sh/jiwell-api-gateway.sh
+    2.chmod +x ./jiwell-*
+
+
+jiwell-user-service
+Jenkins 打包設定
+1.cp /home/w_sirius/jiwell-user-service.sh /mydata/sh/jiwell-user-service.sh
+2.chmod +x ./jiwell-* 
+
+
+jiwell-authentication-service
+Jenkins 打包設定
+1.cp /home/w_sirius/jiwell-authentication-service.sh /mydata/sh/jiwell-authentication-service.sh
+2.chmod +x ./jiwell-* 
+
+打包遇到 server 無法註冊成功Eureka ，檢查一下 mydata/rsa有沒有rsa.pri & rsa.pub兩個檔案。沒有要想辦法生出來。
+不然會無註冊到Eureka
+目前暫時解法，直接從local傳上去
+
+找到原因 jiwell-authentication-service.sh 執行docker時，沒加到rsa路徑 -v /mydata/rsa:/mydata/rsa \
+
+#!/usr/bin/env bash
+app_name='jiwell-authentication-service'
+app_port='8087'
+docker stop ${app_name}
+echo '----stop container----'
+docker rm ${app_name}
+echo '----rm container----'
+docker rmi `docker images | grep none | awk '{print $3}'`
+echo '----rm none images----'
+docker run -p ${app_port}:${app_port} --name ${app_name} \
+-v /etc/localtime:/etc/localtime \
+-v /mydata/app/${app_name}/logs:/var/logs \
+#-v /mydata/rsa:/mydata/rsa \ 原本沒加到這行？？
+-d jiwell/${app_name}:1.0.0-SNAPSHOT
+echo '----start container----'
+
+cp /home/w_sirius/rsa.pri /mydata/rsa/rsa.pri
+cp /home/w_sirius/rsa.pub /mydata/rsa/rsa.pub
+
+chmod +x ./rsa.pri
+chmod +x ./rsa.pub
+
+
+
+
+jiwell-item-service
+Jenkins 打包設定
+1.cp /home/w_sirius/jiwell-item-service.sh /mydata/sh/jiwell-item-service.sh
+2.chmod +x ./jiwell-* 
+
+jiwell-order-service
+Jenkins 打包設定
+1.cp /home/w_sirius/jiwell-order-service.sh /mydata/sh/jiwell-order-service.sh
+2.chmod +x ./jiwell-* 
+
+jiwell-car
+Jenkins 打包設定
+1.cp /home/w_sirius/jiwell-car.sh /mydata/sh/jiwell-car.sh
+2.chmod +x ./jiwell-* 
+
+jiwell-search
+Jenkins 打包設定
+1.cp /home/w_sirius/jiwell-search.sh /mydata/sh/jiwell-search.sh
+2.chmod +x ./jiwell-* 
+
+jiwell-mail
+Jenkins 打包設定
+1.cp /home/w_sirius/jiwell-mail.sh /mydata/sh/jiwell-mail.sh
+2.chmod +x ./jiwell-* 
+
+jiwell-fcm
+Jenkins 打包設定
+1.cp /home/w_sirius/jiwell-fcm.sh /mydata/sh/jiwell-fcm.sh
+2.chmod +x ./jiwell-* 
+
+打包戈
+http://www.mydlq.club/article/16/
