@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-app_name='jiwell-api-gateway'
-app_port='10010'
+app_name='jiwell-mail'
+app_port='10081'
 docker stop ${app_name}
 echo '----stop container----'
 docker rm ${app_name}

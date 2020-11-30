@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-app_name='jiwell-order-service'
+app_name='jiwell-cart'
 app_port='8088'
 docker stop ${app_name}
 echo '----stop container----'
