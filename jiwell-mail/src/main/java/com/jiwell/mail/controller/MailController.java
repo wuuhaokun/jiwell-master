@@ -17,7 +17,7 @@ import java.util.Map;
  * Feature:
  */
 @RestController
-@RequestMapping("mail")
+//@RequestMapping("mail")
 public class MailController {
 
     @Autowired
@@ -40,7 +40,6 @@ public class MailController {
         mailService.sendTemplateMail(subject,mail, params);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }
 
 //Mac 專用的應用程式密碼:nsgupoiakdhltfte
