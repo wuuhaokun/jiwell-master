@@ -1,7 +1,7 @@
 spring:
   cloud:
     config:
-      name: registry
+      name: favorite
       profile: prod
       label: master
       uri: http://10.140.0.8:10011
