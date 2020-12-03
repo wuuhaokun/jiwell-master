@@ -63,6 +63,14 @@ public interface GoodsApi {
     SpuBo queryGoodsById(@PathVariable("id") Long id);
 
     /**
+     * 根据id查询商品
+     * @param ids
+     * @return
+     */
+    @GetMapping("spu/list")
+    //SpuBo queryGoodsById(@PathVariable("id") Long id);
+    List<SpuBo> queryGoodsByIds(@RequestParam("ids") List<Long> ids);
+    /**
      * 根据sku的id查询sku
      * @param id
      * @return

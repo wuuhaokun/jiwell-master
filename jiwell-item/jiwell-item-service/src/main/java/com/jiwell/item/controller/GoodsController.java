@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.util.List;
 
+
 //jiwei
 //jiwell.com
 //gwell.com
@@ -96,6 +97,21 @@ public class GoodsController{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.ok(spuBo);
+    }
+
+    /**
+     * 根据Spu的ids查询其下所有的SpuBo
+     * @param ids
+     * @return
+     */
+    @GetMapping("spu/list")
+    public ResponseEntity<List<SpuBo>> queryGoodsByIds(@RequestParam("ids") List<Long> ids){
+        List<SpuBo> list = this.goodsService.queryGoodsByIds(ids);
+        if (list == null || list.size() < 1){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }else {
+            return ResponseEntity.ok(list);
+        }
     }
 
     /**

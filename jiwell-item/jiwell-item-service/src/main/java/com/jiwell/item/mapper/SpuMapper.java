@@ -1,6 +1,8 @@
 package com.jiwell.item.mapper;
 
+import com.jiwell.item.pojo.Brand;
 import com.jiwell.item.pojo.Spu;
+import tk.mybatis.mapper.additional.idlist.SelectByIdListMapper;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
@@ -9,5 +11,5 @@ import tk.mybatis.mapper.common.Mapper;
  * Feature:
  */
 @org.apache.ibatis.annotations.Mapper
-public interface SpuMapper extends Mapper<Spu> {
+public interface SpuMapper extends Mapper<Spu>,SelectByIdListMapper<Spu,Long> {
 }

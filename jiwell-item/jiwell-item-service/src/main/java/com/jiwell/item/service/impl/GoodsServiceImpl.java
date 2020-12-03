@@ -187,44 +187,103 @@ public class GoodsServiceImpl implements GoodsService {
          * 2.商品的包装清单、售后服务
          */
         Spu spu=this.spuMapper.selectByPrimaryKey(id);
-        SpuDetail spuDetail = this.spuDetailMapper.selectByPrimaryKey(spu.getId());
-
-        Example example = new Example(Sku.class);
-        example.createCriteria().andEqualTo("spuId",spu.getId());
-        List<Sku> skuList = this.skuMapper.selectByExample(example);
-        List<Long> skuIdList = new ArrayList<>();
-        for (Sku sku : skuList){
-            skuIdList.add(sku.getId());
-        }
-
-        List<Stock> stocks = this.stockMapper.selectByIdList(skuIdList);
-
-        for (Sku sku:skuList){
-            for (Stock stock : stocks){
-                if (sku.getId().equals(stock.getSkuId())){
-                    sku.setStock(stock.getStock());
-                }
-            }
-        }
-
-        SpuBo spuBo = new SpuBo(spu.getBrandId(),spu.getCid1(),spu.getCid2(),spu.getCid3(),spu.getTitle(),
-                spu.getSubTitle(),spu.getSaleable(),spu.getValid(),spu.getCreateTime(),spu.getLastUpdateTime(), spu.getInternalCategoryId(), spu.getImage());
-
-        //kun add
-        //2.查询spu的商品分类名称，各级分类
-        List<String> nameList = this.categoryService.queryNameByIds(Arrays.asList(spu.getCid1(),spu.getCid2(),spu.getCid3()));
-        //3.拼接名字,并存入
-        spuBo.setCname(StringUtils.join(nameList,"/"));
-        //4.查询品牌名称
-        Brand brand = this.brandMapper.selectByPrimaryKey(spu.getBrandId());
-        //////////////////////////////////
-        spuBo.setBname(brand.getName());
-        spuBo.setSpuDetail(spuDetail);
-        spuBo.setSkus(skuList);
-        spuBo.setId(id);
-        return spuBo;
+        return this.getSpoBo(spu);
+//        SpuDetail spuDetail = this.spuDetailMapper.selectByPrimaryKey(spu.getId());
+//
+//        Example example = new Example(Sku.class);
+//        example.createCriteria().andEqualTo("spuId",spu.getId());
+//        List<Sku> skuList = this.skuMapper.selectByExample(example);
+//        List<Long> skuIdList = new ArrayList<>();
+//        for (Sku sku : skuList){
+//            skuIdList.add(sku.getId());
+//        }
+//
+//        List<Stock> stocks = this.stockMapper.selectByIdList(skuIdList);
+//
+//        for (Sku sku:skuList){
+//            for (Stock stock : stocks){
+//                if (sku.getId().equals(stock.getSkuId())){
+//                    sku.setStock(stock.getStock());
+//                }
+//            }
+//        }
+//
+//        SpuBo spuBo = new SpuBo(spu.getBrandId(),spu.getCid1(),spu.getCid2(),spu.getCid3(),spu.getTitle(),
+//                spu.getSubTitle(),spu.getSaleable(),spu.getValid(),spu.getCreateTime(),spu.getLastUpdateTime(), spu.getInternalCategoryId(), spu.getImage());
+//
+//        //kun add
+//        //2.查询spu的商品分类名称，各级分类
+//        List<String> nameList = this.categoryService.queryNameByIds(Arrays.asList(spu.getCid1(),spu.getCid2(),spu.getCid3()));
+//        //3.拼接名字,并存入
+//        spuBo.setCname(StringUtils.join(nameList,"/"));
+//        //4.查询品牌名称
+//        Brand brand = this.brandMapper.selectByPrimaryKey(spu.getBrandId());
+//        //////////////////////////////////
+//        spuBo.setBname(brand.getName());
+//        spuBo.setSpuDetail(spuDetail);
+//        spuBo.setSkus(skuList);
+//        spuBo.setId(id);
+        //return spuBo;
     }
 
+    /**
+     * 根据ids查询商品信息
+     * @param ids
+     * @return
+     */
+    @Override
+    public List<SpuBo> queryGoodsByIds(List<Long> ids) {
+        List<SpuBo> spuBoList = new ArrayList<>();
+        List<Spu> spuList = this.spuMapper.selectByIdList(ids);
+        for(Spu spu: spuList){
+            SpuBo spuBo = this.getSpoBo(spu);
+            spuBoList.add(spuBo);
+        }
+        return spuBoList;
+        /**
+         * 第一页所需信息如下：
+         * 1.商品的分类信息、所属品牌、商品标题、商品卖点（子标题）
+         * 2.商品的包装清单、售后服务
+         */
+//        long id = 0;
+//        Spu spu=this.spuMapper.selectByPrimaryKey(id);
+//        SpuDetail spuDetail = this.spuDetailMapper.selectByPrimaryKey(spu.getId());
+//
+//        Example example = new Example(Sku.class);
+//        example.createCriteria().andEqualTo("spuId",spu.getId());
+//        List<Sku> skuList = this.skuMapper.selectByExample(example);
+//        List<Long> skuIdList = new ArrayList<>();
+//        for (Sku sku : skuList){
+//            skuIdList.add(sku.getId());
+//        }
+//
+//        List<Stock> stocks = this.stockMapper.selectByIdList(skuIdList);
+//
+//        for (Sku sku:skuList){
+//            for (Stock stock : stocks){
+//                if (sku.getId().equals(stock.getSkuId())){
+//                    sku.setStock(stock.getStock());
+//                }
+//            }
+//        }
+//
+//        SpuBo spuBo = new SpuBo(spu.getBrandId(),spu.getCid1(),spu.getCid2(),spu.getCid3(),spu.getTitle(),
+//                spu.getSubTitle(),spu.getSaleable(),spu.getValid(),spu.getCreateTime(),spu.getLastUpdateTime(), spu.getInternalCategoryId(), spu.getImage());
+//
+//        //kun add
+//        //2.查询spu的商品分类名称，各级分类
+//        List<String> nameList = this.categoryService.queryNameByIds(Arrays.asList(spu.getCid1(),spu.getCid2(),spu.getCid3()));
+//        //3.拼接名字,并存入
+//        spuBo.setCname(StringUtils.join(nameList,"/"));
+//        //4.查询品牌名称
+//        Brand brand = this.brandMapper.selectByPrimaryKey(spu.getBrandId());
+//        //////////////////////////////////
+//        spuBo.setBname(brand.getName());
+//        spuBo.setSpuDetail(spuDetail);
+//        spuBo.setSkus(skuList);
+//        spuBo.setId(id);
+//        return spuBo;
+    }
     /**
      * 更新商品信息
      * @param spuBo
@@ -555,5 +614,43 @@ public class GoodsServiceImpl implements GoodsService {
         seckillGoods.forEach(goods -> hashOperations.put(goods.getSkuId().toString(),goods.getStock().toString()));
     }
 
+    private SpuBo getSpoBo(Spu spu){
+        //Spu spu=this.spuMapper.selectByPrimaryKey(id);
+        SpuDetail spuDetail = this.spuDetailMapper.selectByPrimaryKey(spu.getId());
+        Example example = new Example(Sku.class);
+        example.createCriteria().andEqualTo("spuId",spu.getId());
+        List<Sku> skuList = this.skuMapper.selectByExample(example);
+        List<Long> skuIdList = new ArrayList<>();
+        for (Sku sku : skuList){
+            skuIdList.add(sku.getId());
+        }
+
+        List<Stock> stocks = this.stockMapper.selectByIdList(skuIdList);
+
+        for (Sku sku:skuList){
+            for (Stock stock : stocks){
+                if (sku.getId().equals(stock.getSkuId())){
+                    sku.setStock(stock.getStock());
+                }
+            }
+        }
+
+        SpuBo spuBo = new SpuBo(spu.getBrandId(),spu.getCid1(),spu.getCid2(),spu.getCid3(),spu.getTitle(),
+                spu.getSubTitle(),spu.getSaleable(),spu.getValid(),spu.getCreateTime(),spu.getLastUpdateTime(), spu.getInternalCategoryId(), spu.getImage());
+
+        //kun add
+        //2.查询spu的商品分类名称，各级分类
+        List<String> nameList = this.categoryService.queryNameByIds(Arrays.asList(spu.getCid1(),spu.getCid2(),spu.getCid3()));
+        //3.拼接名字,并存入
+        spuBo.setCname(StringUtils.join(nameList,"/"));
+        //4.查询品牌名称
+        Brand brand = this.brandMapper.selectByPrimaryKey(spu.getBrandId());
+        //////////////////////////////////
+        spuBo.setBname(brand.getName());
+        spuBo.setSpuDetail(spuDetail);
+        spuBo.setSkus(skuList);
+        spuBo.setId(spu.getId());
+        return spuBo;
+    }
 }
 

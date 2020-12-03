@@ -39,6 +39,13 @@ public interface GoodsService {
     SpuBo queryGoodsById(Long id);
 
     /**
+     * 根据ids查询商品信息
+     * @param ids
+     * @return
+     */
+    List<SpuBo> queryGoodsByIds(List<Long> ids);
+
+    /**
      * 更新商品信息
      * @param spuBo
      */
