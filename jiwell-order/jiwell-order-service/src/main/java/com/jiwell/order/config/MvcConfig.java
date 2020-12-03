@@ -51,7 +51,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
     }
 
-
+    //如果加入以下程式，會出現某些int型別，自動轉成string。所以使用上要注意
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 
