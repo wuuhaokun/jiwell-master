@@ -3,6 +3,7 @@ package com.jiwell.seckill.config;
 
 import feign.Feign;
 
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -18,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
  * @Feature: order服务配置，转发header
  */
 @Configuration
+//這個class 是為feign的HttpServletRequest資料傳遞使用，沒加會無法取得HttpServletRequest相關資料，使用端範例@FeignClient(value = "order-service",configuration = OrderConfig.class)
 public class OrderConfig {
     @Bean
     public Feign.Builder feignBuilder(){
