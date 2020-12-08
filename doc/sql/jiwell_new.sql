@@ -973,22 +973,20 @@ INSERT INTO `tb_specification` VALUES (76, '[{\"group\":\"主體\",\"params\":[{
 INSERT INTO `tb_specification` VALUES (90, '[{\"group\":\"主體\",\"params\":[{\"k\":\"品牌\",\"searchable\": false,\"global\":true,\"numerical\":false,\"unit\":\"\",\"options\":[]},{\"k\":\"適用機型\",\"searchable\":false,\"global\":false,\"numerical\":false,\"unit\":\"\",\"options\":[]}]} ,{\"group\":\"規格尺寸\",\"params\":[{\"k\":\"貼膜尺寸\",\"searchable\":true,\"global\": true,\"numerical\":true,\"unit\":\"英寸\",\"options\":[]},{\"k\":\"材質\",\"searchable\" :true,\"global\":true,\"numerical\":false,\"unit\":\"\",\"options\":[\"鋼化玻璃\",\"水凝膜\ "]},{\"k\":\"類型\",\"searchable\":true,\"global\":true,\"numerical\":false,\"unit\":\"\ ",\"options\":[\"前膜\",\"後膜\",\"磨砂\",\"防指紋\",\"高透膜\"]}]}]') ;
 INSERT INTO `tb_specification` VALUES (105, '[{\"group\":\"主體參數\",\"params\":[{\"k\":\"品牌\",\"searchable\" :false,\"global\":true,\"numerical\":false,\"unit\":\"\",\"options\":[]},{\"k\":\"型號\",\"searchable\":false,\"global\":false,\"numerical\":false,\"unit\":\"\",\"options\":[]},{\ "k\":\"產品顏色\",\"searchable\":false,\"global\":true,\"numerical\":false,\"unit\":\"\",\"options \":[]},{\"k\":\"上市日期\",\"searchable\":false,\"global\":true,\"numerical\":false,\"unit\" :\"\",\"options\":[]},{\"k\":\"能效等級\",\"searchable\":true,\"global\":true,\"numerical\ ":false,\"unit\":\"\",\"options\":[\"一級能效\",\"二級能效\",\"三級能效\",\"政府節能\"]}]},{\"group\":\"顯示參數\",\"params\":[{\"k\":\"屏幕尺寸\",\"searchable\":true, \"global\":false,\"numerical\":true,\"unit\":\"英寸\",\"options\":[]},{\"k\":\"屏幕分辨率\",\"searchable\":true,\"global\":true,\"numerical\":false,\"unit\":\"\",\"options\":[\"超高清\ ",\"全高清\",\"高清\"]}]}]');
 
+
 -- ----------------------------
 -- Table structure for tb_shop_favorite 我的最愛
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_shop_favorite`;
 CREATE TABLE `tb_shop_favorite` (
-                                  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                                  `user_id` bigint(20) NOT NULL  COMMENT '用戶id',
                                   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '訂單創建時間',
                                   `modify_time` datetime(0) NULL DEFAULT NULL COMMENT '訂單創建時間',
-                                  `spu_id` bigint(20) NOT NULL,
-                                  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用戶id',
-                                  PRIMARY KEY (`id`) USING BTREE
+                                  `spu_ids` varchar(1500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT 'spu_id list',
+                                  PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
-INSERT INTO `tb_shop_favorite` (`id`, `create_time`, `modify_time`, `spu_id`, `user_id`) VALUES (1, '2020-1-24 22:34:19', '2020-1-27 22:34:19', 2600242, 1);
-INSERT INTO `tb_shop_favorite` (`id`, `create_time`, `modify_time`, `spu_id`, `user_id`) VALUES (2, '2020-1-24 22:34:19', '2020-2-24 23:34:19', 2600242, 1);
-INSERT INTO `tb_shop_favorite` (`id`, `create_time`, `modify_time`, `spu_id`, `user_id`) VALUES (3, '2018-04-21 15:55:15', '2020-3-24 22:34:19', 26002423, 1);
+INSERT INTO `tb_shop_favorite` VALUES (1, '2020-1-24 22:34:19', '2020-1-27 22:34:19','1,2,4');
 -- ----------------------------
 
 -- ----------------------------
