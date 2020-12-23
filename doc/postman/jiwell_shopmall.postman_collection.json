@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "4e767ec0-1452-4bd8-9415-0a71c0314b28",
 		"name": "jiwell_shopmall",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
@@ -11,10 +11,16 @@
 				{
 					"name": "auth",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJqaXdlbGwiLCJwaG9uZSI6IjE1Mzk3MDg5MDAxIiwiZ2VuZGVyIjoiZmVtYWxlIiwibmlja25hbWUiOiLmpbXlvq4iLCJleHAiOjE4NjMxNTQ3NzZ9.LZtsffAREmpygbsJICmTEzLS3CUjY5NavxLKm3e9InK0Exx4K6A2VOPd0cKY7Es8rbYvvc92ug8N6LGAuVr7C5j-RuZPV6rFsvM-oXr9DNnAwiKsN7Hh2u1KCVvVdlJhOVS8UB7qEfXKhyEOWvaDDHeGuJ_Vpz3TS1MdoGUGFjY"
+							}
+						},
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://{{Domain}}{{AuthItem}}/accredit?account=lyj123123&password=123456",
+							"raw": "http://{{Domain}}{{AuthItem}}/accredit?account=jiwell&password=123456",
 							"protocol": "http",
 							"host": [
 								"{{Domain}}{{AuthItem}}"
@@ -24,8 +30,8 @@
 							],
 							"query": [
 								{
-									"key": "username",
-									"value": "lyj123123"
+									"key": "account",
+									"value": "jiwell"
 								},
 								{
 									"key": "password",
@@ -42,9 +48,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": ""
-						},
+						"url": "",
 						"description": "用戶驗證"
 					},
 					"response": []
@@ -54,31 +58,45 @@
 					"request": {
 						"auth": {
 							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MjksInVzZXJuYW1lIjoibHlqMTIzMTIzIiwicGhvbmUiOiIxMzI4OTM5MzY5MyIsImdlbmRlciI6Im1hbGUiLCJuaWNrbmFtZSI6Im5pY2tuYW1lIiwiZXhwIjoxODQ5ODQ3NDQ1fQ.Yl_JsVYYTDsD0R0tAfdwTIKDaitGGCgjczEUzSrFZE1tdlH8idsajxhk1E-6Rdmjr1gM_RnOGbUin9cKsW7mkT2823UefYqNMDYhE7fwZFU6lzP9qpVo_b3fktMKG1Bffyy4-Xacz1sERQtIlr6HD4FhkcTxiRTRAA7RyaCCZ2s",
-									"type": "string"
-								}
-							]
+							"bearer": {
+								"token": "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MjksInVzZXJuYW1lIjoibHlqMTIzMTIzIiwicGhvbmUiOiIxMzI4OTM5MzY5MyIsImdlbmRlciI6Im1hbGUiLCJuaWNrbmFtZSI6Im5pY2tuYW1lIiwiZXhwIjoxODQ5ODQ3NDQ1fQ.Yl_JsVYYTDsD0R0tAfdwTIKDaitGGCgjczEUzSrFZE1tdlH8idsajxhk1E-6Rdmjr1gM_RnOGbUin9cKsW7mkT2823UefYqNMDYhE7fwZFU6lzP9qpVo_b3fktMKG1Bffyy4-Xacz1sERQtIlr6HD4FhkcTxiRTRAA7RyaCCZ2s"
+							}
 						},
 						"method": "GET",
 						"header": [],
+						"url": "http://{{Domain}}{{AuthItem}}/verify1"
+					},
+					"response": []
+				},
+				{
+					"name": "accredit/code",
+					"request": {
+						"method": "POST",
+						"header": [],
 						"url": {
-							"raw": "http://{{Domain}}{{AuthItem}}/verify1",
+							"raw": "http://{{Domain}}{{AuthItem}}/accredit?account=jiwell&password=123456",
 							"protocol": "http",
 							"host": [
 								"{{Domain}}{{AuthItem}}"
 							],
 							"path": [
-								"verify1"
+								"accredit"
+							],
+							"query": [
+								{
+									"key": "account",
+									"value": "jiwell"
+								},
+								{
+									"key": "password",
+									"value": "123456"
+								}
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "User",
@@ -215,18 +233,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "http://{{Domain}}{{UserItem}}/check/13289393693/1",
-							"protocol": "http",
-							"host": [
-								"{{Domain}}{{UserItem}}"
-							],
-							"path": [
-								"check",
-								"13289393693",
-								"1"
-							]
-						},
+						"url": "http://{{Domain}}{{UserItem}}/check/13289393693/1",
 						"description": "data = 註冊手機號或用戶名，\ntype = 1（輪入手機號）、2（輪入用戶名）"
 					},
 					"response": []
@@ -264,30 +271,6 @@
 					"response": []
 				},
 				{
-					"name": "notification",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://{{Domain}}{{UserItem}}/notification?content=123456",
-							"protocol": "http",
-							"host": [
-								"{{Domain}}{{UserItem}}"
-							],
-							"path": [
-								"notification"
-							],
-							"query": [
-								{
-									"key": "content",
-									"value": "123456"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "forgetPassword",
 					"request": {
 						"method": "POST",
@@ -310,9 +293,61 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "register/code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{UserItem}}/register/code?phone=15397089001",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{UserItem}}"
+							],
+							"path": [
+								"register",
+								"code"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "15397089001"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginAndRegister",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{Domain}}{{UserItem}}/loginAndRegister?account=15397089001&password=123456",
+							"protocol": "http",
+							"host": [
+								"{{Domain}}{{UserItem}}"
+							],
+							"path": [
+								"loginAndRegister"
+							],
+							"query": [
+								{
+									"key": "account",
+									"value": "15397089001"
+								},
+								{
+									"key": "password",
+									"value": "123456"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Item",
@@ -325,16 +360,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{BrandItem}}/page",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{BrandItem}}"
-									],
-									"path": [
-										"page"
-									]
-								},
+								"url": "http://{{Domain}}{{BrandItem}}/page",
 								"description": "分頁查詢品牌"
 							},
 							"response": []
@@ -467,17 +493,7 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{BrandItem}}/cid_bid/325429",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{BrandItem}}"
-									],
-									"path": [
-										"cid_bid",
-										"325429"
-									]
-								},
+								"url": "http://{{Domain}}{{BrandItem}}/cid_bid/325429",
 								"description": "刪除tb_category_brand中的數據"
 							},
 							"response": []
@@ -487,23 +503,20 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{BrandItem}}/bid/325429",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{BrandItem}}"
-									],
-									"path": [
-										"bid",
-										"325429"
-									]
-								}
+								"url": "http://{{Domain}}{{BrandItem}}/bid/325429"
+							},
+							"response": []
+						},
+						{
+							"name": "list/{typeid}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": ""
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Category",
@@ -513,9 +526,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": ""
-								}
+								"url": ""
 							},
 							"response": []
 						},
@@ -524,17 +535,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{CategoryItem}}/bid/15127",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{CategoryItem}}"
-									],
-									"path": [
-										"bid",
-										"15127"
-									]
-								}
+								"url": "http://{{Domain}}{{CategoryItem}}/bid/15127"
 							},
 							"response": []
 						},
@@ -603,18 +604,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{CategoryItem}}/all/level/76",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{CategoryItem}}"
-									],
-									"path": [
-										"all",
-										"level",
-										"76"
-									]
-								}
+								"url": "http://{{Domain}}{{CategoryItem}}/all/level/76"
 							},
 							"response": []
 						},
@@ -689,23 +679,20 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{CategoryItem}}/cid/1426",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{CategoryItem}}"
-									],
-									"path": [
-										"cid",
-										"1426"
-									]
-								}
+								"url": "http://{{Domain}}{{CategoryItem}}/cid/1426"
+							},
+							"response": []
+						},
+						{
+							"name": "buyType",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://{{Domain}}{{CategoryItem}}/buyType"
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Goods",
@@ -715,9 +702,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": ""
-								}
+								"url": ""
 							},
 							"response": []
 						},
@@ -771,18 +756,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{GoodsItem}}/spu/detail/82",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{GoodsItem}}"
-									],
-									"path": [
-										"spu",
-										"detail",
-										"82"
-									]
-								}
+								"url": "http://{{Domain}}{{GoodsItem}}/spu/detail/82"
 							},
 							"response": []
 						},
@@ -791,18 +765,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{GoodsItem}}/sku/list/82",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{GoodsItem}}"
-									],
-									"path": [
-										"sku",
-										"list",
-										"82"
-									]
-								}
+								"url": "http://{{Domain}}{{GoodsItem}}/sku/list/82"
 							},
 							"response": []
 						},
@@ -811,17 +774,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{GoodsItem}}/sku/2600248",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{GoodsItem}}"
-									],
-									"path": [
-										"sku",
-										"2600248"
-									]
-								}
+								"url": "http://{{Domain}}{{GoodsItem}}/sku/2600248"
 							},
 							"response": []
 						},
@@ -830,17 +783,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{GoodsItem}}/seckill/list",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{GoodsItem}}"
-									],
-									"path": [
-										"seckill",
-										"list"
-									]
-								}
+								"url": "http://{{Domain}}{{GoodsItem}}/seckill/list"
 							},
 							"response": []
 						},
@@ -858,17 +801,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://{{Domain}}{{GoodsItem}}/seckill/add",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{GoodsItem}}"
-									],
-									"path": [
-										"seckill",
-										"add"
-									]
-								}
+								"url": "http://{{Domain}}{{GoodsItem}}/seckill/add"
 							},
 							"response": []
 						},
@@ -886,13 +819,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://{{Domain}}{{GoodsItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{GoodsItem}}"
-									]
-								}
+								"url": "http://{{Domain}}{{GoodsItem}}"
 							},
 							"response": []
 						},
@@ -910,13 +837,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://{{Domain}}{{GoodsItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{GoodsItem}}"
-									]
-								}
+								"url": "http://{{Domain}}{{GoodsItem}}"
 							},
 							"response": []
 						},
@@ -925,18 +846,7 @@
 							"request": {
 								"method": "PUT",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{GoodsItem}}/spu/out/{id}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{GoodsItem}}"
-									],
-									"path": [
-										"spu",
-										"out",
-										"{id}"
-									]
-								}
+								"url": "http://{{Domain}}{{GoodsItem}}/spu/out/{id}"
 							},
 							"response": []
 						},
@@ -945,23 +855,11 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{GoodsItem}}/spu/{id}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{GoodsItem}}"
-									],
-									"path": [
-										"spu",
-										"{id}"
-									]
-								}
+								"url": "http://{{Domain}}{{GoodsItem}}/spu/{id}"
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Spec",
@@ -971,16 +869,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{SpecItem}}/76",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{SpecItem}}"
-									],
-									"path": [
-										"76"
-									]
-								}
+								"url": "http://{{Domain}}{{SpecItem}}/76"
 							},
 							"response": []
 						},
@@ -998,13 +887,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://{{Domain}}{{SpecItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{SpecItem}}"
-									]
-								}
+								"url": "http://{{Domain}}{{SpecItem}}"
 							},
 							"response": []
 						},
@@ -1022,9 +905,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": ""
-								}
+								"url": ""
 							},
 							"response": []
 						},
@@ -1033,113 +914,19 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{SpecItem}}/76",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{SpecItem}}"
-									],
-									"path": [
-										"76"
-									]
-								}
+								"url": "http://{{Domain}}{{SpecItem}}/76"
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Favorite",
-					"item": [
-						{
-							"name": "favorite",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{favoriteItem}}?userId=29",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{favoriteItem}}"
-									],
-									"query": [
-										{
-											"key": "userId",
-											"value": "29"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "favorite",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"createTime\": \"2020-02-11T04:44:12.000+0000\",\n    \"modifyTime\": \"2020-04-11T03:44:12.000+0000\",\n    \"userId\": 29,\n     \"spuId\": 102\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://{{Domain}}{{favoriteItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{favoriteItem}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "favorite",
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{favoriteItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{favoriteItem}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Favorite",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{favoriteItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{favoriteItem}}"
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
-			"name": "Car",
+			"name": "Cart",
 			"item": [
 				{
-					"name": "Car",
+					"name": "Cart",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1215,13 +1002,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "http://{{Domain}}{{CartItem}}",
-							"protocol": "http",
-							"host": [
-								"{{Domain}}{{CartItem}}"
-							]
-						}
+						"url": "http://{{Domain}}{{CartItem}}"
 					},
 					"response": []
 				},
@@ -1255,21 +1036,11 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": {
-							"raw": "http://{{Domain}}{{CartItem}}/",
-							"protocol": "http",
-							"host": [
-								"{{Domain}}{{CartItem}}"
-							],
-							"path": [
-								""
-							]
-						}
+						"url": "http://{{Domain}}{{CartItem}}/"
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Order",
@@ -1282,16 +1053,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{OrderItem}}/1260500942546145280",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{OrderItem}}"
-									],
-									"path": [
-										"1260500942546145280"
-									]
-								}
+								"url": "http://{{Domain}}{{OrderItem}}/1260500942546145280"
 							},
 							"response": []
 						},
@@ -1300,16 +1062,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{OrderItem}}/list",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{OrderItem}}"
-									],
-									"path": [
-										"list"
-									]
-								}
+								"url": "http://{{Domain}}{{OrderItem}}/list"
 							},
 							"response": []
 						},
@@ -1327,13 +1080,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://{{Domain}}{{OrderItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{OrderItem}}"
-									]
-								}
+								"url": "http://{{Domain}}{{OrderItem}}"
 							},
 							"response": []
 						},
@@ -1351,13 +1098,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://{{Domain}}{{OrderItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{OrderItem}}"
-									]
-								}
+								"url": "http://{{Domain}}{{OrderItem}}"
 							},
 							"response": []
 						},
@@ -1366,17 +1107,7 @@
 							"request": {
 								"method": "PUT",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{OrderItem}}/1260500942546145280/1",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{OrderItem}}"
-									],
-									"path": [
-										"1260500942546145280",
-										"1"
-									]
-								}
+								"url": "http://{{Domain}}{{OrderItem}}/1260500942546145280/1"
 							},
 							"response": []
 						},
@@ -1385,17 +1116,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{OrderItem}}/url/",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{OrderItem}}"
-									],
-									"path": [
-										"url",
-										""
-									]
-								}
+								"url": "http://{{Domain}}{{OrderItem}}/url/"
 							},
 							"response": []
 						},
@@ -1404,17 +1125,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{OrderItem}}/skuId/1260500942546145280",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{OrderItem}}"
-									],
-									"path": [
-										"skuId",
-										"1260500942546145280"
-									]
-								}
+								"url": "http://{{Domain}}{{OrderItem}}/skuId/1260500942546145280"
 							},
 							"response": []
 						},
@@ -1423,17 +1134,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{OrderItem}}/status/1260500942546145280",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{OrderItem}}"
-									],
-									"path": [
-										"status",
-										"1260500942546145280"
-									]
-								}
+								"url": "http://{{Domain}}{{OrderItem}}/status/1260500942546145280"
 							},
 							"response": []
 						},
@@ -1442,17 +1143,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{OrderItem}}/state/1260500942546145280",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{OrderItem}}"
-									],
-									"path": [
-										"state",
-										"1260500942546145280"
-									]
-								}
+								"url": "http://{{Domain}}{{OrderItem}}/state/1260500942546145280"
 							},
 							"response": []
 						},
@@ -1461,19 +1152,11 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{OrderItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{OrderItem}}"
-									]
-								}
+								"url": "http://{{Domain}}{{OrderItem}}"
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Address",
@@ -1492,13 +1175,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://{{Domain}}{{AddressItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{AddressItem}}"
-									]
-								}
+								"url": "http://{{Domain}}{{AddressItem}}"
 							},
 							"response": []
 						},
@@ -1507,13 +1184,7 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{AddressItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{AddressItem}}"
-									]
-								}
+								"url": "http://{{Domain}}{{AddressItem}}"
 							},
 							"response": []
 						},
@@ -1531,13 +1202,7 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "http://{{Domain}}{{AddressItem}}",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{AddressItem}}"
-									]
-								}
+								"url": "http://{{Domain}}{{AddressItem}}"
 							},
 							"response": []
 						},
@@ -1546,31 +1211,19 @@
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": {
-									"raw": "http://{{Domain}}{{AddressItem}}/6",
-									"protocol": "http",
-									"host": [
-										"{{Domain}}{{AddressItem}}"
-									],
-									"path": [
-										"6"
-									]
-								}
+								"url": "http://{{Domain}}{{AddressItem}}/6"
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Seckill",
 			"item": [
 				{
-					"name": "orderId",
+					"name": "checkSeckillOrder",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -1594,7 +1247,7 @@
 					"response": []
 				},
 				{
-					"name": "get_path/{goodsId}",
+					"name": "createSecKillPath",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -1621,7 +1274,7 @@
 					"response": []
 				},
 				{
-					"name": "{path}/seck",
+					"name": "seckill",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1634,23 +1287,12 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://{{Domain}}{{Seckill}}/$2a$10$N6RWZU6iyWItHCc2xsH5neC8d84TSFdxt2v1J0kE4YZEzItche8ma/seck",
-							"protocol": "http",
-							"host": [
-								"{{Domain}}{{Seckill}}"
-							],
-							"path": [
-								"$2a$10$N6RWZU6iyWItHCc2xsH5neC8d84TSFdxt2v1J0kE4YZEzItche8ma",
-								"seck"
-							]
-						},
+						"url": "http://{{Domain}}{{Seckill}}/$2a$10$N6RWZU6iyWItHCc2xsH5neC8d84TSFdxt2v1J0kE4YZEzItche8ma/seck",
 						"description": "{path} ＝ $2a$10$N6RWZU6iyWItHCc2xsH5neC8d84TSFdxt2v1J0kE4YZEzItche8ma"
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Comment",
@@ -1702,17 +1344,7 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
-						"url": {
-							"raw": "http://{{Domain}}{{CommentItem}}/thumb/80",
-							"protocol": "http",
-							"host": [
-								"{{Domain}}{{CommentItem}}"
-							],
-							"path": [
-								"thumb",
-								"80"
-							]
-						}
+						"url": "http://{{Domain}}{{CommentItem}}/thumb/80"
 					},
 					"response": []
 				},
@@ -1730,17 +1362,7 @@
 								}
 							}
 						},
-						"url": {
-							"raw": "http://{{Domain}}{{CommentItem}}/comment/1072137062385324032",
-							"protocol": "http",
-							"host": [
-								"{{Domain}}{{CommentItem}}"
-							],
-							"path": [
-								"comment",
-								"1072137062385324032"
-							]
-						}
+						"url": "http://{{Domain}}{{CommentItem}}/comment/1072137062385324032"
 					},
 					"response": []
 				},
@@ -1749,17 +1371,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "http://{{Domain}}{{CommentItem}}/commentId/107213706",
-							"protocol": "http",
-							"host": [
-								"{{Domain}}{{CommentItem}}"
-							],
-							"path": [
-								"commentId",
-								"107213706"
-							]
-						}
+						"url": "http://{{Domain}}{{CommentItem}}/commentId/107213706"
 					},
 					"response": []
 				},
@@ -1768,16 +1380,7 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
-						"url": {
-							"raw": "http://{{Domain}}{{CommentItem}}/comment",
-							"protocol": "http",
-							"host": [
-								"{{Domain}}{{CommentItem}}"
-							],
-							"path": [
-								"comment"
-							]
-						}
+						"url": "http://{{Domain}}{{CommentItem}}/comment"
 					},
 					"response": []
 				},
@@ -1786,17 +1389,7 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": {
-							"raw": "http://{{Domain}}{{CommentItem}}/commentId/1258293277413875713",
-							"protocol": "http",
-							"host": [
-								"{{Domain}}{{CommentItem}}"
-							],
-							"path": [
-								"commentId",
-								"1258293277413875713"
-							]
-						}
+						"url": "http://{{Domain}}{{CommentItem}}/commentId/1258293277413875713"
 					},
 					"response": []
 				},
@@ -1805,21 +1398,11 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
-						"url": {
-							"raw": "http://{{Domain}}{{CommentItem}}/comment",
-							"protocol": "http",
-							"host": [
-								"{{Domain}}{{CommentItem}}"
-							],
-							"path": [
-								"comment"
-							]
-						}
+						"url": "http://{{Domain}}{{CommentItem}}/comment"
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Goods Web",
@@ -1829,36 +1412,23 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "http://www.leyou.com/item/141.html",
-							"protocol": "http",
-							"host": [
-								"www",
-								"leyou",
-								"com"
-							],
-							"path": [
-								"item",
-								"141.html"
-							]
-						}
+						"url": "http://www.leyou.com/item/141.html"
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Search",
 			"item": [
 				{
-					"name": "page",
+					"name": "Search",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"key\":\"华为\",\"page\":1,\"sortBy\":\"\",\"descending\":false,\"filter\":{\"key\":\"\"}}",
+							"raw": "{\"key\":\"茉莉綠茶 餐飲 飲品 手搖飲\",\"page\":1,\"sortBy\":\"\",\"descending\":false,\"filter\":{\"key\":\"\"}}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1866,20 +1436,41 @@
 							}
 						},
 						"url": {
-							"raw": "http://{{Domain}}{{SearchItem}}/page",
+							"raw": "http://{{Domain}}{{SearchItem}}/page?key=茉莉綠茶 餐飲 飲品 手搖飲&page=1&sortBy=\"\"&descending=false&filter=\"\"",
 							"protocol": "http",
 							"host": [
 								"{{Domain}}{{SearchItem}}"
 							],
 							"path": [
 								"page"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "茉莉綠茶 餐飲 飲品 手搖飲"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "sortBy",
+									"value": "\"\""
+								},
+								{
+									"key": "descending",
+									"value": "false"
+								},
+								{
+									"key": "filter",
+									"value": "\"\""
+								}
 							]
 						}
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Upload",
@@ -1897,10 +1488,7 @@
 									"type": "file",
 									"src": "/Users/chao-kun.wu/Desktop/AppIcon_airgo_60png.png"
 								}
-							],
-							"options": {
-								"formdata": {}
-							}
+							]
 						},
 						"url": {
 							"raw": "http://{{Domain}}/upload/image",
@@ -1928,22 +1516,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "http://image.ji-well.com/group1/M00/00/00/rBEACV8pJZeAYPVTAAAbo5WgO4U428.png",
-							"protocol": "http",
-							"host": [
-								"image",
-								"ji-well",
-								"com"
-							],
-							"path": [
-								"group1",
-								"M00",
-								"00",
-								"00",
-								"rBEACV8pJZeAYPVTAAAbo5WgO4U428.png"
-							]
-						}
+						"url": "http://image.ji-well.com/group1/M00/00/00/rBEACV8pJZeAYPVTAAAbo5WgO4U428.png"
 					},
 					"response": []
 				},
@@ -1971,10 +1544,322 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "page",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"key\":\"华为\",\"page\":1,\"sortBy\":\"\",\"descending\":false,\"filter\":{\"key\":\"\"}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://{{Domain}}{{SearchItem}}/page"
+					},
+					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
+		},
+		{
+			"name": "Sms",
+			"item": [
+				{
+					"name": "SendSmexpress",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Fcm",
+			"item": [
+				{
+					"name": "firebase token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\":1, \"token\":\"cBv9PfXHq0jiqRwsxdRK-z:APA91bFqS85i4ZHM5CSGyYxcsI3LzMJ5VB0jTLDu2tsYKiI4B4e05ewln7j9B3zkDmHOry_RU-COnlr4yTqaHXqSOsb8MBDENG61ChvI_qXjU1d_WfD6lgHlraglumtwz1PKZd2FsHks,eOKL71lbSOK1nVuMTauw4Q:APA91bE06gB39r7hp5hFhOyFvqVvDNFqgu2DX0aMiy0e71cjAilW33EfK07ElhGdP2nHosV8RbiZL7O1NHXhZ_A-bp520U7MvicN47P0dt-Z3xTrzBhQ-3AADAa_mo7-76O2oSZpmn8J\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://{{Domain}}{{fcmItem}}/firebase/token"
+					},
+					"response": []
+				},
+				{
+					"name": "notification/token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"title\":\"你好\", \"message\":\"看這!\", \"token\":\"cBv9PfXHq0jiqRwsxdRK-z:APA91bFqS85i4ZHM5CSGyYxcsI3LzMJ5VB0jTLDu2tsYKiI4B4e05ewln7j9B3zkDmHOry_RU-COnlr4yTqaHXqSOsb8MBDENG61ChvI_qXjU1d_WfD6lgHlraglumtwz1PKZd2FsHks\", \"topic\": \"\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://{{Domain}}{{fcmItem}}/notification/token",
+						"description": "http://{{Domain}}{{fcmItem}}/notification/token"
+					},
+					"response": []
+				},
+				{
+					"name": "notification/all",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"title\":\"你好\", \"message\":\"看這!\", \"token\":\"cBv9PfXHq0jiqRwsxdRK-z:APA91bFqS85i4ZHM5CSGyYxcsI3LzMJ5VB0jTLDu2tsYKiI4B4e05ewln7j9B3zkDmHOry_RU-COnlr4yTqaHXqSOsb8MBDENG61ChvI_qXjU1d_WfD6lgHlraglumtwz1PKZd2FsHks\", \"topic\": \"\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://{{Domain}}{{fcmItem}}/notification/all"
+					},
+					"response": []
+				},
+				{
+					"name": "notification/data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"title\":\"Hello\", \"message\":\"Data message\", \"topic\":\"contactTopic\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://{{Domain}}{{fcmItem}}/notification/data"
+					},
+					"response": []
+				},
+				{
+					"name": "notification",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://{{Domain}}{{fcmItem}}/notification/data"
+					},
+					"response": []
+				},
+				{
+					"name": "/notification/topic",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"title\":\"Hello\", \"message\":\"The message...\", \"topic\":\"contactTopic\",\"token\":\"cBv9PfXHq0jiqRwsxdRK-z:APA91bFqS85i4ZHM5CSGyYxcsI3LzMJ5VB0jTLDu2tsYKiI4B4e05ewln7j9B3zkDmHOry_RU-COnlr4yTqaHXqSOsb8MBDENG61ChvI_qXjU1d_WfD6lgHlraglumtwz1PKZd2FsHks\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://{{Domain}}{{fcmItem}}/notification/topic"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mail",
+			"item": [
+				{
+					"name": "send simple mail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
+				},
+				{
+					"name": "test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favorite",
+			"item": [
+				{
+					"name": "collection",
+					"item": [
+						{
+							"name": "collection",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{favoriteItem}}?userId=29",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{favoriteItem}}"
+									],
+									"query": [
+										{
+											"key": "userId",
+											"value": "29"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "collection",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"createTime\": \"2020-02-11T04:44:12.000+0000\",\n    \"modifyTime\": \"2020-04-11T03:44:12.000+0000\",\n    \"userId\": 29,\n     \"spuId\": 102\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://{{Domain}}{{favoriteItem}}"
+							},
+							"response": []
+						},
+						{
+							"name": "collection",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "http://{{Domain}}{{FavoriteItem}}/3"
+							},
+							"response": []
+						},
+						{
+							"name": "isCollection",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "http://{{Domain}}{{FavoriteItem}}/isFavorite"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "coupon",
+					"item": [
+						{
+							"name": "coupon/{couponId}",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "http://{{Domain}}{{FavoriteItem}}/coupon/1"
+							},
+							"response": []
+						},
+						{
+							"name": "coupon/list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{Domain}}{{FavoriteItem}}/coupon/list?useStatus=0",
+									"protocol": "http",
+									"host": [
+										"{{Domain}}{{FavoriteItem}}"
+									],
+									"path": [
+										"coupon",
+										"list"
+									],
+									"query": [
+										{
+											"key": "useStatus",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "coupon/list/cart/{type}",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MSwiYWNjb3VudCI6Imppd2VsbCIsInBob25lIjoiMTUzOTcwODkwMDEiLCJnZW5kZXIiOiJmZW1hbGUiLCJuaWNrbmFtZSI6IualteW-riIsImV4cCI6MTg2NzQ4MjA3OH0.XNPsQgEMOtDprscGfGpuER3PYskFXue4twsz_4rAo3yTuKlRG6OyzEE7j5GJo9qRJifD2F9WeKMSNAgmYePtu2-PwHIeZJLIuh3u3q7CWUW7nZpPi2KCo8OwOXwNIZ-fmqig4rAtYIyyT8APhuLHlcSXlEbz4-nhta-3yq0GLmA"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "http://{{Domain}}{{FavoriteItem}}/coupon/list/cart/2"
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJSUzI1NiJ9.eyJpZCI6MSwiYWNjb3VudCI6Imppd2VsbCIsInBob25lIjoiMTUzOTcwODkwMDEiLCJnZW5kZXIiOiJmZW1hbGUiLCJuaWNrbmFtZSI6IualteW-riIsImV4cCI6MTg2NzgyMTY5M30.JMvXx80Di5gOlpvKc9kDkuBBK9APmIaaUZVDbjZnrlmOH6duYOKd1Nldtgs8Png3i-uZk6uGDDricmQIAiVmUjSsN-33wCOEMMVd8795Tu1CmBFKVwcuDDWaRgRt_52DnELZoDAQ24a4u9xtnEKb-IRfJcA_Uv-jfCpzGXw-Qd0"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"amount\": 50,\n  \"count\": 100,\n  \"enableTime\": \"2018-08-27T08:40:46.973Z\",\n  \"endTime\": \"2018-08-31T08:40:46.973Z\",\n  \"minPoint\": 500,\n  \"name\": \"T恤分类专用优惠券\",\n  \"note\": \"满500减50\",\n  \"perLimit\": 1,\n  \"platform\": 0,\n  \"publishCount\": 100,\n  \"receiveCount\": 0,\n  \"startTime\": \"2018-08-27T08:40:46.973Z\",\n  \"type\": 0,\n  \"useCount\": 0,\n  \"useType\": 1,\n  \"productCategoryRelationList\": [\n    {\n      \"productCategoryId\": 16\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "http://{{Domain}}{{FavoriteItem}}/coupon/create"
+							},
+							"response": []
+						},
+						{
+							"name": "delete/{couponId}",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": "http://{{Domain}}{{FavoriteItem}}/coupon/delete/24"
+							},
+							"response": []
+						}
+					]
+				}
+			]
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
