@@ -19,8 +19,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @EnableDiscoveryClient
 @EnableFeignClients
 //@EnableSwagger2
-@MapperScan("com.jiwell.favorite.mapper")
-
+@MapperScan({"com.jiwell.favorite.mapper","com.jiwell.favorite.dao"})
 public class JwFavoriteApplication {
     public static void main(String[] args) {
         SpringApplication.run(JwFavoriteApplication.class,args);

@@ -3,8 +3,8 @@ package com.jiwell.favorite.pojo;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table(name = "tb_shop_favorite")
-public class Favorite {
+@Table(name = "tb_shop_collection")
+public class Collection {
 
     @Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)

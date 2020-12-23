@@ -1,9 +1,8 @@
 package com.jiwell.favorite.service;
 
-import com.jiwell.favorite.pojo.Favorite;
+import com.jiwell.favorite.pojo.Collection;
 import com.jiwell.item.bo.SpuBo;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -12,14 +11,14 @@ import java.util.List;
  * Time: 2018-08-14 15:26
  * Feature:
  */
-public interface FavoriteService {
+public interface CollectionService {
 
     /**
      * 根据userId查詢我的最愛Spu
      * @param userId
      * @return
      */
-    List<SpuBo> queryMyFavoriteSpuByUserId(Long userId);
+    List<SpuBo> queryMyCollectionSpuByUserId(Long userId);
 
 //    /**
 //     * 根据userId查詢我的最愛Spu
@@ -33,13 +32,13 @@ public interface FavoriteService {
      * @param userId
      * @return
      */
-    List<Favorite> queryByUserId(Long userId);
+    List<Collection> queryByUserId(Long userId);
 
     /**
      * 添加规格参数模板
      * @param favorite
      */
-    boolean saveFavorite(Favorite favorite);
+    boolean saveCollection(Collection favorite);
 
 //    /**
 //     * 修改规格参数模板
@@ -51,11 +50,11 @@ public interface FavoriteService {
      * 删除规格参数模板
      * @param favorite
      */
-    boolean deleteFavorite(Favorite favorite);
+    boolean deleteCollection(Collection favorite);
 
     /**
      * 查詢SpuId是否己是我的最愛
-     * @param favorite
+     * @param spuId
      */
-    boolean queryFavoriteIsExist(long spuId);
+    boolean queryCollectionIsExist(long spuId);
 }

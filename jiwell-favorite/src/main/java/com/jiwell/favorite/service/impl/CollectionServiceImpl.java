@@ -2,9 +2,9 @@ package com.jiwell.favorite.service.impl;
 import com.jiwell.auth.entity.UserInfo;
 import com.jiwell.favorite.client.GoodsClient;
 import com.jiwell.favorite.interceptor.LoginInterceptor;
-import com.jiwell.favorite.mapper.FavoriteMapper;
-import com.jiwell.favorite.service.FavoriteService;
-import com.jiwell.favorite.pojo.Favorite;
+import com.jiwell.favorite.mapper.CollectionMapper;
+import com.jiwell.favorite.service.CollectionService;
+import com.jiwell.favorite.pojo.Collection;
 import com.jiwell.item.bo.SpuBo;
 import com.jiwell.myexception.LyException;
 import com.jiwell.myexception.MyException;
@@ -28,10 +28,10 @@ import java.util.stream.Collectors;
  * Feature:
  */
 @Service
-public class FavoriteServiceImpl implements FavoriteService {
+public class CollectionServiceImpl implements CollectionService {
 
     @Autowired
-    private FavoriteMapper favoriteMapper;
+    private CollectionMapper collectionMapper;
 
     @Autowired
     private GoodsClient goodsClient;
@@ -41,8 +41,8 @@ public class FavoriteServiceImpl implements FavoriteService {
      * @return
      */
     @Override
-    public List<SpuBo> queryMyFavoriteSpuByUserId(Long userId) {
-        Favorite myFavorites = this.favoriteMapper.selectByPrimaryKey(userId);
+    public List<SpuBo> queryMyCollectionSpuByUserId(Long userId) {
+        Collection myFavorites = this.collectionMapper.selectByPrimaryKey(userId);
         if(myFavorites != null && !myFavorites.getSpuIds().isEmpty()) {
             List<String> ids = new ArrayList<>(Arrays.asList(myFavorites.getSpuIds().split(",")));
             List<Long> numberIdList = new ArrayList<>();
@@ -56,12 +56,12 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public List<Favorite> queryByUserId(Long userId) {
+    public List<Collection> queryByUserId(Long userId) {
         //這樣寫有錯
         //List<Favorite> list = this.favoriteMapper.queryByUserId(userId);
-        Example example = new Example(Favorite.class);
+        Example example = new Example(Collection.class);
         example.createCriteria().andEqualTo("userId",userId);
-        List<Favorite> list = this.favoriteMapper.selectByExample(example);
+        List<Collection> list = this.collectionMapper.selectByExample(example);
         if (list.isEmpty()){
             throw new MyException(LyException.CATEGORY_NOT_FOUND);
         }
@@ -69,27 +69,27 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public boolean saveFavorite(Favorite favorite) {
-        Favorite myFavorites = this.favoriteMapper.selectByPrimaryKey(favorite.getUserId());
-        if(myFavorites != null && !myFavorites.getSpuIds().isEmpty()) {
-            List<String> ids = new ArrayList<>(Arrays.asList(myFavorites.getSpuIds().split(",")));
+    public boolean saveCollection(Collection collection) {
+        Collection myCollection = this.collectionMapper.selectByPrimaryKey(collection.getUserId());
+        if(myCollection != null && !myCollection.getSpuIds().isEmpty()) {
+            List<String> ids = new ArrayList<>(Arrays.asList(myCollection.getSpuIds().split(",")));
             for(String id:ids){
-                if(id.equals(favorite.getSpuId())){
+                if(id.equals(collection.getSpuId())){
                     return true;
                 }
             }
             if(ids.size() == 12){//同一個ID最多支援20我的最愛
-                ids.set(0,favorite.getSpuId());
+                ids.set(0,collection.getSpuId());
             }
             else{
-                ids.add(favorite.getSpuId());
+                ids.add(collection.getSpuId());
             }
             String idsJoined = String.join(",", ids);
-            myFavorites.setSpuIds(idsJoined);
-            return this.favoriteMapper.updateByPrimaryKeySelective(myFavorites) ==1;
+            myCollection.setSpuIds(idsJoined);
+            return this.collectionMapper.updateByPrimaryKeySelective(myCollection) ==1;
         }
         else{
-            return this.favoriteMapper.insertSelective(myFavorites) == 1;
+            return this.collectionMapper.insertSelective(myCollection) == 1;
         }
     }
 
@@ -99,24 +99,24 @@ public class FavoriteServiceImpl implements FavoriteService {
 //    }
 
     @Override
-    public boolean deleteFavorite(Favorite favorite) {
+    public boolean deleteCollection(Collection favorite) {
         //this.favoriteMapper.deleteByPrimaryKey(favorite);
         long userId = favorite.getUserId();
-        Favorite myFavorites = this.favoriteMapper.selectByPrimaryKey(userId);
-        if(myFavorites == null){
+        Collection myCollection = this.collectionMapper.selectByPrimaryKey(userId);
+        if(myCollection == null){
             return false;
         }
         List<String> keepIds = new ArrayList<>();
-        if(myFavorites != null && !myFavorites.getSpuIds().isEmpty()) {
-            List<String> ids = new ArrayList<>(Arrays.asList(myFavorites.getSpuIds().split(",")));
+        if(myCollection != null && !myCollection.getSpuIds().isEmpty()) {
+            List<String> ids = new ArrayList<>(Arrays.asList(myCollection.getSpuIds().split(",")));
             for(String id:ids){
                 if(!id.equals(favorite.getSpuId())){
                     keepIds.add(id);
                 }
             }
             String idsJoined = String.join(",", keepIds);
-            myFavorites.setSpuIds(idsJoined);
-            return this.favoriteMapper.updateByPrimaryKeySelective(myFavorites) ==1;
+            myCollection.setSpuIds(idsJoined);
+            return this.collectionMapper.updateByPrimaryKeySelective(myCollection) ==1;
         }
         else{
             return true;
@@ -125,11 +125,11 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public boolean queryFavoriteIsExist(long spuId) {
+    public boolean queryCollectionIsExist(long spuId) {
         UserInfo userInfo = LoginInterceptor.getLoginUser();
-        Favorite myFavorites = this.favoriteMapper.selectByPrimaryKey(userInfo.getId());
-        if(myFavorites != null && !myFavorites.getSpuIds().isEmpty()) {
-            List<String> ids = new ArrayList<>(Arrays.asList(myFavorites.getSpuIds().split(",")));
+        Collection myCollection = this.collectionMapper.selectByPrimaryKey(userInfo.getId());
+        if(myCollection != null && !myCollection.getSpuIds().isEmpty()) {
+            List<String> ids = new ArrayList<>(Arrays.asList(myCollection.getSpuIds().split(",")));
             for(String id:ids){
                 if(id.equals(String.valueOf(spuId))){
                     return true;
@@ -138,5 +138,4 @@ public class FavoriteServiceImpl implements FavoriteService {
         }
         return false;
     }
-
 }

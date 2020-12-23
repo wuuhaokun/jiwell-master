@@ -51,22 +51,22 @@ public class MvcConfig implements WebMvcConfigurer {
 
     }
 
-//如果加入以下程式，會出現某些int型別，自動轉成string。所以使用上要注意。所以將其移除了
-//    @Override
-//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-//
-//        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter =
-//                new MappingJackson2HttpMessageConverter();
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        SimpleModule simpleModule = new SimpleModule();
-//        simpleModule.addSerializer(BigInteger.class, ToStringSerializer.instance);
-//        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-//        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-//        objectMapper.registerModule(simpleModule);
-//        jackson2HttpMessageConverter.setObjectMapper(objectMapper);
-//        converters.add(jackson2HttpMessageConverter);
-//        converters.add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
-//    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+
+        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter =
+                new MappingJackson2HttpMessageConverter();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addSerializer(BigInteger.class, ToStringSerializer.instance);
+        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+        objectMapper.registerModule(simpleModule);
+        jackson2HttpMessageConverter.setObjectMapper(objectMapper);
+        converters.add(jackson2HttpMessageConverter);
+        converters.add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
+    }
 
 }

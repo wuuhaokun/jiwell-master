@@ -1,7 +1,7 @@
 package com.jiwell.favorite.controller;
 
-import com.jiwell.favorite.service.FavoriteService;
-import com.jiwell.favorite.pojo.Favorite;
+import com.jiwell.favorite.service.CollectionService;
+import com.jiwell.favorite.pojo.Collection;
 import com.jiwell.item.bo.SpuBo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,11 +12,11 @@ import java.util.List;
  * @author li
  */
 @RestController
-//@RequestMapping("myFavorite")
-public class FavoriteController {
+@RequestMapping("collection")
+public class CollectionController {
 
     @Autowired
-    private FavoriteService favoriteService;
+    private CollectionService collectionService;
 
     /**
      * 查询我的最愛
@@ -25,21 +25,19 @@ public class FavoriteController {
      */
     ///List<Brand> queryBrandByBrandIds(<ListLong> ids);
     @GetMapping("{userId}")
-    public ResponseEntity<List<SpuBo>> queryMyFavoriteSpuByUserId(@PathVariable("userId") Long userId){
-    //public ResponseEntity<SpuBo> queryMyFavoriteSpuByUserId(@PathVariable("userId") Long userId){
-        List<SpuBo> spuBoList = this.favoriteService.queryMyFavoriteSpuByUserId(userId);
+    public ResponseEntity<List<SpuBo>> queryMyCollectionSpuByUserId(@PathVariable("userId") Long userId){
+        List<SpuBo> spuBoList = this.collectionService.queryMyCollectionSpuByUserId(userId);
         if (spuBoList == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(spuBoList);
+        //return ResponseEntity.ok(spuBoList);
 //        SpuBo spuBo = new SpuBo();
 //        spuBo.setId((long) 1);
 //        spuBo.setCid1((long) 1);
-//        spuBo.setCid2((long)2);
-//        spuBo.setCid3((long)3);
-//        return ResponseEntity.ok(spuBo);
-        //return ResponseEntity.ok(spuBoList);
-
+//        spuBo.setCid1((long)2);
+//        spuBo.setCid1((long)3);
+        return ResponseEntity.ok(spuBoList);
+        //return ResponseEntity.ok(spuBo);
     }
 
 //    @GetMapping("{userId}")
@@ -53,12 +51,12 @@ public class FavoriteController {
 
     /**
      * 保存我的最愛
-     * @param favorite
+     * @param collection
      * @return
      */
     @PostMapping
-    public ResponseEntity<Boolean> saveFavorite(@RequestBody Favorite favorite){
-        Boolean result = this.favoriteService.saveFavorite(favorite);
+    public ResponseEntity<Boolean> saveCollection(@RequestBody Collection collection){
+        Boolean result = this.collectionService.saveCollection(collection);
         if(result == null || !result){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -77,24 +75,21 @@ public class FavoriteController {
 //    }
 
     @DeleteMapping
-    public ResponseEntity<Boolean> deleteFavorite(@RequestBody Favorite favorite){
-        Boolean result = this.favoriteService.deleteFavorite(favorite);
+    public ResponseEntity<Boolean> deleteCollection(@RequestBody Collection collection){
+        Boolean result = this.collectionService.deleteCollection(collection);
         if(result == null || !result){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-
-//    @GetMapping("isFavorite")
-    @GetMapping("isFavorite/{spuId}")
-    public ResponseEntity<Boolean> queryFavoriteIsExist(@PathVariable("spuId") Long spuId){
-        Boolean result = this.favoriteService.queryFavoriteIsExist(spuId);
+    @GetMapping("isCollection/{spuId}")
+    public ResponseEntity<Boolean> queryCollectionIsExist(@PathVariable("spuId") Long spuId){
+        Boolean result = this.collectionService.queryCollectionIsExist(spuId);
         if (result == null || !result) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         //return ResponseEntity.ok(result);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }
