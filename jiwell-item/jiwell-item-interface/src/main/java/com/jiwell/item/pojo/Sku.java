@@ -1,6 +1,7 @@
 package com.jiwell.item.pojo;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -47,6 +48,36 @@ public class Sku {
      * @Transient 表示该属性并非一个到数据库表的字段的映射,ORM框架将忽略该属性.
      */
     private Long stock;
+
+    //以下新增的
+
+    //@ApiModelProperty(value = "促销价格")
+    private BigDecimal promotionPrice;
+
+    //@ApiModelProperty(value = "赠送的成长值")
+    private Integer giftGrowth;
+
+    //@ApiModelProperty(value = "赠送的积分")
+    private Integer giftPoint;
+
+    //@ApiModelProperty(value = "限制使用的积分数")
+    private Integer usePointLimit;
+
+    //@ApiModelProperty(value = "以逗号分割的产品服务：1->无忧退货；2->快速退款；3->免费包邮")
+    private String serviceIds;
+
+    //@ApiModelProperty(value = "促销开始时间")
+    private Date promotionStartTime;
+
+    //@ApiModelProperty(value = "促销结束时间")
+    private Date promotionEndTime;
+
+    //@ApiModelProperty(value = "活动限购数量")
+    private Integer promotionPerLimit;
+
+    //@ApiModelProperty(value = "促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购")
+    private Integer promotionType;
+
 
     public Long getId() {
         return id;
@@ -142,6 +173,79 @@ public class Sku {
 
     public void setStock(Long stock) {
         this.stock = stock;
+    }
+
+    ///////////////////////////
+    public BigDecimal getPromotionPrice() {
+        return promotionPrice;
+    }
+
+    public void setPromotionPrice(BigDecimal promotionPrice) {
+        this.promotionPrice = promotionPrice;
+    }
+
+    public Integer getGiftGrowth() {
+        return giftGrowth;
+    }
+
+    public void setGiftGrowth(Integer giftGrowth) {
+        this.giftGrowth = giftGrowth;
+    }
+
+    public Integer getGiftPoint() {
+        return giftPoint;
+    }
+
+    public void setGiftPoint(Integer giftPoint) {
+        this.giftPoint = giftPoint;
+    }
+
+    public Integer getUsePointLimit() {
+        return usePointLimit;
+    }
+
+    public void setUsePointLimit(Integer usePointLimit) {
+        this.usePointLimit = usePointLimit;
+    }
+
+    public String getServiceIds() {
+        return serviceIds;
+    }
+
+    public void setServiceIds(String serviceIds) {
+        this.serviceIds = serviceIds;
+    }
+
+    public Date getPromotionStartTime() {
+        return promotionStartTime;
+    }
+
+    public void setPromotionStartTime(Date promotionStartTime) {
+        this.promotionStartTime = promotionStartTime;
+    }
+
+    public Date getPromotionEndTime() {
+        return promotionEndTime;
+    }
+
+    public void setPromotionEndTime(Date promotionEndTime) {
+        this.promotionEndTime = promotionEndTime;
+    }
+
+    public Integer getPromotionPerLimit() {
+        return promotionPerLimit;
+    }
+
+    public void setPromotionPerLimit(Integer promotionPerLimit) {
+        this.promotionPerLimit = promotionPerLimit;
+    }
+
+    public Integer getPromotionType() {
+        return promotionType;
+    }
+
+    public void setPromotionType(Integer promotionType) {
+        this.promotionType = promotionType;
     }
 
     @Override
