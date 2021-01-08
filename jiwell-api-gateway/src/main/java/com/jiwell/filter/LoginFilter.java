@@ -90,14 +90,6 @@ public class LoginFilter extends ZuulFilter {
 // return !isBlank(cs);
 // }
 
-    private String getJwtFromRequest111(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.isNotBlank(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
     @Override
     public Object run() throws ZuulException {
         //1.獲取上下文
