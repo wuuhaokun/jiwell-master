@@ -3,11 +3,9 @@ package com.jiwell.order.listener;
 import com.jiwell.auth.entity.UserInfo;
 import com.jiwell.item.pojo.SeckillGoods;
 import com.jiwell.item.pojo.Stock;
+import com.jiwell.order.interceptor.LoginInterceptor;
 import com.jiwell.order.mapper.*;
-import com.jiwell.order.pojo.Order;
-import com.jiwell.order.pojo.OrderDetail;
-import com.jiwell.order.pojo.OrderStatus;
-import com.jiwell.order.pojo.SeckillOrder;
+import com.jiwell.order.pojo.*;
 import com.jiwell.order.service.OrderService;
 import com.jiwell.seckill.vo.SeckillMessage;
 import com.jiwell.utils.IdWorker;
@@ -61,6 +59,9 @@ public class SeckillListener {
     @Autowired
     private SeckillMapper seckillMapper;
 
+    @Autowired
+    private AddressMapper addressMapper;
+
     /**
      * 接收秒杀信息
      * @param seck
@@ -76,7 +77,6 @@ public class SeckillListener {
     ))
     @Transactional(rollbackFor = Exception.class)
     public void listenSeckill(String seck){
-
         SeckillMessage seckillMessage = JsonUtils.parse(seck,SeckillMessage.class);
         UserInfo userInfo = seckillMessage.getUserInfo();
         SeckillGoods seckillGoods = seckillMessage.getSeckillGoods();
@@ -104,19 +104,29 @@ public class SeckillListener {
         if (list.size() > 0){
             return;
         }
+
+        Example addressExample = new Example(Address.class);
+        addressExample.createCriteria().andEqualTo("userId",userInfo.getId()).andEqualTo("defaultAddress",true);
+        List<Address> addressList = this.addressMapper.selectByExample(addressExample);
+        Address address = addressList.get(0);
         //3.下订单
         //构造order对象
         Order order = new Order();
         order.setPaymentType(1);
         order.setTotalPay(seckillGoods.getSeckillPrice());
         order.setActualPay(seckillGoods.getSeckillPrice());
-        order.setPostFee(0+"");
-        order.setReceiver("李四");
-        order.setReceiverMobile("15812312312");
-        order.setReceiverCity("西安");
-        order.setReceiverDistrict("碑林区");
-        order.setReceiverState("陕西");
-        order.setReceiverZip("000000000");
+        if (addressList.size() > 0){
+            //寫入地址資料
+            order.setPostFee(0+"");
+            order.setReceiver(address.getName());
+            order.setReceiverMobile(address.getPhone());
+            order.setReceiverCity(address.getCity());
+            order.setReceiverDistrict(address.getDistrict());
+            order.setReceiverState(address.getState());
+            order.setReceiverZip(address.getZipCode());
+            order.setReceiverAddress(address.getAddress());
+        }
+
         order.setInvoiceType(0);
         order.setSourceType(2);
 
@@ -175,6 +185,9 @@ public class SeckillListener {
 
         });
 
-
     }
 }
+
+
+
+
