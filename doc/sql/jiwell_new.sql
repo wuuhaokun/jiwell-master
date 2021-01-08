@@ -315,11 +315,11 @@ CREATE TABLE `tb_seckill_sku` (
 -- ----------------------------
 -- Records of tb_seckill_sku
 -- ----------------------------
-INSERT INTO `tb_seckill_sku` VALUES (8, 2600248, '2019-01-01 00:00:00', '2019-01-02 02:10:00', '華為G9 青春版金色移動聯通電信4G手機雙卡雙待', 16980, 'http://image.ji-well.com/images/9/5/1524297314398.jpg', 1);
-INSERT INTO `tb_seckill_sku` VALUES (9, 2600242, '2019-01-01 00:01:00', '2019-01-02 01:05:00', '華為G9 青春版白色移動聯通電信4G手機雙卡雙待', 8490, 'http://image.ji-well.com/images/9/15/1524297313793.jpg', 1);
-INSERT INTO `tb_seckill_sku` VALUES (10, 2600248, '2019-01-01 00:01:00', '2019-01-02 01:05:00', '華為G9 青春版金色移動聯通電信4G手機雙卡雙待', 16980, 'http://image.ji-well.com/images/9/5/1524297314398.jpg', 1);
-INSERT INTO `tb_seckill_sku` VALUES (11, 3385376, '2019-01-01 00:01:00', '2019-01-02 01:05:00', '華為G9 青春版玫瑰金移動聯通電信4G手機雙卡雙待', 25470, 'http://image.ji-well.com/images/15/15/1524297314800.jpg', 1);
-
+INSERT INTO `tb_seckill_sku` VALUES (8, 101, '2021-01-01 00:00:00', '2022-01-02 02:10:00', '茉莉綠茶', 20, 'http://image.ji-well.com/images/9/5/1524297314398.jpg', 1);
+INSERT INTO `tb_seckill_sku` VALUES (9, 102, '2021-01-01 00:01:00', '2022-01-02 01:05:00', '茉莉綠茶', 20, 'http://image.ji-well.com/images/9/15/1524297313793.jpg', 1);
+INSERT INTO `tb_seckill_sku` VALUES (10, 103, '2021-01-01 00:01:00', '2022-01-02 01:05:00', '茉莉綠茶', 20, 'http://image.ji-well.com/images/9/5/1524297314398.jpg', 1);
+INSERT INTO `tb_seckill_sku` VALUES (11, 104, '2021-01-01 00:01:00', '2022-01-02 01:05:00', '茉莉綠茶', 20, 'http://image.ji-well.com/images/15/15/1524297314800.jpg', 1);
+INSERT INTO `tb_seckill_sku` VALUES (11, 105, '2021-01-01 00:01:00', '2022-01-02 01:05:00', '茉莉綠茶', 20, 'http://image.ji-well.com/images/15/15/1524297314800.jpg', 1);
 -- ----------------------------
 -- Table structure for tb_spu
 -- ----------------------------
@@ -449,7 +449,7 @@ CREATE TABLE `tb_sku` (
   `service_ids` varchar(64) DEFAULT NULL COMMENT '以逗号分割的产品服务：1->无忧退货；2->快速退款；3->免费包邮',
   `promotion_start_time` datetime DEFAULT NULL COMMENT '促销开始时间',
   `promotion_end_time` datetime DEFAULT NULL COMMENT '促销结束时间',
-  `otionprom_per_limit` int(11) DEFAULT NULL COMMENT '活动限购数量',
+  `promotion_per_limit` int(11) DEFAULT NULL COMMENT '活动限购数量',
   `promotion_type` int(1) DEFAULT NULL COMMENT '促销类型：0->没有促销使用原价;1->使用促销价；2->使用会员价；3->使用阶梯价格；4->使用满减价格；5->限时购',
 
   PRIMARY KEY (`id`) USING BTREE,
