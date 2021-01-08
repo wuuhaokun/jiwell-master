@@ -44,7 +44,7 @@ public class User {
     /**
      * 性別 預設為 male
      */
-    private String gender ;
+    private String gender;
 
     private String nickname ;
     /**
