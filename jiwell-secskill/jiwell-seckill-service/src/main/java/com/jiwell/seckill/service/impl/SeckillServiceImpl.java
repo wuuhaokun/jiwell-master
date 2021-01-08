@@ -158,6 +158,22 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     /**
+     * 根据用户id查询秒杀订单
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<SeckillOrder> getSeckillOrders(Long userId) {
+        Example example = new Example(SeckillOrder.class);
+        example.createCriteria().andEqualTo("userId",userId);
+        List<SeckillOrder> seckillOrders = this.seckillOrderMapper.selectByExample(example);
+        if (seckillOrders == null || seckillOrders.size() == 0){
+            return null;
+        }
+        return seckillOrders;
+    }
+
+    /**
      * 创建秒杀地址
      * @param goodsId
      * @param id
@@ -168,8 +184,11 @@ public class SeckillServiceImpl implements SeckillService {
         String str = new BCryptPasswordEncoder().encode(goodsId.toString()+id);
         BoundHashOperations<String,Object,Object> hashOperations = this.stringRedisTemplate.boundHashOps(KEY_PREFIX_PATH);
         String key = id.toString() + "_" + goodsId;
+        if (hashOperations.hasKey(key)){
+            hashOperations.delete(key);
+        }
         hashOperations.put(key,str);
-        hashOperations.expire(60, TimeUnit.SECONDS);
+        hashOperations.expire(600, TimeUnit.SECONDS);
         return str;
     }
 

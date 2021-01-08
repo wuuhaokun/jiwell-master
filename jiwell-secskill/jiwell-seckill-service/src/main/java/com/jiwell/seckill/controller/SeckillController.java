@@ -3,6 +3,7 @@ package com.jiwell.seckill.controller;
 
 import com.jiwell.auth.entity.UserInfo;
 import com.jiwell.item.pojo.SeckillGoods;
+import com.jiwell.order.pojo.SeckillOrder;
 import com.jiwell.response.Result;
 import com.jiwell.seckill.access.AccessLimit;
 import com.jiwell.seckill.client.GoodsClient;
@@ -53,8 +54,10 @@ public class SeckillController implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         //1.查询可以秒杀的商品
         BoundHashOperations<String,Object,Object> hashOperations = this.stringRedisTemplate.boundHashOps(KEY_PREFIX);
-        if (hashOperations.hasKey(KEY_PREFIX)){
-            hashOperations.entries().forEach((m,n) -> localOverMap.put(Long.parseLong(m.toString()),false));
+        if(hashOperations != null) {
+            //if (hashOperations.hasKey("12_") == false){
+            hashOperations.entries().forEach((m, n) -> localOverMap.put(Long.parseLong(m.toString()), false));
+//        }
         }
     }
 
@@ -68,17 +71,20 @@ public class SeckillController implements InitializingBean {
     @PostMapping("/{path}/seck")
     public ResponseEntity<String> seckillOrder(@PathVariable("path") String path, @RequestBody SeckillGoods seckillGoods){
 
-        String result = "排队中";
+        String result = "in the line!!";
 
         UserInfo userInfo = LoginInterceptor.getLoginUser();
 
         //1.验证路径
         boolean check = this.seckillService.checkSeckillPath(seckillGoods.getId(),userInfo.getId(),path);
-        if (!check){
+        if (check){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         //2.内存标记，减少redis访问
+        if(localOverMap.size() < 0){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         boolean over = localOverMap.get(seckillGoods.getSkuId());
         if (over){
             return ResponseEntity.ok(result);
@@ -118,6 +124,19 @@ public class SeckillController implements InitializingBean {
 
     }
 
+    /**
+     * 根据userId查询订单号
+     * @param userId
+     * @return
+     */
+    @GetMapping("orders")
+    public ResponseEntity<List<SeckillOrder>> getSeckillOrders(Long userId){
+        List<SeckillOrder> result = this.seckillService.getSeckillOrders(userId);
+        if (result == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(result);
+    }
     /**
      * 创建秒杀路径
      * @param goodsId

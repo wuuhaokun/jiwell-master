@@ -2,7 +2,10 @@ package com.jiwell.seckill.service;
 
 
 import com.jiwell.item.pojo.SeckillGoods;
+import com.jiwell.order.pojo.SeckillOrder;
 import com.jiwell.seckill.vo.SeckillMessage;
+
+import java.util.List;
 
 /**
  * @Author: 98050
@@ -38,6 +41,14 @@ public interface SeckillService {
      * @return
      */
     Long checkSeckillOrder(Long userId);
+
+
+    /**
+     * 根据用户id查询秒杀订单
+     * @param userId
+     * @return
+     */
+    List<SeckillOrder> getSeckillOrders(Long userId);
 
 
     /**
