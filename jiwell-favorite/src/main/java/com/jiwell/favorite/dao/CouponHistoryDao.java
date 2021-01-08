@@ -1,6 +1,7 @@
 package com.jiwell.favorite.dao;
 
 import com.jiwell.favorite.domain.CouponHistoryDetail;
+import com.jiwell.favorite.pojo.Coupon;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,4 +12,10 @@ import java.util.List;
  */
 public interface CouponHistoryDao {
     List<CouponHistoryDetail> getDetailList(@Param("memberId") Long memberId);
+
+    /**
+     * 获取指定会员优惠券列表
+     */
+    List<Coupon> getCouponList(@Param("memberId") Long memberId, @Param("useStatus")Integer useStatus);
+
 }

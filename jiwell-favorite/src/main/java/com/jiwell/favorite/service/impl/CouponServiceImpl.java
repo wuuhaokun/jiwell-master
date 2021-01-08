@@ -1,5 +1,6 @@
 package com.jiwell.favorite.service.impl;
 
+import com.jiwell.auth.entity.UserInfo;
 import com.jiwell.favorite.dao.CouponDao;
 import com.jiwell.favorite.dao.CouponHistoryDao;
 import com.jiwell.favorite.dao.CouponProductCategoryRelationDao;
@@ -7,8 +8,10 @@ import com.jiwell.favorite.dao.CouponProductRelationDao;
 import com.jiwell.favorite.domain.CartPromotionItem;
 import com.jiwell.favorite.domain.CouponHistoryDetail;
 import com.jiwell.favorite.dto.CouponParam;
+import com.jiwell.favorite.interceptor.LoginInterceptor;
 import com.jiwell.favorite.mapper.CouponProductCategoryRelationMapper;
 import com.jiwell.favorite.mapper.CouponProductRelationMapper;
+import com.jiwell.favorite.mapper.Example.CouponExample;
 import com.jiwell.favorite.mapper.Example.CouponHistoryExample;
 import com.jiwell.favorite.mapper.Example.CouponProductCategoryRelationExample;
 import com.jiwell.favorite.mapper.Example.CouponProductRelationExample;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 会员优惠券管理Service实现类
@@ -52,9 +56,10 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public Boolean add(Long couponId) {
         //        UmsMember currentMember = memberService.getCurrentMember();
-
-        long userId = 1;
-//        //获取优惠券信息，判断数量
+        //获取登录的用户
+        UserInfo userInfo = LoginInterceptor.getLoginUser();
+        long userId = userInfo.getId();
+        //获取优惠券信息，判断数量
         Coupon coupon = couponMapper.selectByPrimaryKey(couponId);
         if(coupon==null){
             //return CommonResult.failed("优惠券不存在");
@@ -69,11 +74,11 @@ public class CouponServiceImpl implements CouponService {
             //return CommonResult.failed("优惠券还没到领取时间");
             return false;
         }
-//        Example example = new Example(CouponHistory.class);
-//        example.createCriteria().andEqualTo("couponId",couponId).andEqualTo("member_id",userId);
+        //Example example = new Example(CouponHistory.class);
+        //example.createCriteria().andEqualTo("couponId",couponId).andEqualTo("member_id",userId);
         //判断用户领取的优惠券数量是否超过限制
         CouponHistoryExample couponHistoryExample = new CouponHistoryExample();
-        couponHistoryExample.createCriteria().andCouponIdEqualTo(couponId).andMemberIdEqualTo(userId/*currentMember.getId()*/);
+        couponHistoryExample.createCriteria().andCouponIdEqualTo(couponId).andMemberIdEqualTo(userId);
         //kun 加的，要看看
         //long count = couponHistoryMapper.selectCountByExample(couponHistoryExample); //.countByExample(couponHistoryExample);
         long count = couponHistoryMapper.countByExample(couponHistoryExample);
@@ -123,9 +128,9 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponHistory> list(Integer useStatus) {
-        long userId = 1;
-        //UmsMember currentMember = memberService.getCurrentMember();
+    public List<CouponHistory> listHistory(Integer useStatus) {
+        UserInfo userInfo = LoginInterceptor.getLoginUser();
+        long userId = userInfo.getId();
         CouponHistoryExample couponHistoryExample=new CouponHistoryExample();
         CouponHistoryExample.Criteria criteria = couponHistoryExample.createCriteria();
         criteria.andMemberIdEqualTo(userId);
@@ -136,10 +141,18 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
+    public List<Coupon> list(Integer useStatus) {
+        UserInfo userInfo = LoginInterceptor.getLoginUser();
+        long userId = userInfo.getId();
+        //UmsMember member = memberService.getCurrentMember();
+        return couponHistoryDao.getCouponList(userId,useStatus);
+    }
+
+    @Override
     public List<CouponHistoryDetail> listCart(List<CartPromotionItem> cartItemList, Integer type) {
 
-//        UmsMember currentMember = memberService.getCurrentMember();
-        long userId = 1;
+        UserInfo userInfo = LoginInterceptor.getLoginUser();
+        long userId = userInfo.getId();
         Date now = new Date();
         //获取该用户所有优惠券
         List<CouponHistoryDetail> allList = couponHistoryDao.getDetailList(userId);
@@ -193,6 +206,47 @@ public class CouponServiceImpl implements CouponService {
         }else{
             return disableList;
         }
+    }
+
+    @Override
+    public List<Coupon> listByProduct(Long productId) {
+        List<Long> allCouponIds = new ArrayList<>();
+        //获取指定商品优惠券
+        CouponProductRelationExample cprExample = new CouponProductRelationExample();
+        cprExample.createCriteria().andProductIdEqualTo(productId);
+        List<CouponProductRelation> cprList = productRelationMapper.selectByExample(cprExample);
+        //if(CollUtil.isNotEmpty(cprList)){
+        if(cprList.size() > 0){
+            List<Long> couponIds = cprList.stream().map(CouponProductRelation::getCouponId).collect(Collectors.toList());
+            allCouponIds.addAll(couponIds);
+        }
+        //获取指定分类优惠券
+        //kun 修改
+        long categoryId = 16;
+        //Product product = productMapper.selectByPrimaryKey(productId);
+        CouponProductCategoryRelationExample cpcrExample = new CouponProductCategoryRelationExample();
+        cpcrExample.createCriteria().andProductCategoryIdEqualTo(categoryId/*product.getProductCategoryId()*/);
+        List<CouponProductCategoryRelation> cpcrList = productCategoryRelationMapper.selectByExample(cpcrExample);
+        //if(CollUtil.isNotEmpty(cpcrList)){
+        if(cprList.size() > 0){
+            List<Long> couponIds = cpcrList.stream().map(CouponProductCategoryRelation::getCouponId).collect(Collectors.toList());
+            allCouponIds.addAll(couponIds);
+        }
+        //if(CollUtil.isEmpty(allCouponIds)){
+        if(cprList.size() <= 0){
+            return new ArrayList<>();
+        }
+        //所有优惠券
+        CouponExample couponExample = new CouponExample();
+        couponExample.createCriteria().andEndTimeGreaterThan(new Date())
+                .andStartTimeLessThan(new Date())
+                .andUseTypeEqualTo(0);
+        couponExample.or(couponExample.createCriteria()
+                .andEndTimeGreaterThan(new Date())
+                .andStartTimeLessThan(new Date())
+                .andUseTypeNotEqualTo(0)
+                .andIdIn(allCouponIds));
+        return couponMapper.selectByExample(couponExample);
     }
 
     private BigDecimal calcTotalAmount(List<CartPromotionItem> cartItemList) {

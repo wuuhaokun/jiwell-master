@@ -52,21 +52,21 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
 
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-
-        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter =
-                new MappingJackson2HttpMessageConverter();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addSerializer(BigInteger.class, ToStringSerializer.instance);
-        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-        objectMapper.registerModule(simpleModule);
-        jackson2HttpMessageConverter.setObjectMapper(objectMapper);
-        converters.add(jackson2HttpMessageConverter);
-        converters.add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
-    }
+//    @Override
+//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//
+//        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter =
+//                new MappingJackson2HttpMessageConverter();
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        SimpleModule simpleModule = new SimpleModule();
+//        simpleModule.addSerializer(BigInteger.class, ToStringSerializer.instance);
+//        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+//        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+//        objectMapper.registerModule(simpleModule);
+//        jackson2HttpMessageConverter.setObjectMapper(objectMapper);
+//        converters.add(jackson2HttpMessageConverter);
+//        converters.add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
+//    }
 
 }

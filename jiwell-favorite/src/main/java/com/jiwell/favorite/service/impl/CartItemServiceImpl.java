@@ -1,15 +1,5 @@
 package com.jiwell.favorite.service.impl;
 
-//import com.macro.mall.mapper.OmsCartItemMapper;
-//import com.macro.mall.model.OmsCartItem;
-//import com.macro.mall.model.OmsCartItemExample;
-//import com.macro.mall.model.UmsMember;
-//import com.macro.mall.portal.dao.PortalProductDao;
-//import com.macro.mall.portal.domain.CartProduct;
-//import com.macro.mall.portal.domain.CartPromotionItem;
-//import com.macro.mall.portal.service.OmsCartItemService;
-//import com.macro.mall.portal.service.OmsPromotionService;
-//import com.macro.mall.portal.service.UmsMemberService;
 import com.jiwell.auth.entity.UserInfo;
 import com.jiwell.favorite.domain.Cart;
 import com.jiwell.favorite.domain.CartPromotionItem;

@@ -8,6 +8,7 @@ package com.jiwell.favorite.service;
 import com.jiwell.favorite.domain.CartPromotionItem;
 import com.jiwell.favorite.domain.CouponHistoryDetail;
 import com.jiwell.favorite.dto.CouponParam;
+import com.jiwell.favorite.pojo.Coupon;
 import com.jiwell.favorite.pojo.CouponHistory;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,15 +26,24 @@ public interface CouponService {
     Boolean add(Long couponId);
 
     /**
-     * 获取优惠券列表
-     * @param useStatus 优惠券的使用状态
+     * 获取优惠券历史列表
      */
-    List<CouponHistory> list(Integer useStatus);
+    List<CouponHistory> listHistory(Integer useStatus);
+
+    /**
+     * 获取用户优惠券列表
+     */
+    List<Coupon> list(Integer useStatus);
 
     /**
      * 根据购物车信息获取可用优惠券
      */
     List<CouponHistoryDetail> listCart(List<CartPromotionItem> cartItemList, Integer type);
+
+    /**
+     * 获取当前商品相关优惠券
+     */
+    List<Coupon> listByProduct(Long productId);
 
     //以下為管理介界使用
 

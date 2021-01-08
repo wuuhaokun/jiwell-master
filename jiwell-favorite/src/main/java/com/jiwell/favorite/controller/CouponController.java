@@ -3,6 +3,7 @@ package com.jiwell.favorite.controller;
 import com.jiwell.favorite.domain.CartPromotionItem;
 import com.jiwell.favorite.domain.CouponHistoryDetail;
 import com.jiwell.favorite.dto.CouponParam;
+import com.jiwell.favorite.pojo.Coupon;
 import com.jiwell.favorite.pojo.CouponHistory;
 import com.jiwell.favorite.service.CartItemService;
 import com.jiwell.favorite.service.CouponService;
@@ -37,18 +38,40 @@ public class CouponController {
         }
         return ResponseEntity.ok(true);
     }
+    ///////////////////////////////////////////
+    //@ApiOperation("获取用户优惠券历史列表")
+    //@ApiImplicitParam(name = "useStatus", value = "优惠券筛选类型:0->未使用；1->已使用；2->已过期", allowableValues = "0,1,2", paramType = "query", dataType = "integer")
+    @RequestMapping(value = "/listHistory", method = RequestMethod.GET)
+    @ResponseBody
+    //public CommonResult<List<SmsCouponHistory>> listHistory(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
+    public ResponseEntity<List<CouponHistory>>listHistory(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
+        List<CouponHistory> couponHistoryList = couponService.listHistory(useStatus);
+        //return CommonResult.success(couponHistoryList);
+        return ResponseEntity.ok(couponHistoryList);
+    }
 
     //@ApiOperation("获取用户优惠券列表")
     //@ApiImplicitParam(name = "useStatus", value = "优惠券筛选类型:0->未使用；1->已使用；2->已过期",allowableValues = "0,1,2", paramType = "query", dataType = "integer")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<List<CouponHistory>> list(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
-        List<CouponHistory> couponHistoryList = couponService.list(useStatus);
-        if (couponHistoryList == null || couponHistoryList.size() <= 0) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(couponHistoryList);
+    //public CommonResult<List<Coupon>> list(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
+    public ResponseEntity<List<Coupon>>list(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
+        List<Coupon> couponList = couponService.list(useStatus);
+        return ResponseEntity.ok(couponList);
+        //return CommonResult.success(couponList);
     }
+    ////////////////////////////////////////////
+    //@ApiOperation("获取用户优惠券列表")
+    //@ApiImplicitParam(name = "useStatus", value = "优惠券筛选类型:0->未使用；1->已使用；2->已过期",allowableValues = "0,1,2", paramType = "query", dataType = "integer")
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public ResponseEntity<List<CouponHistory>> list(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
+//        List<CouponHistory> couponHistoryList = couponService.list(useStatus);
+//        if (couponHistoryList == null || couponHistoryList.size() <= 0) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return ResponseEntity.ok(couponHistoryList);
+//    }
 
     //@ApiOperation("获取登录会员购物车的相关优惠券")
     //@ApiImplicitParam(name = "type", value = "使用可用:0->不可用；1->可用",defaultValue = "1", allowableValues = "0,1", paramType = "query", dataType = "integer")
@@ -61,6 +84,16 @@ public class CouponController {
         List<CouponHistoryDetail> couponHistoryList = couponService.listCart(cartPromotionItemList,type);
         //return CommonResult.success(couponHistoryList);
         return ResponseEntity.ok(couponHistoryList);
+    }
+
+    //@ApiOperation("获取当前商品相关优惠券")
+    @RequestMapping(value = "/listByProduct/{productId}", method = RequestMethod.GET)
+    @ResponseBody
+    //public CommonResult<List<Coupon>> listByProduct(@PathVariable Long productId) {
+    public ResponseEntity<List<Coupon>>listByProduct(@PathVariable Long productId) {
+        List<Coupon> couponList = couponService.listByProduct(productId);
+        //return CommonResult.success(couponHistoryList);
+        return ResponseEntity.ok(couponList);
     }
 
     ////////////////////////////////////////////////////////////////////////////
