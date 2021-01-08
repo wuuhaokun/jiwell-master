@@ -6,6 +6,7 @@ import com.jiwell.comments.pojo.Review;
 import com.jiwell.comments.service.CommentService;
 import com.jiwell.utils.IdWorker;
 import com.mongodb.client.result.UpdateResult;
+import org.mockito.internal.matchers.Find;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -85,10 +86,10 @@ public class CommentServiceImpl implements CommentService {
             return false;
         }
         //原始的寫法在某些版本會有問題。
-        //boolean result = this.orderClient.updateOrderStatus(orderId, 6).getBody();
-        //if (!result){
-        //    return false;
-        //}
+        boolean result = this.orderClient.updateOrderStatus(orderId, 6).getBody();
+        if (!result){
+            return false;
+        }
         //3.添加评论
         /**
          * 设置主键
@@ -170,5 +171,23 @@ public class CommentServiceImpl implements CommentService {
         UpdateResult result = this.mongoTemplate.updateFirst(query,update,"review");
         return result.isModifiedCountAvailable();
     }
+
+    /**
+     * 取得點贊數
+     * @param id
+     */
+    //@Override
+//    public boolean getThumbup(String id) {
+////        Query query = new Query();
+////        query.addCriteria(Criteria.where("_id").is(id));
+////        //Find find = new Find();
+////        UpdateResult result = this.mongoTemplate.findById(query);//updateFirst(query,find,"thumbup");
+////        return result.isModifiedCountAvailable();
+//
+//        Query query = new Query(Criteria.where("spuid").is(id));
+//        long cnt = this.mongoTemplate.count(query, "thumbup");
+//        System.out.println("query: " + query + " | cnt " + cnt);
+//        return true;
+//    }
 }
 

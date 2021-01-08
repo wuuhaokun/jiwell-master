@@ -55,6 +55,23 @@ public class CommentController {
     }
 
     /**
+     * 分页查询某一商品下的所有顶级评论
+     * @param requestParam
+     * @return
+     */
+    @GetMapping("list1")
+    public ResponseEntity findReviewBySpuId1(CommentRequestParam requestParam){
+        Page<Review> result = commentService.findReviewBySpuId(requestParam);
+        if (result == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        PageResult pageResult = new PageResult();
+        pageResult.setTotal(result.getTotalElements());
+        pageResult.setItems(result.getContent());
+        pageResult.setTotalPage((long)result.getTotalPages());
+        return ResponseEntity.ok(pageResult);
+    }
+    /**
      * 评论点赞
      * @param id
      * @return
