@@ -233,6 +233,15 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public RegisterState loginAndRegister(String account, String password){
+        String key = KEY_PASSWORD_PREFIX + account;
+        //1.从redis中取出验证码
+        String codeCache = this.stringRedisTemplate.opsForValue().get(key);
+        //2.检查验证码是否正确
+        if(codeCache == null || !codeCache.equals(password)){
+            //不正确，返回
+            return null;
+        }
+
         User record = new User();
         record.setAccount(account);
         User user = this.userMapper.selectOne(record);
