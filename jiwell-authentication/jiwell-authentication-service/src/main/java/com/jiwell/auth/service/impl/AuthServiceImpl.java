@@ -62,16 +62,19 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public RegisterInfo authenticationAndRegister(String account, String password) {
 
-        String key = KEY_PASSWORD_PREFIX + account;
-        //1.从redis中取出验证码
-        String codeCache = this.stringRedisTemplate.opsForValue().get(key);
-        //2.检查验证码是否正确
-        if(codeCache == null || !codeCache.equals(password)){
-            //不正确，返回
-            return null;
-        }
+//        String key = KEY_PASSWORD_PREFIX + account;
+//        //1.从redis中取出验证码
+//        String codeCache = this.stringRedisTemplate.opsForValue().get(key);
+//        //2.检查验证码是否正确
+//        if(codeCache == null || !codeCache.equals(password)){
+//            //不正确，返回
+//            return null;
+//        }
         RegisterInfo registerInfo = new RegisterInfo();
         RegisterState registerState = userClient.loginAndRegister(account,password);
+        if(registerState == null){
+            return null;
+        }
         if(registerState == RegisterState.REGISTER || registerState == RegisterState.EXIST){
             try{
                 User user = this.userClient.queryUserByAccount(account);
