@@ -65,7 +65,7 @@ public class AddressServiceImpl implements AddressService {
 
     public void setDefaultAddress(Address address){
         if (address.getDefaultAddress()){
-            //如果将本地址设置为默认地址，那么该用户下的其他地址都应该是非默认地址
+            //如果將本地址設置為默認地址，那麼該用戶下的其他地址都應該是非默認地址
             List<Address> addressList = this.queryAddressByUserId();
             addressList.forEach(addressTemp -> {
                 if (addressTemp.getDefaultAddress()){

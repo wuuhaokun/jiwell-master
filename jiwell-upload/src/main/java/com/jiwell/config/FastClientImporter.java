@@ -10,7 +10,7 @@ import org.springframework.jmx.support.RegistrationPolicy;
 @Import(FdfsClientConfig.class)
 /**
  * @author li
- * 解决jmx重复注册bean的问题
+ * 解決jmx重複註冊bean的問題
   */
 @EnableMBeanExport(registration = RegistrationPolicy.IGNORE_EXISTING)
 public class FastClientImporter {

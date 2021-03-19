@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 public interface UserService {
     /**
-     * 检查用户名和手机号是否可用
+     * 檢查用戶名和手機號是否可用
      * @param data
      * @param type
      * @return
@@ -20,21 +20,21 @@ public interface UserService {
     Boolean checkData(String data, Integer type);
 
     /**
-     * 发送手机验证码
+     * 發送手機驗證碼
      * @param phone
      * @return
      */
     Boolean sendVerifyCode(String phone);
 
     /**
-     * 发送密碼從手机
+     * 發送密碼從手機
      * @param phone
      * @return
      */
     Boolean sendPassword(String phone);
 
     /**
-     * 用户注册
+     * 用戶註冊
      * @param user
      * @param code
      * @return
@@ -42,7 +42,7 @@ public interface UserService {
     Boolean register(User user, String code);
 
     /**
-     * 用户验证
+     * 用戶驗證
      * @param account
      * @param password
      * @return
@@ -50,7 +50,7 @@ public interface UserService {
     User queryUser(String account, String password);
 
     /**
-     * 根据用户名修改密码
+     * 根據用戶名修改密碼
      * @param account
      * @param newPassword
      * @return

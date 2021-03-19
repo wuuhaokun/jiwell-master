@@ -16,7 +16,7 @@ import java.util.List;
 public interface OrderDetailMapper extends Mapper<OrderDetail>, InsertListMapper<OrderDetail> {
 
     /**
-     * 根据brand id删除中间表相关数据
+     * 根據brand id刪除中間表相關數據
      * @param orderId
      */
     @Delete("DELETE FROM tb_order_detail WHERE order_id = #{orderId}")

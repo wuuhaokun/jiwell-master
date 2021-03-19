@@ -11,12 +11,12 @@ import java.util.List;
 /**
  * @Author: 98050
  * Time: 2018-10-11 20:04
- * Feature:品牌服务接口
+ * Feature:品牌服務接口
  */
 @RequestMapping("brand")
 public interface BrandApi {
     /**
-     * 根据品牌id集合，查询品牌信息
+     * 根據品牌id集合，查詢品牌信息
      * @param ids
      * @return
      */
@@ -24,7 +24,7 @@ public interface BrandApi {
     List<Brand> queryBrandByIds(@RequestParam("ids") List<Long> ids);
 
     /**
-     * 根据品牌id集合，查询品牌信息
+     * 根據品牌id集合，查詢品牌信息
      * @param typeid
      * @return
      */

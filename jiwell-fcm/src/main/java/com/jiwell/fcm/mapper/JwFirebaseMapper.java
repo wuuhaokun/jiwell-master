@@ -17,7 +17,7 @@ public interface JwFirebaseMapper extends Mapper<JwFirebase>{
 //    String queryByUserId(Long userId);
 
     /**
-     * 根据id查名字
+     * 根據id查名字
      * @param userId
      * @return
      */

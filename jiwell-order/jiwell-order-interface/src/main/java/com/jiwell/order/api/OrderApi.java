@@ -12,13 +12,13 @@ import java.util.List;
 /**
  * @Author: 98050
  * @Time: 2018-11-12 15:13
- * @Feature: 订单服务接口
+ * @Feature: 訂單服務接口
  */
 @RequestMapping("order")
 public interface OrderApi {
 
     /**
-     * 创建订单
+     * 創建訂單
      * @param seck
      * @param order
      * @return
@@ -28,7 +28,7 @@ public interface OrderApi {
 
 
     /**
-     * 修改订单状态
+     * 修改訂單狀態
      * @param id
      * @param status
      * @return

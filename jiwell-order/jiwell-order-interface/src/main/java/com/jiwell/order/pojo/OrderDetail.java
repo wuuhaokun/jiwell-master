@@ -8,7 +8,7 @@ import javax.persistence.Table;
 /**
  * @Author: 98050
  * @Time: 2018-10-27 16:34
- * @Feature: 订单详情信息实体类
+ * @Feature: 訂單詳情信息實體類
  */
 @Table(name = "tb_order_detail")
 public class OrderDetail {
@@ -18,7 +18,7 @@ public class OrderDetail {
     private Long id;
 
     /**
-     * 订单id
+     * 訂單id
      */
     private Long orderId;
 
@@ -28,22 +28,22 @@ public class OrderDetail {
     private Long skuId;
 
     /**
-     * 商品购买数量
+     * 商品購買數量
      */
     private Integer num;
 
     /**
-     * 商品标题
+     * 商品標題
      */
     private String title;
 
     /**
-     * 商品单价
+     * 商品單價
      */
     private Double price;
 
     /**
-     * 商品规格数据
+     * 商品規格數據
      */
     private String ownSpec;
 
@@ -52,7 +52,7 @@ public class OrderDetail {
      */
     private String description;
     /**
-     * 图片
+     * 圖片
      */
     private String image;
 

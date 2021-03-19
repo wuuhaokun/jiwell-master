@@ -58,13 +58,13 @@ public class CommentServiceImpl implements CommentService {
 
     /**
      * 新增
-     * 注意：一个用户只能发表一个顶级评论，可以追评（在一个订单中）
+     * 注意：一個用戶只能發表一個頂級評論，可以追評（在一個訂單中）
      * @param review
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean add(Long orderId, Review review) {
-        //1.检查用户是否在该商品下发表过顶级评论过
+        //1.檢查用戶是否在該商品下發表過頂級評論過
         if (review.getIsparent()) {
             Query query2 = new Query();
             query2.addCriteria(Criteria.where("userid").is(review.getUserid()));
@@ -75,7 +75,7 @@ public class CommentServiceImpl implements CommentService {
                 return false;
             }
         }
-        //2.修改订单状态,6代表评价状态
+        //2.修改訂單狀態,6代表評價狀態
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request1 = servletRequestAttributes.getRequest();
         HttpServletResponse response1 = servletRequestAttributes.getResponse();
@@ -90,9 +90,9 @@ public class CommentServiceImpl implements CommentService {
         if (!result){
             return false;
         }
-        //3.添加评论
+        //3.添加評論
         /**
-         * 设置主键
+         * 設置主鍵
          */
         review.set_id(idWorker.nextId() + "");
         review.setPublishtime(new Date());
@@ -100,7 +100,7 @@ public class CommentServiceImpl implements CommentService {
         review.setThumbup(0);
         review.setVisits(0);
         if (review.getParentid() != null && !"".equals(review.getParentid())){
-            //如果存在上级id，则上级评论数加1，将上级评论的isParent设置为true，浏览量加一
+            //如果存在上級id，則上級評論數加1，將上級評論的isParent設置為true，瀏覽量加一
             Query query = new Query();
             query.addCriteria(Criteria.where("_id").is(review.getParentid()));
             Update update = new Update();
@@ -134,7 +134,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     * 查询某一商品下的所有顶级评论
+     * 查詢某一商品下的所有頂級評論
      * @param commentRequestParam
      * @return
      */
@@ -145,7 +145,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     * 评论点赞(需要改进)
+     * 評論點贊(需要改進)
      * @param id
      */
     @Override
@@ -159,7 +159,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     * 访问量加一
+     * 訪問量加一
      * @param id
      */
     @Override

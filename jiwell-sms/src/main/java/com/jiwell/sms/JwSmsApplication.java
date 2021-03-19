@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @Author: 98050
  * @Time: 2018-10-22 18:08
- * @Feature: 短信服务启动器
+ * @Feature: 短信服務啟動器
  */
 @SpringBootApplication
 public class JwSmsApplication {

@@ -9,18 +9,18 @@ import java.util.Date;
 /**
  * @Author: 98050
  * @Time: 2018-10-27 16:34
- * @Feature: 订单状态实体类
+ * @Feature: 訂單狀態實體類
  */
 @Table(name = "tb_order_status")
 public class OrderStatus {
 
     /**
-     * 初始阶段：1、未付款、未发货；初始化所有数据
-     * 付款阶段：2、已付款、未发货；更改付款时间
-     * 发货阶段：3、已发货，未确认；更改发货时间、物流名称、物流单号
-     * 成功阶段：4、已确认，未评价；更改交易结束时间
-     * 关闭阶段：5、关闭； 更改更新时间，交易关闭时间。
-     * 评价阶段：6、已评价
+     * 初始階段：1、未付款、未發貨；初始化所有數據
+     * 付款階段：2、已付款、未發貨；更改付款時間
+     * 發貨階段：3、已發貨，未確認；更改發貨時間、物流名稱、物流單號
+     * 成功階段：4、已確認，未評價；更改交易結束時間
+     * 關閉階段：5、關閉； 更改更新時間，交易關閉時間。
+     * 評價階段：6、已評價
      */
 
     @Id
@@ -29,32 +29,32 @@ public class OrderStatus {
     private Integer status;
 
     /**
-     * 创建时间
+     * 創建時間
      */
     private Date createTime;
 
     /**
-     * 付款时间
+     * 付款時間
      */
     private Date paymentTime;
 
     /**
-     *  发货时间
+     * 發貨時間
      */
     private Date consignTime;
 
     /**
-     * 交易结束时间
+     * 交易結束時間
      */
     private Date endTime;
 
     /**
-     * 交易关闭时间
+     * 交易關閉時間
      */
     private Date closeTime;
 
     /**
-     * 评价时间
+     * 評價時間
      */
     private Date commentTime;
 

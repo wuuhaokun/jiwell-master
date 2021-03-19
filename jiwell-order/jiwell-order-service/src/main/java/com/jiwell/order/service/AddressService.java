@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface AddressService {
     /**
-     * 删除地址
+     * 刪除地址
      * @param addressId
      */
     void deleteAddress(Long addressId);
@@ -23,19 +23,19 @@ public interface AddressService {
     void updateAddressByUserId(Address address);
 
     /**
-     * 查询地址
+     * 查詢地址
      * @return
      */
     List<Address> queryAddressByUserId();
 
     /**
-     * 新增收货地址
+     * 新增收貨地址
      * @param address
      */
     void addAddressByUserId(Address address);
 
     /**
-     * 根据地址id查询地址
+     * 根據地址id查詢地址
      * @param addressId
      * @return
      */

@@ -17,22 +17,22 @@ public class Address {
     private Long id;
 
     /**
-     * 用户id
+     * 用戶id
      */
     private Long userId;
 
     /**
-     * 收货人
+     * 收貨人
      */
     private String name;
 
     /**
-     * 收货电话
+     * 收貨電話
      */
     private String phone;
 
     /**
-     * 邮编
+     * 郵編
      */
     private String zipCode;
 
@@ -47,17 +47,17 @@ public class Address {
     private String city;
 
     /**
-     * 区/县
+     * 區/縣
      */
     private String district;
 
     /**
-     * 详细地址
+     * 詳細地址
      */
     private String address;
 
     /**
-     * 是否是默认地址
+     * 是否是默認地址
      */
     private Boolean defaultAddress;
 

@@ -12,15 +12,15 @@ public class Stock {
     @Id
     private Long skuId;
     /**
-     * 秒杀可用库存
+     * 秒殺可用庫存
      */
     private Integer seckillStock;
     /**
-     * 已秒杀数量
+     * 已秒殺數量
      */
     private Integer seckillTotal;
     /**
-     * 正常库存
+     * 正常庫存
      */
     private Long stock;
 

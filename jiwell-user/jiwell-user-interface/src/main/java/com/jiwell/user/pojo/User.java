@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * @Author: 98050
  * @Time: 2018-10-21 18:42
- * @Feature: 用户实体类
+ * @Feature: 用戶實體類
  */
 @Table(name = "tb_user")
 public class User {
@@ -23,22 +23,22 @@ public class User {
     private Long id;
 
     /**
-     * 用户名
+     * 用戶名
      */
-    @Length(min = 4,max = 15,message = "用户名只能在4~15位之间")
+    //@Length(min = 4,max = 15,message = "用戶名只能在4~15位之間")
     private String account;
 
     /**
-     * 密码
+     * 密碼
      */
     //@JsonIgnore
-    @Length(min = 6,max = 25,message = "密码只能在6~25位之间")
+    //@Length(min = 6,max = 25,message = "密碼只能在6~25位之間")
     private String password;
 
     /**
-     * 电话
+     * 電話
      */
-    @Pattern(regexp = "^1[35678]\\d{9}$", message = "手机号格式不正确")
+    //@Pattern(regexp = "^1[35678]\\d{9}$", message = "手機號格式不正確")
     private String phone;
     //female
     /**
@@ -48,7 +48,7 @@ public class User {
 
     private String nickname ;
     /**
-     * 创建时间
+     * 創建時間
      */
     private Date created;
 

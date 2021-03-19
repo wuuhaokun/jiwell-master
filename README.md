@@ -499,6 +499,8 @@ docker run -p 80:80 --name nginx \
 -v /mydata/conf/nginx:/etc/nginx \
 -d nginx:1.17.0
 
+附註說明:
+
 Mac 啟動/重啟/關閉/停止ngin方式(需在root權限下 sudo su -)
 先切換到root權限下
 sudo su -
@@ -668,7 +670,7 @@ ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix://var/run/docker.sock
 按下 [Esc] 按鈕回到一般模式。
 在一般模式中按下 :wq 儲存後離開 vi。 離開不儲存更動一般模式中按下 :q!
 
-echo '{ "insecure-registries":["35.236.129.34:5000"] }' > /etc/docker/daemon.json
+echo '{ "insecure-registries":["34.80.112.18:5000"] }' > /etc/docker/daemon.json
 echo '{ "insecure-registries":["34.80.78.203:5000"] }' > /etc/docker/daemon.json
 //35.236.174.253 echo '{ "insecure-registries":["34.80.78.203:5000"] }' > /etc/docker/daemon.json
 修改配置後需要使用如下命令使配置生效
@@ -713,6 +715,14 @@ docker run -p 10010:10010 --name jiwell-api-gateway \
 -v /mydata/app/api-gateway/logs:/var/logs \
 -v /mydata/rsa:/mydata/rsa \
 -d jiwell/jiwell-api-gateway:1.0.0-SNAPSHOT
+
+****************** admi-monitor部署 *********************
+
+docker run -p 10083:10083 --name jiwell-admi-monitor \
+-v /etc/localtime:/etc/localtime \
+-v /mydata/app/admi-monitor/logs:/var/logs \
+-v /mydata/rsa:/mydata/rsa \
+-d jiwell/jiwell-admi-monitor:1.0.0-SNAPSHOT
 
 ****************** user-service部署 *********************
 docker run -p 8085:8085 --name jiwell-user-service \
@@ -831,6 +841,7 @@ mv dist html
 11.重啟nginx
 docker restart nginx
 
+註解：
 如何在 CentOS 安装 node.js
 https://blog.csdn.net/luckydarcy/article/details/79138650
 
@@ -1360,5 +1371,16 @@ Jenkins 打包設定
 1.cp /home/w_sirius/jiwell-fcm.sh /mydata/sh/jiwell-fcm.sh
 2.chmod +x ./jiwell-* 
 
-打包戈
+打包
 http://www.mydlq.club/article/16/
+
+bug 有空在查詢
+Data source rejected establishment of connection,  message from server: \"Too many connections\""
+
+AOP 參考資料 https://kknews.cc/zh-tw/code/ryvvojn.html
+
+docker容器 网关在请求转发的时候，会报 server unknow 的错误，而且这个问题在本地是不存在的因为你本地一直都是localhost
+https://juejin.cn/post/6844903919148072973
+
+Spring Cloud Eureka 使用外网IP和端口号进行服务注册---
+https://www.cnblogs.com/goingforward/p/11233570.html

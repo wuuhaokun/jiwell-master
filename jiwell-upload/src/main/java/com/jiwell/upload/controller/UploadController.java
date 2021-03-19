@@ -20,7 +20,7 @@ public class UploadController {
     private UploadServiceImpl uploadServiceImpl;
 
     /**
-     * 图片上传
+     * 圖片上傳
      * @param file
      * @return
      */
@@ -28,16 +28,16 @@ public class UploadController {
     public ResponseEntity<String> uploadImage(@RequestParam("file")MultipartFile file){
         String url= this.uploadServiceImpl.upload(file);
         if(StringUtils.isBlank(url)){
-            //url为空，证明上传失败
+            //url為空，證明上傳失敗
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.ok(url);
     }
 
     /**
-     * 删除文件
+     * 刪除文件
      *
-     * @param filePath 文件路径(groupName/path)
+     * @param filePath 文件路徑(groupName/path)
      */
     @DeleteMapping("image")
     public ResponseEntity<Boolean> deleteImage(String filePath){

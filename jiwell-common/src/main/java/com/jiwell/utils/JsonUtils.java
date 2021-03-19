@@ -33,7 +33,7 @@ public class JsonUtils {
         try {
             return mapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            logger.error("json序列化出错：" + obj, e);
+            logger.error("json序列化出錯：" + obj, e);
             return null;
         }
     }
@@ -43,7 +43,7 @@ public class JsonUtils {
         try {
             return mapper.readValue(json, tClass);
         } catch (IOException e) {
-            logger.error("json解析出错：" + json, e);
+            logger.error("json解析出錯：" + json, e);
             return null;
         }
     }
@@ -53,7 +53,7 @@ public class JsonUtils {
         try {
             return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, eClass));
         } catch (IOException e) {
-            logger.error("json解析出错：" + json, e);
+            logger.error("json解析出錯：" + json, e);
             return null;
         }
     }
@@ -63,7 +63,7 @@ public class JsonUtils {
         try {
             return mapper.readValue(json, mapper.getTypeFactory().constructMapType(Map.class, kClass, vClass));
         } catch (IOException e) {
-            logger.error("json解析出错：" + json, e);
+            logger.error("json解析出錯：" + json, e);
             return null;
         }
     }
@@ -73,7 +73,7 @@ public class JsonUtils {
         try {
             return mapper.readValue(json, type);
         } catch (IOException e) {
-            logger.error("json解析出错：" + json, e);
+            logger.error("json解析出錯：" + json, e);
             return null;
         }
     }

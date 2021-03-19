@@ -50,7 +50,7 @@ public class MailUtils {
         config.put("mail.smtp.starttls.enable", "true");
         config.put("mail.smtp.host", SERVIDOR_SMTP);
         config.put("mail.smtp.port", PORTA_SERVIDOR_SMTP);
-        //这个参数会把和邮箱服务器的交互过程都打印出来
+        //這個參數會把和郵箱服務器的交互過程都打印出來
         config.put("mail.debug", "true");
         return config;
     }

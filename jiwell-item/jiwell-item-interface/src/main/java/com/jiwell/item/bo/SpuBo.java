@@ -15,18 +15,18 @@ import java.util.List;
  */
 public class SpuBo extends Spu {
     /**
-     * 商品分类名称
+     * 商品分類名稱
      */
     @Transient
     private String cname;
     /**
-     * 品牌名称
+     * 品牌名稱
      */
     @Transient
     private String bname;
 
     /**
-     * 商品详情
+     * 商品詳情
      */
     @Transient
     private SpuDetail spuDetail;

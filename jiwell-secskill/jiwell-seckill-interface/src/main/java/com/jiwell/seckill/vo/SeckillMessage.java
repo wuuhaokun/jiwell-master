@@ -6,7 +6,7 @@ import com.jiwell.item.pojo.SeckillGoods;
 /**
  * @Author: 98050
  * @Time: 2018-11-15 20:19
- * @Feature: 秒杀信息
+ * @Feature: 秒殺信息
  */
 public class SeckillMessage {
     /**

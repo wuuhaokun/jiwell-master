@@ -15,28 +15,28 @@ import java.util.List;
  */
 public interface OrderService {
     /**
-     * 订单创建
+     * 訂單創建
      * @param order
      * @return
      */
     Long createOrder(Order order);
 
     /**
-     * 移除订单
+     * 移除訂單
      * @param orderId
      * @return
      */
     Boolean deleteOrder(long orderId);
 
     /**
-     * 根据订单号查询订单
+     * 根據訂單號查詢訂單
      * @param id
      * @return
      */
     Order queryOrderById(Long id);
 
     /**
-     * 分页查询用户订单
+     * 分頁查詢用戶訂單
      * @param page
      * @param rows
      * @param status
@@ -45,7 +45,7 @@ public interface OrderService {
     PageResult<Order> queryUserOrderList(Integer page, Integer rows, Integer status);
 
     /**
-     * 更改订单状态
+     * 更改訂單狀態
      * @param id
      * @param status
      * @return
@@ -53,21 +53,21 @@ public interface OrderService {
     Boolean updateOrderStatus(Long id, Integer status);
 
     /**
-     * 根据订单号查询商品id
+     * 根據訂單號查詢商品id
      * @param id
      * @return
      */
     List<Long> querySkuIdByOrderId(Long id);
 
     /**
-     * 根据订单号查询订单状态
+     * 根據訂單號查詢訂單狀態
      * @param id
      * @return
      */
     OrderStatus queryOrderStatusById(Long id);
 
     /**
-     * 查询库存
+     * 查詢庫存
      * @param order
      * @return
      */

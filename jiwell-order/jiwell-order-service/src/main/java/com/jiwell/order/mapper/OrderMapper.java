@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface OrderMapper extends Mapper<Order> {
     /**
-     * 分页查询订单
+     * 分頁查詢訂單
      * @param userId
      * @param status
      * @return

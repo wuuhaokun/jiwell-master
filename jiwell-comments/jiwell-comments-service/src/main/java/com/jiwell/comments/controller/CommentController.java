@@ -37,7 +37,7 @@ public class CommentController {
     private final String THUMBUP_PREFIX = "thumbup";
 
     /**
-     * 分页查询某一商品下的所有顶级评论
+     * 分頁查詢某一商品下的所有頂級評論
      * @param requestParam
      * @return
      */
@@ -55,7 +55,7 @@ public class CommentController {
     }
 
     /**
-     * 分页查询某一商品下的所有顶级评论
+     * 分頁查詢某一商品下的所有頂級評論
      * @param requestParam
      * @return
      */
@@ -72,7 +72,7 @@ public class CommentController {
         return ResponseEntity.ok(pageResult);
     }
     /**
-     * 评论点赞
+     * 評論點贊
      * @param id
      * @return
      */
@@ -94,7 +94,7 @@ public class CommentController {
     }
 
     /**
-     * 增加评论
+     * 增加評論
      * @param review
      * @return
      */
@@ -108,7 +108,7 @@ public class CommentController {
     }
 
     /**
-     * 根据评论id查询评论
+     * 根據評論id查詢評論
      * @param id
      * @return
      */
@@ -122,7 +122,7 @@ public class CommentController {
     }
 
     /**
-     * 修改评论
+     * 修改評論
      * @param review
      * @return
      */
@@ -133,7 +133,7 @@ public class CommentController {
     }
 
     /**
-     * 根据评论id删除评论
+     * 根據評論id刪除評論
      * @param id
      * @return
      */
@@ -144,7 +144,7 @@ public class CommentController {
     }
 
     /**
-     * 根据评论id访问量加1
+     * 根據評論id訪問量加1
      * @param id
      * @return
      */

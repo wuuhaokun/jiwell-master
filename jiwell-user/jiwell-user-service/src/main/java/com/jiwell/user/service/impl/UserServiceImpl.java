@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 发送短信验证码
+     * 發送短信驗證碼
      * @param phone
      */
     @Override
@@ -77,17 +77,17 @@ public class UserServiceImpl implements UserService {
             msg.put("phone",phone);
             msg.put("code",code);
 
-            //2.发送短信 //先改為MAIL
+            //2.發送短信 //先改為MAIL
             //this.amqpTemplate.convertAndSend("jiwell.sms.exchange","sms.verify.code",msg);
             this.amqpTemplate.convertAndSend("jiwell.mail.exchange","mail.verify.code",msg);
 
-            //3.将code存入redis
+            //3.將code存入redis
             this.stringRedisTemplate.opsForValue().set(KEY_PREFIX + phone,code,5, TimeUnit.MINUTES);
 
             return true;
 
         }catch (Exception e){
-            logger.error("发送短信失败。phone：{}，code：{}",phone,code);
+            logger.error("發送短信失敗。phone：{}，code：{}",phone,code);
             return false;
         }
     }
@@ -108,17 +108,17 @@ public class UserServiceImpl implements UserService {
             msg.put("phone",phone);
             msg.put("password",code);
 
-            //2.发送短信 //先改為MAIL
+            //2.發送短信 //先改為MAIL
             //this.amqpTemplate.convertAndSend("jiwell.sms.exchange","sms.verify.code",msg);
             this.amqpTemplate.convertAndSend("jiwell.mail.exchange","mail.verify.code",msg);
 
-            //3.将code存入redis
+            //3.將code存入redis
             this.stringRedisTemplate.opsForValue().set(KEY_PASSWORD_PREFIX + phone,code,5, TimeUnit.MINUTES);
 
             return true;
 
         }catch (Exception e){
-            logger.error("发送短信失败。phone：{}，code：{}",phone,code);
+            logger.error("發送短信失敗。phone：{}，code：{}",phone,code);
             return false;
         }
     }
@@ -126,33 +126,33 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean register(User user, String code) {
         String key = KEY_PREFIX + user.getPhone();
-        //1.从redis中取出验证码
+        //1.從redis中取出驗證碼
         String codeCache = this.stringRedisTemplate.opsForValue().get(key);
-        //2.检查验证码是否正确
+        //2.檢查驗證碼是否正確
         if(codeCache == null || !codeCache.equals(code)){
-            //不正确，返回
+            //不正確，返回
             return false;
         }
         user.setId(null);
         user.setCreated(new Date());
-        //3.密码加密
+        //3.密碼加密
         String encodePassword = CodecUtils.passwordBcryptEncode(user.getAccount().trim(),user.getPassword().trim());
         user.setPassword(encodePassword);
-        //4.写入数据库
+        //4.寫入數據庫
         boolean result = this.userMapper.insertSelective(user) == 1;
-        //5.如果注册成功，则删掉redis中的code
+        //5.如果註冊成功，則刪掉redis中的code
         if (result){
             try{
                 this.stringRedisTemplate.delete(KEY_PREFIX + user.getPhone());
             }catch (Exception e){
-                logger.error("删除缓存验证码失败，code:{}",code,e);
+                logger.error("刪除緩存驗證碼失敗，code:{}",code,e);
             }
         }
         return result;
     }
 
     /**
-     * 用户验证
+     * 用戶驗證
      * @param account
      * @param password
      * @return
@@ -160,37 +160,37 @@ public class UserServiceImpl implements UserService {
     @Override
     public User queryUser(String account, String password) {
         /**
-         * 逻辑改变，先去缓存中查询用户数据，查到的话直接返回，查不到再去数据库中查询，然后放入到缓存当中
+         * 邏輯改變，先去緩存中查詢用戶數據，查到的話直接返回，查不到再去數據庫中查詢，然後放入到緩存當中
          */
-        //1.缓存中查询
+        //1.緩存中查詢
         BoundHashOperations<String,Object,Object> hashOperations = this.stringRedisTemplate.boundHashOps(KEY_PREFIX2);
         String userStr = (String) hashOperations.get(account);
         User user;
         if (StringUtils.isEmpty(userStr)){
-            //在缓存中没有查到，去数据库查,查到放入缓存当中
+            //在緩存中沒有查到，去數據庫查,查到放入緩存當中
             User record = new User();
             record.setAccount(account);
             user = this.userMapper.selectOne(record);
             hashOperations.put(user.getAccount(), JsonUtils.serialize(user));
         } else {
-            user =  JsonUtils.parse(userStr,User.class);
+            user = JsonUtils.parse(userStr,User.class);
         }
-        //2.校验用户名
+        //2.校驗用戶名
         if (user == null){
             return null;
         }
-        //3. 校验密码
+        //3. 校驗密碼
         boolean result = CodecUtils.passwordConfirm(account + password,user.getPassword());
         if (!result){
             return null;
         }
 
-        //4.用户名密码都正确
+        //4.用戶名密碼都正確
         return user;
     }
 
     /**
-     * 根据用户名修改密码
+     * 根據用戶名修改密碼
      * @param account
      * @param newPassword
      * @return
@@ -198,26 +198,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updatePassword(String account,String oldPassword, String newPassword) {
         /**
-         * 这里面涉及到对缓存的操作：
-         * 先把数据存到数据库中，成功后，再让缓存失效。
+            * 這裡面涉及到對緩存的操作：
+            * 先把數據存到數據庫中，成功後，再讓緩存失效。
          */
-        //1.读取用户信息
+        //1.讀取用戶信息
         User user = this.queryUser(account,oldPassword);
         if (user == null){
             return false;
         }
-        //2.更新数据库中的用户信息 //這里可以不用的，有寫錯
+        //2.更新數據庫中的用戶信息 //這裡可以不用的，有寫錯
         //User updateUser = new User();
         //updateUser.setId(user.getId());
 
-        //2.1密码加密
+        //2.1密碼加密
         String encodePassword = CodecUtils.passwordBcryptEncode(account.trim(),newPassword.trim());
         user.setPassword(encodePassword);
         int result = this.userMapper.updateByPrimaryKeySelective(user);
         if(result == 0){
             return false;
         }
-        //3.处理缓存中的信息
+        //3.處理緩存中的信息
         //BoundHashOperations<String,Object,Object> hashOperations = this.stringRedisTemplate.boundHashOps(KEY_PREFIX+account);
         BoundHashOperations<String,Object,Object> hashOperations = this.stringRedisTemplate.boundHashOps(KEY_PREFIX2);
 
@@ -234,11 +234,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public RegisterState loginAndRegister(String account, String password){
         String key = KEY_PASSWORD_PREFIX + account;
-        //1.从redis中取出验证码
+        //1.從redis中取出驗證碼
         String codeCache = this.stringRedisTemplate.opsForValue().get(key);
-        //2.检查验证码是否正确
+        //2.檢查驗證碼是否正確
         if(codeCache == null || !codeCache.equals(password)){
-            //不正确，返回
+            //不正確，返回
             return null;
         }
 
@@ -253,17 +253,17 @@ public class UserServiceImpl implements UserService {
             newUser.setAccount(account);
             newUser.setCreated(new Date());
             newUser.setPhone(account);
-            //3.密码加密
+            //3.密碼加密
             String encodePassword = CodecUtils.passwordBcryptEncode(account.trim(),password.trim());
             newUser.setPassword(encodePassword);
-            //4.写入数据库
+            //4.寫入數據庫
             boolean result = this.userMapper.insertSelective(newUser) == 1;
-            //5.如果注册成功，则删掉redis中的code
+            //5.如果註冊成功，則刪掉redis中的code
             if (result){
                 try{
                     this.stringRedisTemplate.delete(KEY_PASSWORD_PREFIX + newUser.getPhone());
                 }catch (Exception e){
-                    logger.error("删除缓存密碼失败，code:{}",password,e);
+                    logger.error("刪除緩存密碼失敗，code:{}",password,e);
                 }
                 return RegisterState.REGISTER;
             }
@@ -284,7 +284,6 @@ public class UserServiceImpl implements UserService {
         User record = new User();
         record.setAccount(account);
         User user = this.userMapper.selectOne(record);
-        //4.用户名密码都正确
         return user;
     }
 

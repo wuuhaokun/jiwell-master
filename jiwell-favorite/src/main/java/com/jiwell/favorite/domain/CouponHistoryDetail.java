@@ -8,15 +8,15 @@ import com.jiwell.favorite.pojo.CouponProductRelation;
 import java.util.List;
 
 /**
- * 优惠券领取历史详情封装
+ * 優惠券領取歷史詳情封裝
  * Created by macro on 2018/8/29.
  */
 public class CouponHistoryDetail extends CouponHistory {
-    //相关优惠券信息
+    //相關優惠券信息
     private Coupon coupon;
-    //优惠券关联商品
+    //優惠券關聯商品
     private List<CouponProductRelation> productRelationList;
-    //优惠券关联商品分类
+    //優惠券關聯商品分類
     private List<CouponProductCategoryRelation> categoryRelationList;
 
     public Coupon getCoupon() {

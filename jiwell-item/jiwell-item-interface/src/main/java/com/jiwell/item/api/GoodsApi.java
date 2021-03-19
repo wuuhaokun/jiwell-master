@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @Author: 98050
  * Time: 2018-10-11 20:05
- * Feature:商品服务接口
+ * Feature:商品服務接口
  */
 @RequestMapping("goods")
 public interface GoodsApi {
@@ -38,7 +38,7 @@ public interface GoodsApi {
             @RequestParam(value = "saleable",defaultValue = "true") Boolean saleable,
             @RequestParam(value = "cid3",defaultValue = "-1") long cid3);
     /**
-     * 根据spu商品id查询详情
+     * 根據spu商品id查詢詳情
      * @param id
      * @return
      */
@@ -47,7 +47,7 @@ public interface GoodsApi {
     SpuDetail querySpuDetailBySpuId(@PathVariable("id") Long id);
 
     /**
-     * 根据Spu的id查询其下所有的sku
+     * 根據Spu的id​​查詢其下所有的sku
      * @param id
      * @return
      */
@@ -55,7 +55,7 @@ public interface GoodsApi {
     List<Sku> querySkuBySpuId(@PathVariable("id") Long id);
 
     /**
-     * 根据id查询商品
+     * 根據id查詢商品
      * @param id
      * @return
      */
@@ -63,7 +63,7 @@ public interface GoodsApi {
     SpuBo queryGoodsById(@PathVariable("id") Long id);
 
     /**
-     * 根据id查询商品
+     * 根據id查詢商品
      * @param ids
      * @return
      */
@@ -71,7 +71,7 @@ public interface GoodsApi {
     //SpuBo queryGoodsById(@PathVariable("id") Long id);
     List<SpuBo> queryGoodsByIds(@RequestParam("ids") List<Long> ids);
     /**
-     * 根据sku的id查询sku
+     * 根據sku的id查詢sku
      * @param id
      * @return
      */
@@ -80,9 +80,8 @@ public interface GoodsApi {
 
 
     /**
-     * 查询秒杀商品
+     * 查詢秒殺商品
      * @return
      */
     @GetMapping("/seckill/list")
-    ResponseEntity<List<SeckillGoods>> querySeckillGoods();
-}
+    ResponseEntity<List<SeckillGoods>> querySeckillGoods();}

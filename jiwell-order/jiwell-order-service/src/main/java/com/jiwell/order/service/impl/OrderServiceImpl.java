@@ -87,36 +87,36 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long createOrder(Order order) {
-        //创建订单
+//創建訂單
         //1.生成orderId
         long orderId = idWorker.nextId();
-        //2.获取登录的用户
+        //2.獲取登錄的用戶
         UserInfo userInfo = LoginInterceptor.getLoginUser();
-        //3.初始化数据
+        //3.初始化數據
         order.setBuyerNick(userInfo.getAccount());
         order.setBuyerRate(false);
         order.setCreateTime(new Date());
         order.setOrderId(orderId);
         order.setUserId(userInfo.getId());
-        //4.保存数据
+        //4.保存數據
         this.orderMapper.insertSelective(order);
 
-        //5.保存订单状态
+        //5.保存訂單狀態
         OrderStatus orderStatus = new OrderStatus();
         orderStatus.setOrderId(orderId);
         orderStatus.setCreateTime(order.getCreateTime());
-        //初始状态未未付款：1
+        //初始狀態未未付款：1
         orderStatus.setStatus(1);
-        //6.保存数据
+        //6.保存數據
         this.orderStatusMapper.insertSelective(orderStatus);
 
-        //7.在订单详情中添加orderId
+        //7.在訂單詳情中添加orderId
         order.getOrderDetails().forEach(orderDetail -> {
-            //添加订单
+            //添加訂單
             orderDetail.setOrderId(orderId);
         });
 
-        //8.保存订单详情，使用批量插入功能
+        //8.保存訂單詳情，使用批量插入功能
         this.orderDetailMapper.insertList(order.getOrderDetails());
 
         order.getOrderDetails().forEach(orderDetail -> this.stockMapper.reduceStock(orderDetail.getSkuId(), orderDetail.getNum()));
@@ -126,7 +126,7 @@ public class OrderServiceImpl implements OrderService {
 
     }
     /**
-     * 根据订单号查移除訂單
+     * 根據訂單號查移除訂單
      * @param orderId
      * @return
      */
@@ -140,7 +140,7 @@ public class OrderServiceImpl implements OrderService {
         if(result == 0){
             //return null;
         }
-        //8.保存订单详情，使用批量插入功能
+        //8.保存訂單詳情，使用批量插入功能
         order.getOrderDetails().forEach(orderDetail -> this.stockMapper.increaseStock(orderDetail.getSkuId(), orderDetail.getNum()));
 
         result = this.orderStatusMapper.deleteByPrimaryKey(orderId);
@@ -156,31 +156,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 根据订单号查询订单
+     * 根據訂單號查詢訂單
      * @param id
      * @return
      */
     @Override
     public Order queryOrderById(Long id) {
-        //1.查询订单
+        //1.查詢訂單
         Order order = this.orderMapper.selectByPrimaryKey(id);
-        //2.查询订单详情
+        //2.查詢訂單詳情
         Example example = new Example(OrderDetail.class);
         example.createCriteria().andEqualTo("orderId",id);
         List<OrderDetail> orderDetail = this.orderDetailMapper.selectByExample(example);
         orderDetail.forEach(System.out::println);
-        //3.查询订单状态
+        //3.查詢訂單狀態
         OrderStatus orderStatus = this.orderStatusMapper.selectByPrimaryKey(order.getOrderId());
-        //4.order对象填充订单详情
+        //4.order對象填充訂單詳情
         order.setOrderDetails(orderDetail);
-        //5.order对象设置订单状态
+        //5.order對象設置訂單狀態
         order.setStatus(orderStatus.getStatus());
         //6.返回order
         return order;
     }
 
     /**
-     * 查询当前登录用户的订单，通过订单状态进行筛选
+     * 查詢當前登錄用戶的訂單，通過訂單狀態進行篩選
      * @param page
      * @param rows
      * @param status
@@ -189,11 +189,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public PageResult<Order> queryUserOrderList(Integer page, Integer rows, Integer status) {
         try{
-            //1.分页
+            //1.分頁
             PageHelper.startPage(page,rows);
-            //2.获取登录用户
+            //2.獲取登錄用戶
             UserInfo userInfo = LoginInterceptor.getLoginUser();
-            //3.查询
+            //3.查詢
             Page<Order> pageInfo = (Page<Order>) this.orderMapper.queryOrderList(userInfo.getId(), status);
             //4.填充orderDetail
             List<Order> orderList = pageInfo.getResult();
@@ -205,13 +205,13 @@ public class OrderServiceImpl implements OrderService {
             });
             return new PageResult<>(pageInfo.getTotal(),(long)pageInfo.getPages(), orderList);
         }catch (Exception e){
-            logger.error("查询订单出错",e);
+            logger.error("查詢訂單出錯",e);
             return null;
         }
     }
 
     /**
-     * 更新订单状态
+     * 更新訂單狀態
      * @param id
      * @param status
      * @return
@@ -225,45 +225,45 @@ public class OrderServiceImpl implements OrderService {
         orderStatus.setOrderId(id);
         orderStatus.setStatus(status);
 
-        //延时消息
+        //延時消息
         OrderStatusMessage orderStatusMessage = new OrderStatusMessage(id,userInfo.getId(),userInfo.getAccount(),spuId,1);
         OrderStatusMessage orderStatusMessage2 = new OrderStatusMessage(id,userInfo.getId(),userInfo.getAccount(),spuId,2);
-        //1.根据状态判断要修改的时间
+        //1.根據狀態判斷要修改的時間
         switch (status){
             case 2:
-                //2.付款时间
+                //2.付款時間
                 orderStatus.setPaymentTime(new Date());
                 break;
             case 3:
-                //3.发货时间
+                //3.發貨時間
                 orderStatus.setConsignTime(new Date());
-                //发送消息到延迟队列，防止用户忘记确认收货
+                //發送消息到延遲隊列，防止用戶忘記確認收貨
                 orderStatusService.sendMessage(orderStatusMessage);
                 orderStatusService.sendMessage(orderStatusMessage2);
                 break;
             case 4:
-                //4.确认收货，订单结束
+                //4.確認收貨，訂單結束
                 orderStatus.setEndTime(new Date());
                 orderStatusService.sendMessage(orderStatusMessage2);
                 break;
             case 5:
-                //5.交易失败，订单关闭
+                //5.交易失敗，訂單關閉
                 orderStatus.setCloseTime(new Date());
                 break;
             case 6:
-                //6.评价时间
+                //6.評價時間
                 orderStatus.setCommentTime(new Date());
                 break;
 
-                default:
-                    return null;
+            default:
+                return null;
         }
         int count = this.orderStatusMapper.updateByPrimaryKeySelective(orderStatus);
         return count == 1;
     }
 
     /**
-     * 根据订单号查询商品id
+     * 根據訂單號查詢商品id
      * @param id
      * @return
      */
@@ -278,7 +278,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 根据订单号查询订单状态
+     * 根據訂單號查詢訂單狀態
      * @param id
      * @return
      */
@@ -288,7 +288,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 查询订单下商品的库存，返回库存不足的商品Id
+     * 查詢訂單下商品的庫存，返回庫存不足的商品Id
      * @param order
      * @return
      */
@@ -298,7 +298,7 @@ public class OrderServiceImpl implements OrderService {
         order.getOrderDetails().forEach(orderDetail -> {
             Stock stock = this.stockMapper.selectByPrimaryKey(orderDetail.getSkuId());
             if (stock.getStock() - orderDetail.getNum() < 0){
-                //先判断库存是否充足
+                //先判斷庫存是否充足
                 skuId.add(orderDetail.getSkuId());
             }
         });
@@ -306,7 +306,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 根据订单id查询其skuId
+     * 根據訂單id查詢其skuId
      * @param id
      * @return
      */
@@ -318,7 +318,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
-     * 发送短信验证码
+     * 發送短信驗證碼
      * @param userId
      */
     //@Override
@@ -328,16 +328,16 @@ public class OrderServiceImpl implements OrderService {
             Map<String,String> msg = new HashMap<>();
             msg.put("userId",userId);
             msg.put("message",message);
-            //2.发送短信
+            //2.發送短信
             this.amqpTemplate.convertAndSend("jiwell.fcm.exchange","fcm.verify.code",msg);
 
-            //3.将code存入redis
+            //3.將code存入redis
             //this.stringRedisTemplate.opsForValue().set(KEY_PREFIX + phone,code,5, TimeUnit.MINUTES);
 
             return true;
 
         }catch (Exception e){
-            logger.error("发送短信失败。phone：{}，code：{}",userId,message);
+            logger.error("發送短信失敗。phone：{}，code：{}",userId,message);
             return false;
         }
     }

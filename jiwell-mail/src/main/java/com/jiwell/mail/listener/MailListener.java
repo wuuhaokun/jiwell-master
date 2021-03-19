@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * @Author: 98050
  * @Time: 2018-10-22 19:21
- * @Feature:短信服务监听器
+ * @Feature:Mail服務監聽器
  */
 @Component
 public class MailListener {

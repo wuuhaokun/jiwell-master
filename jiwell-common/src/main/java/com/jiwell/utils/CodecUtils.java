@@ -5,7 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 /**
  * @Author: 98050
  * @Time: 2018-10-23 10:49
- * @Feature: 密码加密
+ * @Feature: 密碼加密
  */
 public class CodecUtils {
 

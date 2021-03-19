@@ -8,7 +8,7 @@ import javax.persistence.Table;
 /**
  * @Author: 98050
  * @Time: 2018-11-15 15:42
- * @Feature: 秒杀订单
+ * @Feature: 秒殺訂單
  */
 @Table(name = "tb_seckill_order")
 public class SeckillOrder {

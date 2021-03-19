@@ -29,7 +29,7 @@ public class UploadServiceImpl implements UploadService {
     private static final Logger logger= LoggerFactory.getLogger(UploadServiceImpl.class);
 
     /**
-     *     支持上传的文件类型
+     * 支持上傳的文件類型
      */
     private static final List<String> suffixes = Arrays.asList("image/png","image/jpeg","image/jpg");
 
@@ -37,38 +37,38 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public String upload(MultipartFile file) {
         /**
-         * 1.图片信息校验
-         *      1)校验文件类型
-         *      2)校验图片内容
-         * 2.保存图片
-         *      1)生成保存目录
-         *      2)保存图片
-         *      3)拼接图片地址
+         * 1.圖片信息校驗
+         * 1)校驗文件類型
+         * 2)校驗圖片內容
+         * 2.保存圖片
+         * 1)生成保存目錄
+         * 2)保存圖片
+         * 3)拼接圖片地址
          */
         try {
             String type = file.getContentType();
             if (!suffixes.contains(type)) {
-                logger.info("上传文件失败，文件类型不匹配：{}", type);
+                logger.info("上傳文件失敗，文件類型不匹配：{}", type);
                 return null;
             }
             BufferedImage image = ImageIO.read(file.getInputStream());
             if (image == null) {
-                logger.info("上传失败，文件内容不符合要求");
+                logger.info("上傳失敗，文件內容不符合要求");
                 return null;
             }
 
-//            File dir = new File("G:\\jiwell\\upload");
-//            if (!dir.exists()){
-//                dir.mkdirs();
-//            }
-//            file.transferTo(new File(dir, Objects.requireNonNull(file.getOriginalFilename())));
+// File dir = new File("G:\\jiwell\\upload");
+// if (!dir.exists()){
+// dir.mkdirs();
+// }
+// file.transferTo(new File(dir, Objects.requireNonNull(file.getOriginalFilename())));
 
             StorePath storePath = this.storageClient.uploadFile(
-                  file.getInputStream(), file.getSize(), getExtension(file.getOriginalFilename()), null);
+                    file.getInputStream(), file.getSize(), getExtension(file.getOriginalFilename()), null);
 
             //String url = "http://image.ji-well.com/upload/"+file.getOriginalFilename();
             String url = "http://image.ji-well.com/"+storePath.getFullPath();
-//            System.out.println(url);
+// System.out.println(url);
             return url;
         }catch (Exception e){
             return null;

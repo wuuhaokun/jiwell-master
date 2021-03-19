@@ -22,7 +22,7 @@ public class CartController {
     private CartService cartService;
 
     /**
-     * 添加购物车
+     * 添加購物車
      * @param cart
      * @return
      */
@@ -33,7 +33,7 @@ public class CartController {
     }
 
     /**
-     * 查询购物车
+     * 查詢購物車
      * @return
      */
     @GetMapping
@@ -46,7 +46,7 @@ public class CartController {
     }
 
     /**
-     * 修改购物车中商品数量
+     * 修改購物車中商品數量
      * @return
      */
     @PutMapping
@@ -56,7 +56,7 @@ public class CartController {
     }
 
     /**
-     * 删除购物车中的商品
+     * 刪除購物車中的商品
      * @param skuId
      * @return
      */
@@ -67,3 +67,4 @@ public class CartController {
     }
 
 }
+

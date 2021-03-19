@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 /**
  * @Author: 98050
  * @Time: 2018-10-24 20:46
- * @Feature:购物车启动器
+ * @Feature:購物車啟動器
  */
 @SpringBootApplication
 @EnableDiscoveryClient

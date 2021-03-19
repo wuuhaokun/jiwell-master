@@ -14,7 +14,7 @@ import java.util.List;
 @org.apache.ibatis.annotations.Mapper
 public interface CollectionMapper extends Mapper<Collection> {
     /**
-     * 根据id查名字
+     * 根據id查名字
      * @param userId
      * @return
      */

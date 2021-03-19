@@ -6,7 +6,7 @@ import com.jiwell.favorite.pojo.CouponProductCategoryRelation;
 import com.jiwell.favorite.pojo.CouponProductRelation;
 
 /**
- * 优惠券信息封装，包括绑定商品和绑定分类
+ * 優惠券信息封裝，包括綁定商品和綁定分類
  * Created by macro on 2018/8/28.
  */
 public class CouponParam extends Coupon {

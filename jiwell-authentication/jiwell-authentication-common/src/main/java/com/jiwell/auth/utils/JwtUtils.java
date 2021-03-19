@@ -104,11 +104,11 @@ public class JwtUtils {
     }
 
     /**
-     * 获取token中的用户信息
+     * 獲取token中的用戶信息
      *
-     * @param token     用户请求中的令牌
-     * @param publicKey 公钥
-     * @return 用户信息
+     * @param token 用戶請求中的令牌
+     * @param publicKey 公鑰
+     * @return 用戶信息
      * @throws Exception
      */
     public static UserInfo getInfoFromToken(String token, byte[] publicKey) throws Exception {

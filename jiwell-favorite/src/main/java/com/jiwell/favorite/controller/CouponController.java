@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 用户优惠券管理Controller
+ * 用戶優惠券管理Controller
  * Created by macro on 2018/8/29.
  */
 @RestController
@@ -39,8 +39,8 @@ public class CouponController {
         return ResponseEntity.ok(true);
     }
     ///////////////////////////////////////////
-    //@ApiOperation("获取用户优惠券历史列表")
-    //@ApiImplicitParam(name = "useStatus", value = "优惠券筛选类型:0->未使用；1->已使用；2->已过期", allowableValues = "0,1,2", paramType = "query", dataType = "integer")
+    //@ApiOperation("獲取用戶優惠券歷史列表")
+    //@ApiImplicitParam(name = "useStatus", value = "優惠券篩選類型:0->未使用；1->已使用；2->已過期", allowableValues = "0,1,2", paramType = "query", dataType = "integer")
     @RequestMapping(value = "/listHistory", method = RequestMethod.GET)
     @ResponseBody
     //public CommonResult<List<SmsCouponHistory>> listHistory(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
@@ -50,8 +50,8 @@ public class CouponController {
         return ResponseEntity.ok(couponHistoryList);
     }
 
-    //@ApiOperation("获取用户优惠券列表")
-    //@ApiImplicitParam(name = "useStatus", value = "优惠券筛选类型:0->未使用；1->已使用；2->已过期",allowableValues = "0,1,2", paramType = "query", dataType = "integer")
+    //@ApiOperation("獲取用戶優惠券列表")
+    //@ApiImplicitParam(name = "useStatus", value = "優惠券篩選類型:0->未使用；1->已使用；2->已過期",allowableValues = "0,1,2", paramType = "query", dataType = "integer")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     //public CommonResult<List<Coupon>> list(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
@@ -61,8 +61,8 @@ public class CouponController {
         //return CommonResult.success(couponList);
     }
     ////////////////////////////////////////////
-    //@ApiOperation("获取用户优惠券列表")
-    //@ApiImplicitParam(name = "useStatus", value = "优惠券筛选类型:0->未使用；1->已使用；2->已过期",allowableValues = "0,1,2", paramType = "query", dataType = "integer")
+    //@ApiOperation("獲取用戶優惠券列表")
+    //@ApiImplicitParam(name = "useStatus", value = "優惠券篩選類型:0->未使用；1->已使用；2->已過期",allowableValues = "0,1,2", paramType = "query", dataType = "integer")
 //    @RequestMapping(value = "/list", method = RequestMethod.GET)
 //    @ResponseBody
 //    public ResponseEntity<List<CouponHistory>> list(@RequestParam(value = "useStatus", required = false) Integer useStatus) {
@@ -73,7 +73,7 @@ public class CouponController {
 //        return ResponseEntity.ok(couponHistoryList);
 //    }
 
-    //@ApiOperation("获取登录会员购物车的相关优惠券")
+    //@ApiOperation("獲取登錄會員購物車的相關優惠券")
     //@ApiImplicitParam(name = "type", value = "使用可用:0->不可用；1->可用",defaultValue = "1", allowableValues = "0,1", paramType = "query", dataType = "integer")
     @RequestMapping(value = "/list/cart/{type}", method = RequestMethod.GET)
     @ResponseBody
@@ -86,7 +86,7 @@ public class CouponController {
         return ResponseEntity.ok(couponHistoryList);
     }
 
-    //@ApiOperation("获取当前商品相关优惠券")
+    //@ApiOperation("獲取當前商品相關優惠券")
     @RequestMapping(value = "/listByProduct/{productId}", method = RequestMethod.GET)
     @ResponseBody
     //public CommonResult<List<Coupon>> listByProduct(@PathVariable Long productId) {
@@ -97,7 +97,7 @@ public class CouponController {
     }
 
     ////////////////////////////////////////////////////////////////////////////
-    //@ApiOperation("添加优惠券")
+    //@ApiOperation("添加優惠券")
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Boolean> create(@RequestBody CouponParam couponParam) {
@@ -111,7 +111,7 @@ public class CouponController {
         return ResponseEntity.ok(false);
     }
 
-//    @ApiOperation("删除优惠券")
+    //@ApiOperation("刪除優惠券")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     @ResponseBody
     //public CommonResult delete(@PathVariable Long id) {
@@ -125,7 +125,7 @@ public class CouponController {
         //return CommonResult.failed();
     }
 
-    //@ApiOperation("修改优惠券")
+    //@ApiOperation("修改優惠券")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Boolean>update(@PathVariable Long id,@RequestBody CouponParam couponParam) {
@@ -139,7 +139,7 @@ public class CouponController {
         return ResponseEntity.ok(false);
     }
 
-//    @ApiOperation("根据优惠券名称和类型分页获取优惠券列表")
+//    @ApiOperation("根據優惠券名稱和類型分頁獲取優惠券列表")
 //    @RequestMapping(value = "/list", method = RequestMethod.GET)
 //    @ResponseBody
 //    public CommonResult<CommonPage<SmsCoupon>> list(
@@ -151,7 +151,7 @@ public class CouponController {
 //        return CommonResult.success(CommonPage.restPage(couponList));
 //    }
 //
-    //@ApiOperation("获取单个优惠券的详细信息")
+    //@ApiOperation("獲取單個優惠券的詳細信息")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     //public CommonResult<SmsCouponParam> getItem(@PathVariable Long id) {

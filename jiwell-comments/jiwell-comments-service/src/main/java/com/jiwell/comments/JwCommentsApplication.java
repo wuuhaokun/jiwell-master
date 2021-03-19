@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 /**
  * @Author: 98050
  * @Time: 2018-11-29 15:41
- * @Feature: 开启feign
+ * @Feature: 開啟feign
  */
 @SpringBootApplication
 @EnableDiscoveryClient

@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * @Author: 98050
  * @Time: 2018-10-23 23:50
- * @Feature: 用户服务接口
+ * @Feature: 用戶服務接口
  */
 public interface UserApi {
     /**
-     * 用户验证
+     * 用戶驗證
      * @param account
      * @param password
      * @return

@@ -15,7 +15,7 @@ import java.util.List;
 public interface SeckillService {
 
     /**
-     * 创建订单
+     * 創建訂單
      * @param seckillGoods
      * @return
      */
@@ -23,20 +23,20 @@ public interface SeckillService {
 
 
     /**
-     * 检查库存
+     * 檢查庫存
      * @param skuId
      * @return
      */
     boolean queryStock(Long skuId);
 
     /**
-     * 发送秒杀信息到队列当中
+     * 發送秒殺信息到隊列當中
      * @param seckillMessage
      */
     void sendMessage(SeckillMessage seckillMessage);
 
     /**
-     * 根据用户id查询秒杀订单
+     * 根據用戶id查詢秒殺訂單
      * @param userId
      * @return
      */
@@ -44,7 +44,7 @@ public interface SeckillService {
 
 
     /**
-     * 根据用户id查询秒杀订单
+     * 根據用戶id查詢秒殺訂單
      * @param userId
      * @return
      */
@@ -52,7 +52,7 @@ public interface SeckillService {
 
 
     /**
-     * 创建秒杀地址
+     * 創建秒殺地址
      * @param goodsId
      * @param id
      * @return
@@ -60,7 +60,7 @@ public interface SeckillService {
     String createPath(Long goodsId, Long id);
 
     /**
-     * 验证秒杀地址
+     * 驗證秒殺地址
      * @param goodsId
      * @param id
      * @param path

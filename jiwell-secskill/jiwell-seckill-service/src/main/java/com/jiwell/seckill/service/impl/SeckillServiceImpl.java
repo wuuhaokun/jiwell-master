@@ -70,7 +70,7 @@ public class SeckillServiceImpl implements SeckillService {
 
 
     /**
-     * 创建订单
+     * 創建訂單
      * @param seckillGoods
      * @return
      */
@@ -86,7 +86,7 @@ public class SeckillServiceImpl implements SeckillService {
         order.setReceiver("李四");
         order.setReceiverMobile("15812312312");
         order.setReceiverCity("西安");
-        order.setReceiverDistrict("碑林区");
+        order.setReceiverDistrict("碑林區");
         order.setReceiverState("陕西");
         order.setReceiverZip("000000000");
         order.setInvoiceType(0);
@@ -114,7 +114,7 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     /**
-     * 检查秒杀库存
+     * 檢查秒殺庫存
      * @param skuId
      * @return
      */
@@ -128,7 +128,7 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     /**
-     * 发送消息到秒杀队列当中
+     * 發送消息到秒殺隊列當中
      * @param seckillMessage
      */
     @Override
@@ -137,12 +137,12 @@ public class SeckillServiceImpl implements SeckillService {
         try {
             this.amqpTemplate.convertAndSend("order.seckill", json);
         }catch (Exception e){
-            LOGGER.error("秒杀商品消息发送异常，商品id：{}",seckillMessage.getSeckillGoods().getSkuId(),e);
+            LOGGER.error("秒殺商品消息發送異常，商品id：{}",seckillMessage.getSeckillGoods().getSkuId(),e);
         }
     }
 
     /**
-     * 根据用户id查询秒杀订单
+     * 根據用戶id查詢秒殺訂單
      * @param userId
      * @return
      */
@@ -158,7 +158,7 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     /**
-     * 根据用户id查询秒杀订单
+     * 根據用戶id查詢秒殺訂單
      * @param userId
      * @return
      */
@@ -174,7 +174,7 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     /**
-     * 创建秒杀地址
+     * 創建秒殺地址
      * @param goodsId
      * @param id
      * @return
@@ -193,7 +193,7 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     /**
-     * 验证秒杀地址
+     * 驗證秒殺地址
      * @param goodsId
      * @param id
      * @param path

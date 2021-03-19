@@ -14,11 +14,11 @@ public class BuyType implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * 品牌名称
+     * 品牌名稱
      */
     private String name;
     /**
-     * 品牌图片
+     * 品牌圖片
      */
 
     /**

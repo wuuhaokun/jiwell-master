@@ -19,7 +19,7 @@ public class CollectionController {
     private CollectionService collectionService;
 
     /**
-     * 查询我的最愛
+     * 查詢我的最愛
      * @param userId
      * @return
      */

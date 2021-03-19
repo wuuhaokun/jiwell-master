@@ -14,7 +14,7 @@ public interface StockMapper extends Mapper<Stock> {
 
 
     /**
-     * 更新对应商品的库存,且库存必须大于0，否则回滚。
+     * 更新對應商品的庫存,且庫存必須大於0，否則回滾。
      * @param skuId
      * @param num
      */
@@ -26,7 +26,7 @@ public interface StockMapper extends Mapper<Stock> {
     void increaseStock(@Param("skuId") Long skuId, @Param("num") Integer num);
 
     /**
-     * 更新对应商品的秒杀库存,且库存必须大于0，否则回滚。
+     * 更新對應商品的庫存,且庫存必須大於0，否則回滾。
      * @param skuId
      * @param num
      */

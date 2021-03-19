@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface UploadService {
     /**
-     * 文件上传
+     * 文件上傳
      * @param file
      * @return
      */

@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * @Author: 98050
  * @Time: 2018-10-25 19:48
- * @Feature: 配置过滤器
+ * @Feature: 配置過濾器
  */
 @Configuration
 //@EnableConfigurationProperties(JwtProperties.class)
@@ -31,15 +31,15 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(loginInterceptor()).addPathPatterns("/**");
     }
 
-//    @Bean
-//    public FilterRegistrationBean someFilterRegistration1() {
-//        //新建过滤器注册类
-//        FilterRegistrationBean registration = new FilterRegistrationBean();
-//        // 添加我们写好的过滤器
-//        registration.setFilter( new CartFilter());
-//        // 设置过滤器的URL模式
-//        registration.addUrlPatterns("/*");
-//        return registration;
-//    }
+//  @Bean
+//  public FilterRegistrationBean someFilterRegistration1() {
+//      //新建過濾器註冊類
+//      FilterRegistrationBean registration = new FilterRegistrationBean();
+//      // 添加我們寫好的過濾器
+//      registration.setFilter( new CartFilter());
+//      // 設置過濾器的URL模式
+//      registration.addUrlPatterns("/*");
+//      return registration;
+//  }
 
 }

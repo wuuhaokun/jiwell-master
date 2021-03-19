@@ -5,74 +5,74 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 
 /**
- * <p>名称：IdWorker.java</p>
- * <p>描述：分布式自增长ID</p>
+ * <p>名稱：IdWorker.java</p>
+ * <p>描述：分佈式自增長ID</p>
  * <pre>
- *     Twitter的 Snowflake　JAVA实现方案
+ * Twitter的 Snowflake　JAVA實現方案
  * </pre>
- * 核心代码为其IdWorker这个类实现，其原理结构如下，我分别用一个0表示一位，用—分割开部分的作用：
+ * 核心代碼為其IdWorker這個類實現，其原理結構如下，我分別用一個0表示一位，用—分割開部分的作用：
  * 1||0---0000000000 0000000000 0000000000 0000000000 0 --- 00000 ---00000 ---000000000000
- * 在上面的字符串中，第一位为未使用（实际上也可作为long的符号位），接下来的41位为毫秒级时间，
- * 然后5位datacenter标识位，5位机器ID（并不算标识符，实际是为线程标识），
- * 然后12位该毫秒内的当前毫秒内的计数，加起来刚好64位，为一个Long型。
- * 这样的好处是，整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞（由datacenter和机器ID作区分），
- * 并且效率较高，经测试，snowflake每秒能够产生26万ID左右，完全满足需要。
+ * 在上面的字符串中，第一位為未使用（實際上也可作為long的符號位），接下來的41位為毫秒級時間，
+ * 然後5位datacenter標識位，5位機器ID（並不算標識符，實際是為線程標識），
+ * 然後12位該毫秒內的當前毫秒內的計數，加起來剛好64位，為一個Long型。
+ * 這樣的好處是，整體上按照時間自增排序，並且整個分佈式系統內不會產生ID碰撞（由datacenter和機器ID作區分），
+ * 並且效率較高，經測試，snowflake每秒能夠產生26萬ID左右，完全滿足需要。
  * <p>
- * 64位ID (42(毫秒)+5(机器ID)+5(业务编码)+12(重复累加))
+ * 64位ID (42(毫秒)+5(機器ID)+5(業務編碼)+12(重複累加))
  *
  * @author Polim
  */
 public class IdWorker {
     /**
-     *  时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动）
+     * 時間起始標記點，作為基準，一般取系統的最近時間（一旦確定不能變動）
      */
     private final static long twepoch = 1288834974657L;
     /**
-     *  机器标识位数
-      */
+     * 機器標識位數
+     */
     private final static long workerIdBits = 5L;
     /**
-     * 数据中心标识位数
+     * 數據中心標識位數
      */
     private final static long datacenterIdBits = 5L;
     /**
-     * 机器ID最大值
+     * 機器ID最大值
      */
     private final static long maxWorkerId = -1L ^ (-1L << workerIdBits);
     /**
-     * 数据中心ID最大值
+     * 數據中心ID最大值
      */
     private final static long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
     /**
-     * 毫秒内自增位
+     * 毫秒內自增位
      */
     private final static long sequenceBits = 12L;
     /**
-     * 机器ID偏左移12位
+     * 機器ID偏左移12位
      */
     private final static long workerIdShift = sequenceBits;
     /**
-     * 数据中心ID左移17位
+     * 數據中心ID左移17位
      */
     private final static long datacenterIdShift = sequenceBits + workerIdBits;
     /**
-     * 时间毫秒左移22位
+     * 時間毫秒左移22位
      */
     private final static long timestampLeftShift = sequenceBits + workerIdBits + datacenterIdBits;
 
     private final static long sequenceMask = -1L ^ (-1L << sequenceBits);
     /**
-     * 上次生产id时间戳
+     * 上次生產id時間戳
      */
     private static long lastTimestamp = -1L;
     /**
-     * 并发控制
+     * 並發控制
      */
     private long sequence = 0L;
 
     private final long workerId;
     /**
-     * 数据标识id部分
+     * 數據標識id部分
      */
     private final long datacenterId;
 
@@ -82,9 +82,9 @@ public class IdWorker {
     }
     /**
      * @param workerId
-     *            工作机器ID
+     * 工作機器ID
      * @param datacenterId
-     *            序列号
+     * 序列號
      */
     public IdWorker(long workerId, long datacenterId) {
         if (workerId > maxWorkerId || workerId < 0) {
@@ -97,28 +97,28 @@ public class IdWorker {
         this.datacenterId = datacenterId;
     }
     /**
-     * 获取下一个ID
+     * 獲取下一個ID
      *
      * @return
      */
     public synchronized long nextId() {
         long timestamp = timeGen();
         if (timestamp < lastTimestamp) {
-            throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
+            throw new RuntimeException(String.format("Clock moved backwards. Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
         }
 
         if (lastTimestamp == timestamp) {
-            // 当前毫秒内，则+1
+            // 當前毫秒內，則+1
             sequence = (sequence + 1) & sequenceMask;
             if (sequence == 0) {
-                // 当前毫秒内计数满了，则等待下一秒
+                // 當前毫秒內計數滿了，則等待下一秒
                 timestamp = tilNextMillis(lastTimestamp);
             }
         } else {
             sequence = 0L;
         }
         lastTimestamp = timestamp;
-        // ID偏移组合生成最终的ID，并返回ID
+        // ID偏移組合生成最終的ID，並返回ID
         long nextId = ((timestamp - twepoch) << timestampLeftShift)
                 | (datacenterId << datacenterIdShift)
                 | (workerId << workerIdShift) | sequence;
@@ -140,7 +140,7 @@ public class IdWorker {
 
     /**
      * <p>
-     * 获取 maxWorkerId
+     * 獲取 maxWorkerId
      * </p>
      */
     protected static long getMaxWorkerId(long datacenterId, long maxWorkerId) {
@@ -161,7 +161,7 @@ public class IdWorker {
 
     /**
      * <p>
-     * 数据标识id部分
+     * 數據標識id部分
      * </p>
      */
     protected static long getDatacenterId(long maxDatacenterId) {

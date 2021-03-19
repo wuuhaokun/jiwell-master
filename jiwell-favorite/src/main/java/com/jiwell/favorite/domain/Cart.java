@@ -3,11 +3,11 @@ package com.jiwell.favorite.domain;
 /**
  * @Author: 98050
  * @Time: 2018-10-25 20:27
- * @Feature: 购物车实体类
+ * @Feature: 購物車實體類
  */
 public class Cart {
     /**
-     * 用户Id
+     * 用戶Id
      */
     private Long userId;
 
@@ -17,27 +17,27 @@ public class Cart {
     private Long skuId;
 
     /**
-     * 标题
+     * 標題
      */
     private String title;
 
     /**
-     * 图片
+     * 圖片
      */
     private String image;
 
     /**
-     * 加入购物车时的价格
+     * 加入購物車時的價格
      */
     private Long price;
 
     /**
-     * 购买数量
+     * 購買數量
      */
     private Integer num;
 
     /**
-     * 商品规格参数
+     * 商品規格參數
      */
     private String ownSpec;
 

@@ -21,13 +21,13 @@ import java.security.PublicKey;
 public class JwtProperties {
 
     /**
-     * 公钥地址
+     * 公鑰地址
      */
     @Value("${jiwell.jwt.pubKeyPath}")
     private String pubKeyPath;
 
     /**
-     * 公钥
+     * 公鑰
      */
     private PublicKey publicKey;
 
@@ -39,10 +39,10 @@ public class JwtProperties {
     @PostConstruct
     public void init(){
         try {
-            // 获取公钥和私钥
+            // 獲取公鑰和私鑰
             this.publicKey = RsaUtils.getPublicKey(pubKeyPath);
         } catch (Exception e) {
-            logger.error("初始化公钥失败！", e);
+            logger.error("初始化公鑰失敗！", e);
             throw new RuntimeException();
         }
     }

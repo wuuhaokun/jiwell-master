@@ -15,31 +15,31 @@ import org.springframework.context.annotation.Configuration;
 public class PayProperties {
 
     /**
-     * 公众账号ID
+     * 公眾賬號ID
      */
     @Value("${jiwell.pay.appId}")
     private String appId;
 
     /**
-     * 商户号
+     * 商戶號
      */
     @Value("${jiwell.pay.mchId}")
     private String mchId;
 
     /**
-     * 生成签名的密钥
+     * 生成簽名的密鑰
      */
     @Value("${jiwell.pay.key}")
     private String key;
 
     /**
-     * 连接超时时间
+     * 連接超時時間
      */
     @Value("${jiwell.pay.connectTimeoutMs}")
     private int connectTimeoutMs;
 
     /**
-     * 读取超时时间
+     * 讀取超時時間
      */
     @Value("${jiwell.pay.connectTimeoutMs}")
     private int readTimeoutMs;

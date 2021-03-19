@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * @Author: 98050
  * @Time: 2018-11-13 22:39
- * @Feature: order服务配置，转发header
+ * @Feature: order服務配置，轉發header
  */
 @Configuration
 public class OrderConfig {

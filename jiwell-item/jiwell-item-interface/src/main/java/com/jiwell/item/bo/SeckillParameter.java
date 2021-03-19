@@ -9,22 +9,22 @@ package com.jiwell.item.bo;
 public class SeckillParameter {
 
     /**
-     * 要秒杀的sku id
+     * 要秒殺的sku id
      */
     private Long id;
 
     /**
-     * 秒杀开始时间
+     * 秒殺開始時間
      */
     private String startTime;
 
     /**
-     * 秒杀结束时间
+     * 秒殺結束時間
      */
     private String endTime;
 
     /**
-     * 参与秒杀的商品数量
+     * 參與秒殺的商品數量
      */
     private Integer count;
 

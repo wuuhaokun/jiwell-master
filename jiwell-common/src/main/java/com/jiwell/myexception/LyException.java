@@ -7,12 +7,12 @@ package com.jiwell.myexception;
  */
 public enum LyException {
     /**
-     * 分类信息无法找到
+     * 分類信息無法找到
      */
     CATEGORY_NOT_FOUND,
 
     /**
-     * 品牌信息无法找到
+     * 品牌信息無法找到
      */
     BRAND_NOT_FOUND,
 }

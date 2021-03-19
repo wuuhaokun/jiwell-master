@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @Author: 98050
  * @Time: 2018-10-27 16:33
- * @Feature: 订单类实体
+ * @Feature: 訂單類實體
  */
 @Table(name = "tb_order")
 public class Order {
@@ -22,74 +22,74 @@ public class Order {
     private Long orderId;
 
     /**
-     * 总金额
+     * 總金額
      */
     @NotNull
     private Double totalPay;
     /**
-     * 实付金额
+     * 實付金額
      */
     @NotNull
     private Double actualPay;
 
     /**
-     * 支付类型，1、在线支付，2、货到付款
+     * 支付類型，1、在線支付，2、貨到付款
      */
     @NotNull
     private Integer paymentType;
 
     /**
-     * 参与促销活动的id
+     * 參與促銷活動的id
      */
     private String promotionIds;
 
     /**
-     * 邮费
+     * 郵費
      */
     private String postFee;
 
     /**
-     * 创建时间
+     * 創建時間
      */
     private Date createTime;
 
     /**
-     * 物流名称
+     * 物流名稱
      */
     private String shippingName;
 
     /**
-     * 物流单号
+     * 物流單號
      */
     private String shippingCode;
 
     /**
-     * 用户id
+     * 用戶id
      */
     private Long userId;
 
     /**
-     * 买家留言
+     * 買家留言
      */
     private String buyerMessage;
 
     /**
-     * 买家昵称
+     * 買家暱稱
      */
     private String buyerNick;
 
     /**
-     * 买家是否已经评价
+     * 買家是否已經評價
      */
     private Boolean buyerRate;
 
     /**
-     * 收货人全名
+     * 收貨人全名
      */
     private String receiver;
 
     /**
-     * 移动电话
+     * 移動電話
      */
     private String receiverMobile;
 
@@ -104,27 +104,27 @@ public class Order {
     private String receiverCity;
 
     /**
-     *  区/县
+     * 區/縣
      */
     private String receiverDistrict;
 
     /**
-     * 收货地址，如：xx路xx号
+     * 收貨地址，如：xx路xx號
      */
     private String receiverAddress;
 
     /**
-     * 邮政编码,如：310001
+     * 郵政編碼,如：310001
      */
     private String receiverZip;
 
     /**
-     * 发票类型，0无发票，1普通发票，2电子发票，3增值税发票
+     * 發票類型，0無發票，1普通發票，2電子發票，3增值稅發票
      */
     private Integer invoiceType;
 
     /**
-     * 订单来源 1:app端，2：pc端，3：M端，4：微信端，5：手机qq端
+     * 訂單來源 1:app端，2：pc端，3：M端，4：微信端，5：手機qq端
      */
     private Integer sourceType;
 

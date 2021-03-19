@@ -48,7 +48,7 @@ public class MailServiceImpl implements MailService {
     public void sendHtmlMail(String subject, String text,String mail, Map<String, String> attachmentMap) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
-        //是否发送的邮件是富文本（附件，图片，html等）
+        //是否發送的郵件是富文本（附件，圖片，html等）
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
 
         messageHelper.setFrom(mailProperties.getFrom());

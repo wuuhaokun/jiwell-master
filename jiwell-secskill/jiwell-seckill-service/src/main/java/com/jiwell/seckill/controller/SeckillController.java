@@ -47,7 +47,7 @@ public class SeckillController implements InitializingBean {
     private Map<Long,Boolean> localOverMap = new HashMap<>();
 
     /**
-     * 系统初始化，初始化秒杀商品数量
+     * 系統初始化，初始化秒殺商品數量
      * @throws Exception
      */
     @Override
@@ -63,7 +63,7 @@ public class SeckillController implements InitializingBean {
 
 
     /**
-     * 秒杀
+     * 秒殺
      * @param path
      * @param seckillGoods
      * @return
@@ -75,13 +75,13 @@ public class SeckillController implements InitializingBean {
 
         UserInfo userInfo = LoginInterceptor.getLoginUser();
 
-        //1.验证路径
+        //1.驗證路徑
         boolean check = this.seckillService.checkSeckillPath(seckillGoods.getId(),userInfo.getId(),path);
         if (check){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        //2.内存标记，减少redis访问
+        //2.內存標記，減少redis訪問
         if(localOverMap.size() < 0){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -90,27 +90,27 @@ public class SeckillController implements InitializingBean {
             return ResponseEntity.ok(result);
         }
 
-        //3.读取库存，减一后更新缓存
+        //3.讀取庫存，減一後更新緩存
         BoundHashOperations<String,Object,Object> hashOperations = this.stringRedisTemplate.boundHashOps(KEY_PREFIX);
         Long stock = hashOperations.increment(seckillGoods.getSkuId().toString(), -1);
 
-        //4.库存不足直接返回
+        //4.庫存不足直接返回
         if (stock < 0){
             localOverMap.put(seckillGoods.getSkuId(),true);
             return ResponseEntity.ok(result);
         }
 
-        //5.库存充足，请求入队
-        //5.1 获取用户信息
+        //5.庫存充足，請求入隊
+        //5.1 獲取用戶信息
         SeckillMessage seckillMessage = new SeckillMessage(userInfo,seckillGoods);
-        //5.2 发送消息
+        //5.2 發送消息
         this.seckillService.sendMessage(seckillMessage);
 
         return ResponseEntity.ok(result);
     }
 
     /**
-     * 根据userId查询订单号
+     * 根據userId查詢訂單號
      * @param userId
      * @return
      */
@@ -125,7 +125,7 @@ public class SeckillController implements InitializingBean {
     }
 
     /**
-     * 根据userId查询订单号
+     * 根據userId查詢訂單號
      * @param userId
      * @return
      */
@@ -138,7 +138,7 @@ public class SeckillController implements InitializingBean {
         return ResponseEntity.ok(result);
     }
     /**
-     * 创建秒杀路径
+     * 創建秒殺路徑
      * @param goodsId
      * @return
      */

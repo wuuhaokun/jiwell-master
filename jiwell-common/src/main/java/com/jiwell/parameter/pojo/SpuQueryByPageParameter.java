@@ -7,12 +7,12 @@ package com.jiwell.parameter.pojo;
  */
 public class SpuQueryByPageParameter extends BrandQueryByPageParameter{
     /**
-     *         - page：当前页，int
-     *         - rows：每页大小，int
-     *         - sortBy：排序字段，String
-     *         - desc：是否为降序，boolean
-     *         - key：搜索关键词，String
-     *         - saleable: 是否上下架
+     * - page：當前頁，int
+     * - rows：每頁大小，int
+     * - sortBy：排序字段，String
+     * - desc：是否為降序，boolean
+     * - key：搜索關鍵詞，String
+     * - saleable: 是否上下架
      */
     private Boolean saleable;
 

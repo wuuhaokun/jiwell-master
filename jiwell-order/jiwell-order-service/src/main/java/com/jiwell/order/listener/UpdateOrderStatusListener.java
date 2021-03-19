@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @Author: 98050
  * @Time: 2018-12-10 23:12
- * @Feature: 自动修改订单状态：自动确认收货，自动评价
+ * @Feature: 自動修改訂單狀態：自動確認收貨，自動評價
  */
 @Component
 public class UpdateOrderStatusListener {
@@ -39,7 +39,7 @@ public class UpdateOrderStatusListener {
     private OrderStatusMapper orderStatusMapper;
 
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "jiwell.order.delay.ttl.queue",durable = "true"), //队列持久化
+            value = @Queue(value = "jiwell.order.delay.ttl.queue",durable = "true"), //隊列持久化
             exchange = @Exchange(
                     value = "jiwell.amq.direct",
                     ignoreDeclarationExceptions = "true",
@@ -55,27 +55,27 @@ public class UpdateOrderStatusListener {
         int type = orderStatusMessage.getType();
 
         if (type == 1){
-            //自动确认收货，时间为7天
+            //自動確認收貨，時間為7天
 
-            //1.查询当前订单状态
+            //1.查詢當前訂單狀態
             int status = orderService.queryOrderStatusById(orderStatusMessage.getOrderId()).getStatus();
             int nowStatus = 4;
             if (status + 1 == nowStatus){
-                //2.修改订单状态
+                //2.修改訂單狀態
                 updateOrderStatusDelay(orderStatusMessage.getOrderId(), nowStatus);
 
             }
         }else {
-            //自动好评，时间为5天
-            //1.查询当前订单状态
+            //自動好評，時間為5天
+            //1.查詢當前訂單狀態
             int status = orderService.queryOrderStatusById(orderStatusMessage.getOrderId()).getStatus();
             int nowStatus = 6;
             if (status + 2 != nowStatus){
                 return;
             }
-            //2.修改订单状态
+            //2.修改訂單狀態
             updateOrderStatusDelay(orderStatusMessage.getOrderId(), nowStatus);
-            //3.发送评论消息
+            //3.發送評論消息
             CommentsParameter commentsParameter = constructMessage(orderStatusMessage);
 
             this.orderStatusService.sendComments(commentsParameter);
@@ -84,7 +84,7 @@ public class UpdateOrderStatusListener {
 
     private CommentsParameter constructMessage(OrderStatusMessage orderStatusMessage) {
         Long spuId = orderStatusMessage.getSpuId();
-        String content = "默认好评";
+        String content = "默認好評";
         Long userId = orderStatusMessage.getUserId();
         String nickname = orderStatusMessage.getAccount();
         List<String> images = new ArrayList<>();

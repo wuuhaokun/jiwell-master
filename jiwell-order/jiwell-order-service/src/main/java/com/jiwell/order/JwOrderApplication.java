@@ -13,7 +13,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 /**
  * @Author: 98050
  * @Time: 2018-10-27 11:36
- * @Feature: 订单服务启动器
+ * @Feature: 訂單服務啟動器
  */
 @SpringBootApplication
 @EnableDiscoveryClient

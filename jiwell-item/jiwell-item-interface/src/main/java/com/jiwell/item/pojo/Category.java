@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * @author li
  * @time 2018/8/7
- * @feature: 商品分类对应的实体
+ * @feature: 商品分類對應的實體
  */
 public class Category implements Serializable {
 	@Id
@@ -20,7 +20,7 @@ public class Category implements Serializable {
 	private Long parentId;
 	private Boolean isParent;
 	/**
-	 * 排序指数，越小越靠前
+	 * 排序指數，越小越靠前
 	 */
 	private Integer sort;
 

@@ -12,17 +12,17 @@ public class CommentRequestParam {
     private Long spuId;
 
     /**
-     * 当前页码
+     * 當前頁碼
      */
     private Integer page;
 
     /**
-     * 每页大小，不从页面接收，而是固定大小
+     * 每頁大小，不從頁面接收，而是固定大小
      */
     private static final Integer DEFAULT_SIZE = 20;
 
     /**
-     * 默认页
+     * 默認頁
      */
     private static final Integer DEFAULT_PAGE = 1;
 
@@ -39,7 +39,7 @@ public class CommentRequestParam {
             return DEFAULT_PAGE;
         }
         /**
-         * 获取页码时做一些校验，不能小于1
+         * 獲取頁碼時做一些校驗，不能小於1
          */
         return Math.max(DEFAULT_PAGE,page);
     }

@@ -7,12 +7,12 @@ package com.jiwell.order.vo;
  */
 public class OrderStatusMessage {
     /**
-     * 订单id
+     * 訂單id
      */
     private Long orderId;
 
     /**
-     * 用户id
+     * 用戶id
      */
     private Long userId;
 
@@ -21,7 +21,7 @@ public class OrderStatusMessage {
     private Long spuId;
 
     /**
-     * 消息类型：1(自动确认收货)  2（自动评论）
+     * 消息類型：1(自動確認收貨) 2（自動評論）
      */
     private int type;
 

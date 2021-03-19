@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * @Author: 98050
  * @Time: 2018-10-21 18:42
- * @Feature: 用户实体类
+ * @Feature: 用戶實體類
  */
 @Table(name = "tb_jwfirebase")
 public class JwFirebase implements Serializable {

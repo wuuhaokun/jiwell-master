@@ -7,14 +7,14 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * 会员优惠券领取历史自定义Dao
+ * 會員優惠券領取歷史自定義Dao
  * Created by macro on 2018/8/29.
  */
 public interface CouponHistoryDao {
     List<CouponHistoryDetail> getDetailList(@Param("memberId") Long memberId);
 
     /**
-     * 获取指定会员优惠券列表
+     * 獲取指定會員優惠券列表
      */
     List<Coupon> getCouponList(@Param("memberId") Long memberId, @Param("useStatus")Integer useStatus);
 

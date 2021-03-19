@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * @Author: 98050
  * @Time: 2018-10-22 18:34
- * @Feature: 短信服务实体类
+ * @Feature: 短信服務實體類
  */
 //@ConfigurationProperties(prefix = "jiwell.sms")
 @Configuration

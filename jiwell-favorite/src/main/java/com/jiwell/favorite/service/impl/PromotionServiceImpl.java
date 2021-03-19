@@ -24,7 +24,7 @@ import java.util.*;
 @Service
 public class PromotionServiceImpl implements PromotionService {
     @Autowired
-    private PortalProductDao portalProductDao;
+    private PortalProductDao  portalProductDao;
 
     @Override
     public List<CartPromotionItem> calcCartPromotion(List<Cart> cartItemList) {

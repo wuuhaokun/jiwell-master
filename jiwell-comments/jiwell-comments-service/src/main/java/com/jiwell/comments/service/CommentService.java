@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public interface CommentService {
 
     /**
-     * 根据评论id查询
+     * 根據評論id查詢
      *
      * @param id
      * @return
@@ -24,7 +24,7 @@ public interface CommentService {
     Review findOne(String id);
 
     /**
-     * 新增评论
+     * 新增評論
      * @param review
      * @param orderId
      * @return
@@ -32,34 +32,34 @@ public interface CommentService {
     boolean add(Long orderId, Review review);
 
     /**
-     * 修改评论
+     * 修改評論
      *
      * @param review
      */
     void update(Review review);
 
     /**
-     * 删除指定评论
+     * 刪除指定評論
      *
      * @param id
      */
     void deleteById(String id);
 
     /**
-     * 查询某一商品下的所有顶级评论
+     * 查詢某一商品下的所有頂級評論
      * @param commentRequestParam
      * @return
      */
     Page<Review> findReviewBySpuId(CommentRequestParam commentRequestParam);
 
     /**
-     * 评论点赞
+     * 評論點贊
      * @param id
      */
     boolean updateThumbup(String id);
 
     /**
-     * 浏览量增1
+     * 瀏覽量＋1
      * @param id
      */
     boolean updateVisits(String id);

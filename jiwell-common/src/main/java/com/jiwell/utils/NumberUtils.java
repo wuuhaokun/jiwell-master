@@ -20,7 +20,7 @@ public class NumberUtils {
     }
 
     /**
-     * 判断字符串是否是数值格式
+     * 判斷字符串是否是數值格式
      * @param str
      * @return
      */
@@ -32,7 +32,7 @@ public class NumberUtils {
     }
 
     /**
-     * 将一个小数精确到指定位数
+     * 將一個小數精確到指定位數
      * @param num
      * @param scale
      * @return
@@ -43,7 +43,7 @@ public class NumberUtils {
     }
 
     /**
-     * 从字符串中根据正则表达式寻找，返回找到的数字数组
+     * 從字符串中根據正則表達式尋找，返回找到的數字數組
      * @param value
      * @param regex
      * @return
@@ -62,7 +62,7 @@ public class NumberUtils {
     }
 
     /**
-     * 生成指定位数的随机数字
+     * 生成指定位數的隨機數字
      * @param len
      * @return
      */

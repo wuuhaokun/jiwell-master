@@ -9,13 +9,13 @@ public class ProductLadder implements Serializable {
 
     private Long productId;
 
-    //@ApiModelProperty(value = "满足的商品数量")
+    //@ApiModelProperty(value = "滿足的商品數量")
     private Integer count;
 
     //@ApiModelProperty(value = "折扣")
     private BigDecimal discount;
 
-    //@ApiModelProperty(value = "折后价格")
+    //@ApiModelProperty(value = "折後價格")
     private BigDecimal price;
 
     private static final long serialVersionUID = 1L;

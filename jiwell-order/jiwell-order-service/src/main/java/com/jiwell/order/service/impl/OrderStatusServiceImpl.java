@@ -25,7 +25,7 @@ public class OrderStatusServiceImpl implements OrderStatusService {
 
 
     /**
-     * 发送延时消息到延时队列中
+     * 發送延時消息到延時隊列中
      * @param orderStatusMessage
      */
     @Override
@@ -44,12 +44,12 @@ public class OrderStatusServiceImpl implements OrderStatusService {
         try {
             this.amqpTemplate.convertAndSend("", "jiwell.order.delay.queue", message);
         }catch (Exception e){
-            LOGGER.error("延时消息发送异常，订单号为：id：{}，用户id为：{}",orderStatusMessage.getOrderId(),orderStatusMessage.getUserId(),e);
+            LOGGER.error("延時消息發送異常，訂單號為：id：{}，用户id为：{}",orderStatusMessage.getOrderId(),orderStatusMessage.getUserId(),e);
         }
     }
 
     /**
-     * 将评论发送到消息队列中
+     * 將評論發送到消息隊列中
      * @param commentsParameter
      */
     @Override
@@ -58,7 +58,7 @@ public class OrderStatusServiceImpl implements OrderStatusService {
         try {
             this.amqpTemplate.convertAndSend("jiwell.comments.exchange","user.comments", json);
         }catch (Exception e){
-            LOGGER.error("评论消息发送异常，订单id：{}",commentsParameter.getOrderId(),e);
+            LOGGER.error("評論消息發送異常，訂單id：{}",commentsParameter.getOrderId(),e);
         }
     }
 }

@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * @Author: 98050
  * @Time: 2018-11-10 11:48
- * @Feature: 秒杀商品对象
+ * @Feature: 秒殺商品對象
  */
 @Table(name = "tb_seckill_sku")
 public class SeckillGoods {
@@ -17,38 +17,38 @@ public class SeckillGoods {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * 秒杀商品的id
+     * 秒殺商品的id
      */
     private Long skuId;
     /**
-     * 秒杀开始时间
+     * 秒殺開始時間
      */
     private Date startTime;
     /**
-     * 秒杀结束时间
+     * 秒殺結束時間
      */
     private Date endTime;
     /**
-     * 秒杀价格
+     * 秒殺價格
      */
     private Double seckillPrice;
     /**
-     * 商品标题
+     * 商品標題
      */
     private String title;
 
     /**
-     * 商品图片
+     * 商品圖片
      */
     private String image;
 
     /**
-     * 是否可以秒杀
+     * 是否可以秒殺
      */
     private Boolean enable;
 
     /**
-     * 秒杀库存
+     * 秒殺庫存
      */
     @JsonIgnore
     @Transient

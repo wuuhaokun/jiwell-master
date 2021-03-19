@@ -17,7 +17,7 @@ import java.util.Map;
 /**
  * @Author: 98050
  * @Time: 2018-10-22 19:21
- * @Feature:短信服务监听器
+ * @Feature:短信服務監聽器
  */
 @Component
 public class SmsListener {
@@ -42,14 +42,14 @@ public class SmsListener {
         String code = msg.get("code");
 
         if (StringUtils.isNotBlank(phone) && StringUtils.isNotBlank(code)){
-            //发送消息
+            //發送消息
             try {
                 SendSmsResponse response = this.smsUtils.sendSms(phone, code, smsProperties.getSignName(), smsProperties.getVerifyCodeTemplate());
             }catch (ClientException e){
                 return;
             }
         }else {
-            //不做处理
+            //不做處理
             return;
         }
     }

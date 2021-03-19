@@ -19,7 +19,7 @@ public class MyFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        logger.info("过滤器启动");
+        logger.info("過濾器啟動");
     }
 
     @Override
@@ -28,7 +28,7 @@ public class MyFilter implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         String url = httpServletRequest.getRequestURI();
 
-        //过滤/actuator/bus-refresh请求
+        //過濾/actuator/bus-refresh請求
         String suffix = "/bus-refresh";
         if (!url.endsWith(suffix)){
             filterChain.doFilter(servletRequest,servletResponse);
@@ -42,6 +42,6 @@ public class MyFilter implements Filter {
 
     @Override
     public void destroy() {
-        logger.info("过滤器销毁");
+        logger.info("過濾器銷毀");
     }
 }

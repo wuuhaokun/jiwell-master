@@ -3,7 +3,7 @@ package com.jiwell.response;
 /**
  * @Author: 98050
  * @Time: 2018-11-24 21:41
- * @Feature: 返回结果
+ * @Feature: 返回結果
  */
 public class Result<T> {
 
@@ -12,16 +12,16 @@ public class Result<T> {
     private T data;
 
     /**
-     *  成功时候的调用
+     * 成功時候的調用
      * */
-    public static  <T> Result<T> success(T data){
+    public static <T> Result<T> success(T data){
         Result<T> result = new Result<T>(data);
         result.code = CodeMsg.SUCCESS.getCode();
         return new Result<T>(data);
     }
 
     /**
-     *  失败时候的调用
+     * 失敗時候的調用
      * */
     public static  <T> Result<T> error(CodeMsg codeMsg){
         return new Result<T>(codeMsg);

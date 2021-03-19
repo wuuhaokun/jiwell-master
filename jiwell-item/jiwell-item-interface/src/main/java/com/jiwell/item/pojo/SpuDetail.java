@@ -9,28 +9,28 @@ import javax.persistence.Table;
 @Table(name="tb_spu_detail")
 public class SpuDetail {
     @Id
-    /**
-     * 对应的SPU的id
-     */
+/**
+ * 對應的SPU的id
+ */
     private Long spuId;
     /**
      * 商品描述
      */
     private String description;
     /**
-     * 商品特殊规格的名称及可选值模板
+     * 商品特殊規格的名稱及可選值模板
      */
     private String specTemplate;
     /**
-     * 商品的全局规格属性
+     * 商品的全局規格屬性
      */
     private String specifications;
     /**
-     * 包装清单
+     * 包裝清單
      */
     private String packingList;
     /**
-     * 售后服务
+     * 售後服務
      */
     private String afterService;
 

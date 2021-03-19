@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @Author: 98050
  * @Time: 2018-11-23 23:45
- * @Feature: 接口限流拦截器
+ * @Feature: 接口限流攔截器
  */
 @Service
 public class AccessInterceptor extends HandlerInterceptorAdapter {
@@ -38,7 +38,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
                 return true;
             }
 
-            //获取用户信息
+            //獲取用戶信息
             UserInfo userInfo = LoginInterceptor.getLoginUser();
             int seconds = accessLimit.seconds();
             int maxCount = accessLimit.maxCount();
@@ -51,7 +51,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
                 }
                 key += "_" + userInfo.getId();
             }else {
-                //不需要登录，则什么也不做
+                //不需要登錄，則什麼也不做
             }
             String count = redisTemplate.opsForValue().get(key);
             if (count == null){

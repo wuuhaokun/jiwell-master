@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @Author: 98050
  * @Time: 2018-10-25 18:17
- * @Feature: 登录拦截器
+ * @Feature: 登錄攔截器
  */
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
@@ -25,7 +25,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     private JwtProperties jwtProperties;
 
     /**
-     * 定义一个线程域，存放登录用户
+     * 定義一個線程域，存放登錄用戶
      */
     private static final ThreadLocal<UserInfo> t1 = new ThreadLocal<>();
 
@@ -34,14 +34,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     }
 
     /**
-     *      * 在业务处理器处理请求之前被调用
-     *      * 如果返回false
-     *      *      则从当前的拦截器往回执行所有拦截器的afterCompletion(),再退出拦截器链
-     *      * 如果返回true
-     *      *      执行下一个拦截器，直到所有拦截器都执行完毕
-     *      *      再执行被拦截的Controller
-     *      *      然后进入拦截器链
-     *      *      从最后一个拦截器往回执行所有的postHandle()
+     * * 在業務處理器處理請求之前被調用
+     * * 如果返回false
+     * * 則從當前的攔截器往回執行所有攔截器的afterCompletion(),再退出攔截器鏈
+     * * 如果返回true
+     * * 執行下一個攔截器，直到所有攔截器都執行完畢
+     * * 再執行被攔截的Controller
+     * * 然後進入攔截器鏈
+     * * 從最後一個攔截器往回執行所有的postHandle()
      * @param request
      * @param response
      * @param handler
@@ -50,7 +50,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //1.查询token
+        //1.查詢token
         String token = CookieUtils.getCookieValue(request,jwtProperties.getCookieName());
         String headerToken = JwtUtils.getJwtFromRequest(request);
         if (StringUtils.isBlank(token)){
@@ -59,28 +59,28 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 token = headerToken;
             }
             else{
-                //2.未登录，返回401
+                //2.未登錄，返回401
                 response.setStatus(HttpStatus.UNAUTHORIZED.value());
                 return false;
             }
         }
-        //3.有token，查询用户信息
+        //3.有token，查詢用戶信息
         try{
-            //4.解析成功，说明已经登录
+            //4.解析成功，說明已經登錄
             UserInfo userInfo = JwtUtils.getInfoFromToken(token,jwtProperties.getPublicKey());
-            //5.放入线程域
+            //5.放入線程域
             t1.set(userInfo);
             return true;
         }catch (Exception e){
-            //6.抛出异常，证明未登录，返回401
+            //6.拋出異常，證明未登錄，返回401
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             return false;
         }
     }
 
     /**
-     * 在业务处理器处理请求执行完成后，生成视图之前执行的动作
-     * 可在modelAndView中加入数据，比如当前时间
+     * 在業務處理器處理請求執行完成後，生成視圖之前執行的動作
+     * 可在modelAndView中加入數據，比如當前時間
      * @param request
      * @param response
      * @param handler
@@ -93,8 +93,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     }
 
     /**
-     * 在DispatcherServlet完全处理完请求后被调用,可用于清理资源等
-     * 当有拦截器抛出异常时,会从当前拦截器往回执行所有的拦截器的afterCompletion()
+     * 在DispatcherServlet完全處理完請求後被調用,可用於清理資源等
+     * 當有攔截器拋出異常時,會從當前攔截器往回執行所有的攔截器的afterCompletion()
      * @param request
      * @param response
      * @param handler
@@ -103,7 +103,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-       t1.remove();
+        t1.remove();
     }
 
     public static UserInfo getLoginUser(){

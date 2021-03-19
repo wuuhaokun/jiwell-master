@@ -10,14 +10,14 @@ import java.util.List;
 
 /**
  * Created by macro on 2018/8/27.
- * 商品的促销信息，包括sku、打折优惠、满减优惠
+ * 商品的促銷信息，包括sku、打折優惠、滿減優惠
  */
 public class PromotionProduct extends Sku {
-    //商品库存信息
+    //商品庫存信息
     private List<Stock> skuStockList;
     //商品打折信息
     private List<ProductLadder> productLadderList;
-    //商品满减信息
+    //商品滿減信息
     private List<ProductFullReduction> productFullReductionList;
 
     public List<Stock> getSkuStockList() {

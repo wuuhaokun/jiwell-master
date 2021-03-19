@@ -11,13 +11,13 @@ import java.util.List;
 /**
  * @Author: 98050
  * Time: 2018-10-11 20:05
- * Feature:商品分类服务接口
+ * Feature:商品分類服務接口
  */
 @RequestMapping("category")
 public interface CategoryApi {
 
     /**
-     * 根据id，查询分类名称
+     * 根據id，查詢分類名稱
      * @param ids
      * @return
      */
@@ -25,7 +25,7 @@ public interface CategoryApi {
     ResponseEntity<List<String>> queryNameByIds(@RequestParam("ids")List<Long> ids);
 
     /**
-     * 根据分类id集合查询分类名称
+     * 根據分類id集合查詢分類名稱
      * @param ids
      * @return
      */

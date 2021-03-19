@@ -8,7 +8,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 /**
  * @Author: 98050
  * @Time: 2018-10-21 17:29
- * @Feature: 用户中心启动器
+ * @Feature: 用戶中心啟動器
  */
 @SpringBootApplication
 @EnableDiscoveryClient

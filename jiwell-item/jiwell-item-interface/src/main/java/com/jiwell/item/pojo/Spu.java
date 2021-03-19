@@ -17,23 +17,23 @@ public class Spu {
     private Long id;
     private Long brandId;
     /**
-     * 1级类目
+     * 1級類目
      */
     private Long cid1;
     /**
-     * 2级类目
+     * 2級類目
      */
     private Long cid2;
     /**
-     * 3级类目
+     * 3級類目
      */
     private Long cid3;
     /**
-     * 标题
+     * 標題
      */
     private String title;
     /**
-     * 子标题
+     * 子標題
      */
     private String subTitle;
     /**
@@ -41,15 +41,15 @@ public class Spu {
      */
     private Boolean saleable;
     /**
-     * 是否有效，逻辑删除使用
+     * 是否有效，邏輯刪除使用
      */
     private Boolean valid;
     /**
-     * 创建时间
+     * 創建時間
      */
     private Date createTime;
     /**
-     * 最后修改时间
+     * 最後修改時間
      */
     private Date lastUpdateTime;
 

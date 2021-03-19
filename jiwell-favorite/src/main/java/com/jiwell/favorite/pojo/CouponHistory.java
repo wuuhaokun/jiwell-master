@@ -17,24 +17,24 @@ public class CouponHistory implements Serializable {
 
     private String couponCode;
 
-    //@ApiModelProperty(value = "领取人昵称")
+    //@ApiModelProperty(value = "領取人暱稱")
     private String memberNickname;
 
-    //@ApiModelProperty(value = "获取类型：0->后台赠送；1->主动获取")
+    //@ApiModelProperty(value = "獲取類型：0->後台贈送；1->主動獲取")
     private Integer getType;
 
     private Date createTime;
 
-    //@ApiModelProperty(value = "使用状态：0->未使用；1->已使用；2->已过期")
+    //@ApiModelProperty(value = "使用狀態：0->未使用；1->已使用；2->已過期")
     private Integer useStatus;
 
-    //@ApiModelProperty(value = "使用时间")
+    //@ApiModelProperty(value = "使用時間")
     private Date useTime;
 
-    //@ApiModelProperty(value = "订单编号")
+    //@ApiModelProperty(value = "訂單編號")
     private Long orderId;
 
-    //@ApiModelProperty(value = "订单号码")
+    //@ApiModelProperty(value = "訂單號碼")
     private String orderSn;
 
     private static final long serialVersionUID = 1L;

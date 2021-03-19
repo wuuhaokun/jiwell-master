@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 /**
  * @Author: 98050
  * @Time: 2018-10-22 18:59
- * @Feature: 短信服务工具类
+ * @Feature: 短信服務工具類
  */
 @Component
 //@EnableConfigurationProperties(SmsProperties.class)
@@ -29,11 +29,11 @@ public class SmsUtils {
     private SmsProperties properties;
 
     /**
-     * 产品名称:云通信短信API产品,开发者无需替换
+     * 產品名稱:云通信短信API產品,開發者無需替換
      */
     static final String product = "Dysmsapi";
     /**
-     * 产品域名,开发者无需替换
+     * 產品域名,開發者無需替換
      */
     static final String domain = "dysmsapi.aliyuncs.com";
 
@@ -41,34 +41,34 @@ public class SmsUtils {
 
     public  SendSmsResponse sendSms(String phone,String code,String signName,String template) throws ClientException {
 
-        //可自助调整超时时间
+//可自助調整超時時間
         System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
         System.setProperty("sun.net.client.defaultReadTimeout", "10000");
 
-        //初始化acsClient,暂不支持region化
+        //初始化acsClient,暫不支持region化
         IClientProfile profile = DefaultProfile.getProfile("cn-hangzhou", properties.getAccessKeyId(), properties.getAccessKeySecret());
         DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
         IAcsClient acsClient = new DefaultAcsClient(profile);
 
-        //组装请求对象-具体描述见控制台-文档部分内容
+        //組裝請求對象-具體描述見控制台-文檔部分內容
         SendSmsRequest request = new SendSmsRequest();
         request.setMethod(MethodType.POST);
-        //必填:待发送手机号
+        //必填:待發送手機號
         request.setPhoneNumbers(phone);
-        //必填:短信签名-可在短信控制台中找到
+        //必填:短信簽名-可在短信控制台中找到
         request.setSignName(signName);
         //必填:短信模板-可在短信控制台中找到
         request.setTemplateCode(template);
-        //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
+        //可選:模板中的變量替換JSON串,如模板內容為"親愛的${name},您的驗證碼為${code}"時,此處的值為
         request.setTemplateParam("{\"code\":\"" + code + "\"}");
 
-        //选填-上行短信扩展码(无特殊需求用户请忽略此字段)
+        //選填-上行短信擴展碼(無特殊需求用戶請忽略此字段)
         //request.setSmsUpExtendCode("90997");
 
-        //可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
+        //可選:outId為提供給業務方擴展字段,最終在短信回執消息中將此值帶回給調用者
         request.setOutId("123456");
 
-        //hint 此处可能会抛出异常，注意catch
+        //hint 此處可能會拋出異常，注意catch
         SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
 
         return sendSmsResponse;

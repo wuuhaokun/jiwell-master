@@ -38,11 +38,11 @@ public class CommentsListener {
     private CommentDao commentDao;
 
     /**
-     * 取到消息队列中信息，发布评论
+     * 取到消息隊列中信息，發布評論
      * @param string
      */
     @RabbitListener(bindings = @QueueBinding(
-            value = @Queue(value = "jiwell.comments.queue",durable = "true"), //队列持久化
+            value = @Queue(value = "jiwell.comments.queue",durable = "true"), //隊列持久化
             exchange = @Exchange(
                     value = "jiwell.comments.exchange",
                     ignoreDeclarationExceptions = "true",
@@ -63,7 +63,7 @@ public class CommentsListener {
         review.setThumbup(0);
         review.setVisits(0);
         if (review.getParentid() != null && !"".equals(review.getParentid())){
-            //如果存在上级id，则上级评论数加1，将上级评论的isParent设置为true，浏览量加一
+            //如果存在上級id，則上級評論數加1，將上級評論的isParent設置為true，瀏覽量加一
             Query query = new Query();
             query.addCriteria(Criteria.where("_id").is(review.getParentid()));
             Update update = new Update();

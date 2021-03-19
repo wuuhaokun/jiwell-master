@@ -14,10 +14,10 @@ public class CouponProductCategoryRelation implements Serializable {
 
     private Long productCategoryId;
 
-    //@ApiModelProperty(value = "产品分类名称")
+    //@ApiModelProperty(value = "產品分類名稱")
     private String productCategoryName;
 
-    //@ApiModelProperty(value = "父分类名称")
+    //@ApiModelProperty(value = "父分類名稱")
     private String parentCategoryName;
 
     private static final long serialVersionUID = 1L;

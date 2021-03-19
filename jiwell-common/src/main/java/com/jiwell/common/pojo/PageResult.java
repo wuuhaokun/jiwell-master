@@ -9,15 +9,15 @@ import java.util.List;
 public class PageResult<T> {
 
     /**
-     * 总条数
+     * 總條數
      */
     private Long total;
     /**
-     * 总页数
+     * 總頁數
      */
     private Long totalPage;
     /**
-     * 当前页数据
+     * 當前頁數據
      */
     private List<T> items;
 
