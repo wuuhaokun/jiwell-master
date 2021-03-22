@@ -2,6 +2,6 @@ spring:
   cloud:
     config:
       name: cart
-      profile: dev
+      profile: prod
       label: master
-      uri: http://127.0.0.1:10011
+      uri: http://10.140.0.11:10011
