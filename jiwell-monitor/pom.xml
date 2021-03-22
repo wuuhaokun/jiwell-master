@@ -10,7 +10,7 @@
         <modelVersion>4.0.0</modelVersion>
 
         <groupId>com.jiwell.monitor</groupId>
-        <artifactId>jiwell-monitor</artifactId>
+        <artifactId>jiwell-admi-monitor</artifactId>
 
     <dependencies>
         <dependency>
@@ -70,7 +70,7 @@
                         <include>${project.build.finalName}.jar</include>
                     </resource>
                 </resources>
-                <dockerHost>${docker.host}</dockerHost>
+                <dockerHost>${docker.cloud.host}</dockerHost>
             </configuration>
         </plugin>
     </plugins>

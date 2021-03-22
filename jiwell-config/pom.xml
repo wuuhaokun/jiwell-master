@@ -69,7 +69,7 @@
                             <include>${project.build.finalName}.jar</include>
                         </resource>
                     </resources>
-                    <dockerHost>${docker.host}</dockerHost>
+                    <dockerHost>${docker.cloud.host}</dockerHost>
                 </configuration>
             </plugin>
         </plugins>

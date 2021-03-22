@@ -249,7 +249,7 @@ FastDFS兩個主要的角色：Tracker Server 和 Storage Server 。
 本機中需要的配置：
 
 - nginx：前端所有請求統一代理到網關，域名的反向代理
-             - host：實現域名訪問
+- host：實現域名訪問
 
 具體請參照：https://blog.csdn.net/lyj2018gyq/article/details/83654179#2.1%20Nginx
 
@@ -262,12 +262,6 @@ FastDFS兩個主要的角色：Tracker Server 和 Storage Server 。
 ### 五、博客地址
 
 [傳送門](https://blog.csdn.net/lyj2018gyq/article/category/7963560)
-
-mac 打開docker port
-docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 10.140.0.3:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run /docker.sock
-在Mac OSX系統的Docker機上啟用Docker遠程API功能
-https://blog.csdn.net/chszs/article/details/50650214
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1384,3 +1378,8 @@ https://juejin.cn/post/6844903919148072973
 
 Spring Cloud Eureka 使用外网IP和端口号进行服务注册---
 https://www.cnblogs.com/goingforward/p/11233570.html
+
+mac 打開docker port
+docker run -d -v /var/run/docker.sock:/var/run/docker.sock -p 10.140.0.3:2375:2375 bobrik/socat TCP-LISTEN:2375,fork UNIX-CONNECT:/var/run /docker.sock
+在Mac OSX系統的Docker機上啟用Docker遠程API功能
+https://blog.csdn.net/chszs/article/details/50650214
