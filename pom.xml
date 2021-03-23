@@ -73,6 +73,7 @@
         <spring-boot-maven-plugin.version>2.2.2.RELEASE</spring-boot-maven-plugin.version>
         <firebase-admin.version>6.8.1</firebase-admin.version>
         <logstash-logback.version>5.3</logstash-logback.version>
+        <hutool.version>5.4.0</hutool.version>
     </properties>
 
     <dependencyManagement>
@@ -254,6 +255,17 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-actuator</artifactId>
                 <version>${spring.config.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logstash-logback.version}</version>
             </dependency>
 
         </dependencies>
